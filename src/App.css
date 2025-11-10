@@ -1,7 +1,10 @@
 #root {
-  padding: 2rem;
   text-align: center;
   width: 100%;
+}
+
+.content {
+  padding: 2rem;
 }
 
 @keyframes logo-spin {
