@@ -29,11 +29,6 @@
   font-weight: 400;
   scroll-behavior: smooth;
 
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -44,9 +39,9 @@ body {
   margin: 0;
   padding: 0; 
   width: 100%;
-  display: flex;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 h1 {
