@@ -25,7 +25,6 @@ export default function Footer() {
           </p>
 
           {/* İletişim */}
-          {/* İletişim */}
           <div>
             <p className="font-semibold mb-3">İLETİŞİM</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm sm:text-base">
