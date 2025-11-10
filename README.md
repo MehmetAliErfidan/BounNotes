@@ -1,4 +1,4 @@
-projeye başlama tarihi: 29.10.2025 Çarşamba
+projeye başlama tarihi: 29 Ekim 2025 Çarşamba
 
 Bu uygulama, benim (Mehmet Ali Erfidan) portföyüm için yaptığım bir projedir, para kazanma arzusu ile yapmıyorum fakat etrafıma bir iyilikte bulunmak isteğim bana bu uygulama fikrini verdi.
 Bu uygulamanın tüm kodu tarafımdan yazılmıştır. Yapay zeka sadece stil önerileri 
@@ -38,7 +38,7 @@ Geliştirici
 Mehmet Fullstack Developer & Boğaziçi öğrencisi ürün geliştirme tutkusu olan bir yazılımcı
 
 
-6.11.2025 itibariyle yapılan frontend sayfalar:
+6 Kasım 2025 itibariyle yapılan frontend sayfalar:
 Landing Page ve
 içinde:
 navbar
@@ -48,5 +48,5 @@ register page
 searchbar frontend kısmı
 category filter frontend kısmı
 
-08.11.2025 itibariyle yapılan frontend sayfalar:
+08 Kasım 2025 itibariyle yapılan frontend sayfalar:
 CategoryFilter, searchbar ve LandingPage'de props ve state mantığı ayarlandı. Backend kurulursa frontend mantığı hazır. Kullanıcı kategori seçince bağlantılı veri ekranda gösteriliyor.
