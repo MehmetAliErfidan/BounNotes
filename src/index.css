@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zalando+Sans+SemiExpanded:ital,wght@0,200..900;1,200..900&display=swap');
+
+@import "tailwindcss";
+
+@font-face{
+  font-family: Zalando Sans SemiExpanded;
+  src: url("../src/assets/fonts/ZalandoSansSemiExpanded-Regular.ttf")
+}
+
+@font-face{
+  font-family: Prompt;
+  src: url("../src/assets/fonts/Prompt-Regular.ttf")
+}
+
+@font-face{
+  font-family: WDXL Lubrifont SC;
+  src: url("../src/assets/fonts/WDXLLubrifontSC-Regular.ttf")
+}
+
+@theme{
+  --font-Zalando-Sans-SemiExpanded: Zalando Sans SemiExpanded;
+  --font-Prompt: Prompt;
+  --font-WDXL-Lubrifont-SC: WDXL Lubrifont SC;
+}
+
+:root {
+  line-height: 1.5;
+  font-weight: 400;
+  scroll-behavior: smooth;
+
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  line-height: 1.1;
+}
+
+button {
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: var(----font-Zalando-Sans-SemiExpanded);
+  transition: border-color 0.25s;
+}
+
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #F9FAFB;
+  }
+}
