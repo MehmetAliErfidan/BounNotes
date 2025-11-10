@@ -1,3 +1,6 @@
+websitesi adresi: 
+https://bounnotes.vercel.app/
+
 projeye başlama tarihi: 29 Ekim 2025 Çarşamba
 
 Bu uygulama, benim (Mehmet Ali Erfidan) portföyüm için yaptığım bir projedir, para kazanma arzusu ile yapmıyorum fakat etrafıma bir iyilikte bulunmak isteğim bana bu uygulama fikrini verdi.
