@@ -35,7 +35,7 @@ Uygulama BrowserRouter ile sarmalanmıştır.
 Giriş yapabilmek için @std.bogazici.edu.tr uzantılı bir e-posta adresi gereklidir.
 
 Geliştirici
-Mehmet Fullstack Developer & Boğaziçi öğrencisi ürün geliştirme tutkusu olan bir yazılımcı
+Mehmet Ali Erfidan - Fullstack Developer & Boğaziçi öğrencisi ürün geliştirme tutkusu olan bir yazılımcı
 
 
 6 Kasım 2025 itibariyle yapılan frontend sayfalar:
