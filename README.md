@@ -1,7 +1,9 @@
 projeye başlama tarihi: 29.10.2025 Çarşamba
 
 Bu uygulama, benim (Mehmet Ali Erfidan) portföyüm için yaptığım bir projedir, para kazanma arzusu ile yapmıyorum fakat etrafıma bir iyilikte bulunmak isteğim bana bu uygulama fikrini verdi.
-Bu uygulamanın yapımında yapay zeka kullanılmamıştır, ürünün teknik tarafı tamamen kişsel eforla oluşturulmuştur. Yapay zekaya sadece bazı stil önerileri ve teorik mantık yürütme için danıştım.
+Bu uygulamanın tüm kodu tarafımdan yazılmıştır. Yapay zeka sadece stil önerileri 
+ve teknik konseptlerin açıklanması için danışman olarak kullanılmıştır, 
+kod üretimi için kullanılmamıştır.
 
 BounNotes
 BounNotes, Boğaziçi Üniversitesi öğrencileri için geliştirilmiş bir dijital platformdur. Öğrenciler bu platformda ders notlarını satabilir veya satın alabilir, böylece akademik kaynaklara kolayca erişebilirler.
