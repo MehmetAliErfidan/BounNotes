@@ -1,15 +1,14 @@
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
 import SearchBar from "../components/search/SearchBar";
+import type { Category } from "../components/search/CategoryFilter.types";
 import CategoryFilter from "../components/search/CategoryFilter";
 import { useState } from "react";
 
 import { Link } from "react-router-dom";
 
 export default function LandingPage() {
-  const [selectedCategory, setSelectedCategory] = useState<
-    "kullanıcı" | "ders" | "hoca" | null
-  >(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category>(null);
 
   return (
     <main className="min-h-screen font-Prompt">

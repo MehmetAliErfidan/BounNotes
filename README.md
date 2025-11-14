@@ -1,11 +1,11 @@
-websitesi adresi: 
+websitesi adresi:
 https://bounnotes.vercel.app/
 
 projeye başlama tarihi: 29 Ekim 2025 Çarşamba
 
 Bu uygulama, benim (Mehmet Ali Erfidan) portföyüm için yaptığım bir projedir, para kazanma arzusu ile yapmıyorum fakat etrafıma bir iyilikte bulunmak isteğim bana bu uygulama fikrini verdi.
-Bu uygulamanın tüm kodu tarafımdan yazılmıştır. Yapay zeka sadece stil önerileri 
-ve teknik konseptlerin açıklanması için danışman olarak kullanılmıştır, 
+Bu uygulamanın tüm kodu tarafımdan yazılmıştır. Yapay zeka sadece stil önerileri
+ve teknik konseptlerin açıklanması için danışman olarak kullanılmıştır,
 kod üretimi için kullanılmamıştır.
 
 BounNotes
@@ -39,7 +39,6 @@ Giriş yapabilmek için @std.bogazici.edu.tr uzantılı bir e-posta adresi gerek
 
 Geliştirici
 Mehmet Ali Erfidan - Fullstack Developer & Boğaziçi öğrencisi ürün geliştirme tutkusu olan bir yazılımcı
-
 
 6 Kasım 2025 itibariyle yapılan frontend sayfalar:
 Landing Page ve
