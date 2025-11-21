@@ -46,7 +46,7 @@ export function useLandingPageTexts() {
 
 /* RegisterPage texts */
 export function useRegisterPageTexts() {
-  const allowedDomain = "std.bogazici.edu.tr";
+  const allowedDomain = "@std.bogazici.edu.tr";
 
   return {
     unmatchedPasswordsMessage: useText({
@@ -61,5 +61,47 @@ export function useRegisterPageTexts() {
       tr: "Şifre en az 8 karakter olmalı, büyük/küçük harf, rakam ve özel karakter içermeli.",
       en: "Password must be at least 8 characters and include uppercase, lowercase, numbers, and special characters.",
     }),
+
+    codeSentAlert: useText({
+      tr: "Doğrulama kodu e-postana gönderildi!",
+      en: "A verification code has been sent to your email!",
+    }),
+
+    registerHeaderText: useText({
+      tr: "Ders Notu Paylaşmayı Kolaylaştıran Platform",
+      en: "The Platform That Makes Sharing Course Notes Easy",
+    }),
+
+    namePlaceholder: useText({ tr: "İsim", en: "Name" }),
+
+    surnamePlaceholder: useText({ tr: "Soyisim", en: "Surname" }),
+
+    emailPlaceholder: useText({
+      tr: "Öğrenci E-posta Adresi",
+      en: "Student Email Adress",
+    }),
+
+    passwordPlaceholder: useText({ tr: "Şifre", en: "Password" }),
+
+    confirmPasswordPlaceholder: useText({
+      tr: "Şifre Tekrarı",
+      en: "Confirm Password",
+    }),
+
+    codeSentText: useText({ tr: "Kod Gönerildi", en: "Code Sent" }),
+
+    sendCodeText: useText({ tr: "Kod Gönder", en: "Send Code" }),
+
+    verifyEmailMessage: useText({
+      tr: "E-posta doğrulaması yapmalısınız",
+      en: "You need to verify your email",
+    }),
+
+    registerButtonText: useText({ tr: "Kayıt Olun", en: "Register" }),
+    alreadyHaveAccountText: useText({
+      tr: "Bir hesabınız var mıydı?",
+      en: "Do you already have an account?",
+    }),
+    loginLink: useText({ tr: "Giriş Yapın", en: "Login" }),
   };
 }

@@ -4,8 +4,24 @@ import Logo from "../components/common/Logo.tsx";
 import { Link } from "react-router-dom";
 
 export default function RegisterPage() {
-  const { unmatchedPasswordsMessage, emailErrorMessage, passwordErrorMessage } =
-    useRegisterPageTexts();
+  const {
+    unmatchedPasswordsMessage,
+    emailErrorMessage,
+    passwordErrorMessage,
+    codeSentAlert,
+    registerHeaderText,
+    namePlaceholder,
+    surnamePlaceholder,
+    emailPlaceholder,
+    passwordPlaceholder,
+    confirmPasswordPlaceholder,
+    registerButtonText,
+    alreadyHaveAccountText,
+    loginLink,
+    codeSentText,
+    sendCodeText,
+    verifyEmailMessage,
+  } = useRegisterPageTexts();
 
   const [email, setEmail] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -31,7 +47,7 @@ export default function RegisterPage() {
   const nameSurname = name.length >= 2 && surname.length >= 2;
 
   const validateEmail = (value: string) => {
-    const allowedDomain = "std.bogazici.edu.tr";
+    const allowedDomain = "@std.bogazici.edu.tr";
 
     if (!value.endsWith(allowedDomain)) {
       setEmailError(emailErrorMessage);
@@ -89,16 +105,16 @@ export default function RegisterPage() {
 
     setIsCodeSent(true);
     setTimeout(() => {
-      alert("Doğrulama kodu e-postana gönderildi!");
+      alert(codeSentAlert);
 
-      setIsEmailVerified(true); // Backend ekleyene kadar Email verified kabul ediyorum.
+      setIsEmailVerified(true); // Email will be accepted as validated until backend
     }, 500);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // backend login isteği buraya gelecek
-    console.log("Kayıt Olunuyor:", name, surname, email, password);
+    // backend login request is going to be here.
+    console.log("Registering", name, surname, email, password);
   };
 
   return (
@@ -110,7 +126,7 @@ export default function RegisterPage() {
         <div className="flex flex-col gap-3 w-full text-center">
           <Logo />
           <p className="text-gray-600 text-base md:text-lg font-semibold">
-            Ders Notu Paylaşmayı Kolaylaştıran Platform
+            {registerHeaderText}
           </p>
         </div>
 
@@ -119,7 +135,7 @@ export default function RegisterPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             type="text"
-            placeholder="İsim"
+            placeholder={namePlaceholder}
             className="border p-2 rounded bg-gray-50"
             required
             minLength={2}
@@ -128,7 +144,7 @@ export default function RegisterPage() {
             value={surname}
             onChange={(e) => setSurname(e.target.value)}
             type="text"
-            placeholder="soyisim"
+            placeholder={surnamePlaceholder}
             className="border p-2 rounded bg-gray-50"
             required
             minLength={2}
@@ -137,7 +153,7 @@ export default function RegisterPage() {
             value={email}
             onChange={handleChange}
             type="email"
-            placeholder="Okul E-posta Adresi"
+            placeholder={emailPlaceholder}
             className="border p-2 rounded bg-gray-50"
           />
           {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
@@ -146,7 +162,7 @@ export default function RegisterPage() {
             value={password}
             onChange={handlePassword}
             type="password"
-            placeholder="Şifre"
+            placeholder={passwordPlaceholder}
             className="border p-2 rounded bg-gray-50"
           />
           {passwordError && (
@@ -155,7 +171,7 @@ export default function RegisterPage() {
 
           <input
             type="password"
-            placeholder="Şifre Tekrarı"
+            placeholder={confirmPasswordPlaceholder}
             value={confirmPassword}
             onChange={(e) => validateConfirmPassword(e.target.value)}
             className="border p-2 rounded bg-gray-50"
@@ -178,11 +194,9 @@ export default function RegisterPage() {
               }
               `}
             >
-              {isCodeSent ? "Kod Gönerildi" : "Kod Gönder"}
+              {isCodeSent ? codeSentText : sendCodeText}
             </button>
-            <p className="text-gray-600 text-sm mt-1">
-              E-posta doğrulaması yapmalısınız
-            </p>
+            <p className="text-gray-600 text-sm mt-1">{verifyEmailMessage}</p>
           </div>
         )}
 
@@ -211,13 +225,13 @@ export default function RegisterPage() {
                 : "bg-blue-500 hover:bg-blue-700 cursor-pointer w-full p-2 rounded text-white font-semibold mt-3 transition"
             }`}
           >
-            Kayıt Olun
+            {registerButtonText}
           </button>
           <p className="text-gray-600 text-sm mt-2">
-            Bir hesabınız var mıydı?{" "}
+            {alreadyHaveAccountText}{" "}
             <Link to="/login">
               <span className="underline text-red-500 hover:text-red-700 cursor-pointer">
-                Giriş Yapın
+                {loginLink}
               </span>
             </Link>
           </p>
