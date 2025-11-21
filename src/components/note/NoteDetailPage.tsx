@@ -1,8 +1,13 @@
 //this is incomplete
 
 import type { NoteCardProps } from "./NoteTypes";
+import { useNoteDetailPageTexts } from "../../i18n/translations/note";
+import { useLang } from "../../i18n";
 
 export default function NoteDetail({ note }: NoteCardProps) {
+  const { lang } = useLang();
+  const { buyText } = useNoteDetailPageTexts(lang);
+
   return (
     <div>
       <div>
@@ -33,7 +38,7 @@ export default function NoteDetail({ note }: NoteCardProps) {
           <div>
             // pdf preview on this line
             <button>{note.price}</button>
-            <button></button> //buy button
+            <button>{buyText}</button> //buy button
           </div>
         </div>
       </div>

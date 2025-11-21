@@ -1,8 +1,13 @@
 import NoteForm from "./NoteForm.tsx";
 import type { Note } from "./NoteTypes.ts";
 import { useState } from "react";
+import { useCreateNoteTexts } from "../../i18n/translations/note";
+import { useLang } from "../../i18n";
 
 export default function UploadNote() {
+  const { lang } = useLang();
+  const { uploadText } = useCreateNoteTexts(lang);
+
   const [note, setNote] = useState<Partial<Note>>({
     course: "",
     teacher: "",
@@ -15,7 +20,7 @@ export default function UploadNote() {
   return (
     <>
       <NoteForm note={note} setNote={setNote} />
-      <button>Yükle</button>
+      <button>{uploadText}</button>
     </>
   );
 }

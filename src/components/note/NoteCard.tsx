@@ -1,8 +1,13 @@
 //this is incomplete
 
+import { useNoteCardTexts } from "../../i18n/translations/note";
+import { useLang } from "../../i18n";
 import type { NoteCardProps } from "./NoteTypes";
 
 export default function NoteDetail({ note }: NoteCardProps) {
+  const { lang } = useLang();
+  const { seeDetailText } = useNoteCardTexts(lang);
+
   return (
     <div>
       <div>
@@ -13,7 +18,7 @@ export default function NoteDetail({ note }: NoteCardProps) {
         <div>
           <p>{note.course}</p>
           <p>{note.teacher}</p>
-          <button>Detay Gör</button>
+          <button>{seeDetailText}</button>
         </div>
 
         <div>

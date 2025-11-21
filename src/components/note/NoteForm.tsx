@@ -1,4 +1,6 @@
 import type { Note } from "./NoteTypes";
+import { useNoteFormTexts } from "../../i18n/translations/note";
+import { useLang } from "../../i18n";
 
 interface NoteFormProps {
   note: Partial<Note>;
@@ -6,6 +8,16 @@ interface NoteFormProps {
 }
 
 export default function NoteForm({ note, setNote }: NoteFormProps) {
+  const { lang } = useLang();
+  const {
+    coursePlaceholder,
+    instructorPlaceholder,
+    datePlaceholder,
+    titlePlaceholder,
+    descriptionPlaceholder,
+    pricePlaceholder,
+  } = useNoteFormTexts(lang);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -21,7 +33,7 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           required
           type="text"
           name="course"
-          placeholder="Ders Adı"
+          placeholder={coursePlaceholder}
         />
         <input
           onChange={handleChange}
@@ -29,7 +41,7 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           required
           type="text"
           name="teacher"
-          placeholder="Dersin Hocası"
+          placeholder={instructorPlaceholder}
         />
         <input
           onChange={handleChange}
@@ -37,7 +49,7 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           required
           type="date"
           name="date"
-          placeholder="Dersin Tarihi"
+          placeholder={datePlaceholder}
         />
         <input
           onChange={handleChange}
@@ -45,14 +57,14 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           required
           type="text"
           name="title"
-          placeholder="Notunuzun Başlığı"
+          placeholder={titlePlaceholder}
         />
         <textarea
           onChange={handleChange}
           value={note.description}
           required
           name="description"
-          placeholder="Notunuzun Açıklaması"
+          placeholder={descriptionPlaceholder}
         />
         <input
           onChange={handleChange}
@@ -60,7 +72,7 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           required
           type="number"
           name="price"
-          placeholder="Fiyat (TL)"
+          placeholder={pricePlaceholder}
           min="20"
         />
       </form>
