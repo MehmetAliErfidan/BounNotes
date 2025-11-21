@@ -1,107 +1,96 @@
-import { useText } from "../useText";
-
 export type LangObject = {
   tr: string;
   en: string;
 };
 
-/* LandingPage texts*/
-export function useLandingPageTexts() {
+/* LandingPage texts */
+export function useLandingPageTexts(lang: "tr" | "en") {
   return {
-    appDefinition: useText({
-      tr: "Boğaziçi öğrencileri için ders notu paylaşma uygulaması",
-      en: "A course note sharing platform for Boğaziçi University students",
-    }),
+    appDefinition:
+      lang === "tr"
+        ? "Boğaziçi öğrencileri için ders notu paylaşma uygulaması"
+        : "A course note sharing platform for Boğaziçi University students",
 
-    noHassleMessage: useText({
-      tr: "Ders notu aramak veya satmak için kendinizi yormayın.",
-      en: "Finding or selling course notes shouldn’t be a hassle.",
-    }),
+    noHassleMessage:
+      lang === "tr"
+        ? "Ders notu aramak veya satmak için kendinizi yormayın."
+        : "Finding or selling course notes shouldn’t be a hassle.",
 
-    bounNotesDescription: useText({
-      tr: "BounNotes, Boğaziçi'ndeki çeşitli derslerin notlarını dijital ortamda satın alabileceğiniz ya da satabileceğiniz bir platformdur.",
-      en: "BounNotes is a platform where you can digitally buy or sell course notes from a wide range of Boğaziçi University courses.",
-    }),
+    bounNotesDescription:
+      lang === "tr"
+        ? "BounNotes, Boğaziçi'ndeki çeşitli derslerin notlarını dijital ortamda satın alabileceğiniz ya da satabileceğiniz bir platformdur."
+        : "BounNotes is a platform where you can digitally buy or sell course notes from a wide range of Boğaziçi University courses.",
 
-    emailInfo: useText({
-      tr: "E-postası '@std.bogazici.edu.tr' ile biten herkes ekosistemimizden yararlanabilir.",
-      en: "Anyone whose email ends with ‘@std.bogazici.edu.tr’ can benefit from our ecosystem.",
-    }),
+    emailInfo:
+      lang === "tr"
+        ? "E-postası '@std.bogazici.edu.tr' ile biten herkes ekosistemimizden yararlanabilir."
+        : "Anyone whose email ends with ‘@std.bogazici.edu.tr’ can benefit from our ecosystem.",
 
-    buttonDirective: useText({
-      tr: "ders notları almak ya da satmak için:",
-      en: "To buy or sell course notes:",
-    }),
+    buttonDirective:
+      lang === "tr"
+        ? "ders notları almak ya da satmak için:"
+        : "To buy or sell course notes:",
 
-    ifNoAccount: useText({
-      tr: "hesabınız yoksa:",
-      en: "if you don't have an account:",
-    }),
+    ifNoAccount:
+      lang === "tr" ? "hesabınız yoksa:" : "if you don't have an account:",
 
-    login: useText({ tr: "Giriş Yapın", en: "Login" }),
+    login: lang === "tr" ? "Giriş Yapın" : "Login",
 
-    register: useText({ tr: "Kayıt Olun", en: "Register" }),
+    register: lang === "tr" ? "Kayıt Olun" : "Register",
   };
 }
 
 /* RegisterPage texts */
-export function useRegisterPageTexts() {
+export function useRegisterPageTexts(lang: "tr" | "en") {
   const allowedDomain = "@std.bogazici.edu.tr";
 
   return {
-    unmatchedPasswordsMessage: useText({
-      tr: "Şifreler eşleşmiyor.",
-      en: "Passwords don't match.",
-    }),
-    emailErrorMessage: useText({
-      tr: `Sadece "${allowedDomain}" uzantılı e-posta adreslerine izin verilir.`,
-      en: `Only email addresses ending with “${allowedDomain}” are allowed.`,
-    }),
-    passwordErrorMessage: useText({
-      tr: "Şifre en az 8 karakter olmalı, büyük/küçük harf, rakam ve özel karakter içermeli.",
-      en: "Password must be at least 8 characters and include uppercase, lowercase, numbers, and special characters.",
-    }),
+    unmatchedPasswordsMessage:
+      lang === "tr" ? "Şifreler eşleşmiyor." : "Passwords don't match.",
 
-    codeSentAlert: useText({
-      tr: "Doğrulama kodu e-postana gönderildi!",
-      en: "A verification code has been sent to your email!",
-    }),
+    emailErrorMessage:
+      lang === "tr"
+        ? `Sadece "${allowedDomain}" uzantılı e-posta adreslerine izin verilir.`
+        : `Only email addresses ending with “${allowedDomain}” are allowed.`,
 
-    registerHeaderText: useText({
-      tr: "Ders Notu Paylaşmayı Kolaylaştıran Platform",
-      en: "The Platform That Makes Sharing Course Notes Easy",
-    }),
+    passwordErrorMessage:
+      lang === "tr"
+        ? "Şifre en az 8 karakter olmalı, büyük/küçük harf, rakam ve özel karakter içermeli."
+        : "Password must be at least 8 characters and include uppercase, lowercase, numbers, and special characters.",
 
-    namePlaceholder: useText({ tr: "İsim", en: "Name" }),
+    codeSentAlert:
+      lang === "tr"
+        ? "Doğrulama kodu e-postana gönderildi!"
+        : "A verification code has been sent to your email!",
 
-    surnamePlaceholder: useText({ tr: "Soyisim", en: "Surname" }),
+    registerHeaderText:
+      lang === "tr"
+        ? "Ders Notu Paylaşmayı Kolaylaştıran Platform"
+        : "The Platform That Makes Sharing Course Notes Easy",
 
-    emailPlaceholder: useText({
-      tr: "Öğrenci E-posta Adresi",
-      en: "Student Email Adress",
-    }),
+    namePlaceholder: lang === "tr" ? "İsim" : "Name",
+    surnamePlaceholder: lang === "tr" ? "Soyisim" : "Surname",
+    emailPlaceholder:
+      lang === "tr" ? "Öğrenci E-posta Adresi" : "Student Email Address",
+    passwordPlaceholder: lang === "tr" ? "Şifre" : "Password",
+    confirmPasswordPlaceholder:
+      lang === "tr" ? "Şifre Tekrarı" : "Confirm Password",
 
-    passwordPlaceholder: useText({ tr: "Şifre", en: "Password" }),
+    codeSentText: lang === "tr" ? "Kod Gönderildi" : "Code Sent",
+    sendCodeText: lang === "tr" ? "Kod Gönder" : "Send Code",
 
-    confirmPasswordPlaceholder: useText({
-      tr: "Şifre Tekrarı",
-      en: "Confirm Password",
-    }),
+    verifyEmailMessage:
+      lang === "tr"
+        ? "E-posta doğrulaması yapmalısınız"
+        : "You need to verify your email",
 
-    codeSentText: useText({ tr: "Kod Gönerildi", en: "Code Sent" }),
+    registerButtonText: lang === "tr" ? "Kayıt Olun" : "Register",
 
-    sendCodeText: useText({ tr: "Kod Gönder", en: "Send Code" }),
+    alreadyHaveAccountText:
+      lang === "tr"
+        ? "Bir hesabınız var mıydı?"
+        : "Do you already have an account?",
 
-    verifyEmailMessage: useText({
-      tr: "E-posta doğrulaması yapmalısınız",
-      en: "You need to verify your email",
-    }),
-
-    registerButtonText: useText({ tr: "Kayıt Olun", en: "Register" }),
-    alreadyHaveAccountText: useText({
-      tr: "Bir hesabınız var mıydı?",
-      en: "Do you already have an account?",
-    }),
-    loginLink: useText({ tr: "Giriş Yapın", en: "Login" }),
+    loginLink: lang === "tr" ? "Giriş Yapın" : "Login",
   };
 }

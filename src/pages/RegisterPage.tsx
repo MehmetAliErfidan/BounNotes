@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useRegisterPageTexts } from "../i18n/translations/pages";
+import { useLang } from "../i18n";
 import Logo from "../components/common/Logo.tsx";
 import { Link } from "react-router-dom";
 
 export default function RegisterPage() {
+  const { lang } = useLang();
+
   const {
     unmatchedPasswordsMessage,
     emailErrorMessage,
@@ -21,7 +24,7 @@ export default function RegisterPage() {
     codeSentText,
     sendCodeText,
     verifyEmailMessage,
-  } = useRegisterPageTexts();
+  } = useRegisterPageTexts(lang);
 
   const [email, setEmail] = useState("");
   const [passwordError, setPasswordError] = useState("");

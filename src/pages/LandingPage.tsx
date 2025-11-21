@@ -5,10 +5,13 @@ import type { Category } from "../components/search/CategoryFilter.types";
 import CategoryFilter from "../components/search/CategoryFilter";
 import { useState } from "react";
 import { useLandingPageTexts } from "../i18n/translations/pages";
+import { useLang } from "../i18n";
 
 import { Link } from "react-router-dom";
 
 export default function LandingPage() {
+  const { lang } = useLang();
+
   const {
     appDefinition,
     noHassleMessage,
@@ -18,7 +21,7 @@ export default function LandingPage() {
     login,
     register,
     ifNoAccount,
-  } = useLandingPageTexts();
+  } = useLandingPageTexts(lang);
   const [selectedCategory, setSelectedCategory] = useState<Category>(null);
 
   return (
