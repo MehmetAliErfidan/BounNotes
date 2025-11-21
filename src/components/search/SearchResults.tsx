@@ -1,4 +1,5 @@
 import type { Category } from "./CategoryFilter.types";
+import { useSearchResults } from "../../i18n/translations/search-files";
 
 interface SearchResultsProps {
   results: Array<Record<string, string>>;
@@ -9,8 +10,9 @@ export default function SearchResults({
   results,
   category,
 }: SearchResultsProps) {
+  const { noResult } = useSearchResults();
   if (!results.length) {
-    return <p className="text-gray-500 mt-2">No results found.</p>;
+    return <p className="text-gray-500 mt-2">{noResult}</p>;
   }
 
   return (

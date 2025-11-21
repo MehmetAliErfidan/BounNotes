@@ -1,6 +1,10 @@
 import Logo from "./Logo";
+import { useFooterTexts } from "../../i18n/translations/common-files";
 
 export default function Footer() {
+  const { appDefinition, contactInfo, email, about, FAQ, copyrightMessage } =
+    useFooterTexts();
+
   return (
     <footer className="w-full bg-linear-to-r from-cyan-300 via-blue-400 to-blue-600 text-gray-800 mt-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -10,14 +14,13 @@ export default function Footer() {
             <Logo />
           </div>
           <p className="text-base sm:text-lg lg:text-xl font-Prompt italic max-w-2xl">
-            Boğaziçi Öğrencileri İçin Ders Notu Paylaşımını Kolaylaştıran
-            Platform
+            {appDefinition}
           </p>
         </div>
 
-        {/* Orta Kısım - İletişim */}
+        {/* Middle Part - contact information */}
         <div className="mb-8 sm:mb-12 text-center">
-          <p className="font-semibold text-lg mb-4">İLETİŞİM</p>
+          <p className="font-semibold text-lg mb-4">{contactInfo}</p>
           <div className="flex flex-wrap justify-center gap-3 sm:gap-6 text-sm sm:text-base">
             <a
               href="https://www.linkedin.com/in/mehmet-ali-erfidan/"
@@ -45,21 +48,21 @@ export default function Footer() {
             </a>
           </div>
           <p className="mt-4 text-sm sm:text-base">
-            E-posta Adresi:{" "}
+            {email}
             <a href="mailto:erfidan740@gmail.com" className="hover:underline">
               erfidan740@gmail.com
             </a>
           </p>
         </div>
 
-        {/* Alt Kısım - Linkler ve Copyright */}
+        {/* Bottom Part - Links and Copyright */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-blue-700/30">
           <div className="flex gap-6 text-base sm:text-lg font-WDXL-Lubrifont-SC">
-            <a href="/hakkinda" className="hover:underline">
-              Hakkında
+            <a href="/about" className="hover:underline">
+              {about}
             </a>
-            <a href="/sss" className="hover:underline">
-              SSS
+            <a href="/faq" className="hover:underline">
+              {FAQ}
             </a>
           </div>
           <p className="text-xs sm:text-sm">
@@ -68,7 +71,7 @@ export default function Footer() {
               Mehmet Ali Erfidan
             </strong>
           </p>
-          <p className="text-xs sm:text-sm">© 2024 Tüm hakları saklıdır.</p>
+          <p className="text-xs sm:text-sm">{copyrightMessage}</p>
         </div>
       </div>
     </footer>

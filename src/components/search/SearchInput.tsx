@@ -11,7 +11,7 @@ export default function SearchInput({
   value,
   onChange,
   onSubmit,
-  placeholder = "Ara",
+  placeholder = "",
 }: SearchInputProps) {
   return (
     <form onSubmit={onSubmit} className="flex w-full max-w-xl items-stretch">

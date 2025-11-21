@@ -7,8 +7,8 @@ export default function RegisterPage() {
   const [passwordError, setPasswordError] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [isim, setIsim] = useState("");
-  const [soyisim, setSoyisim] = useState("");
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [isCodeSent, setIsCodeSent] = useState(false);
@@ -24,7 +24,7 @@ export default function RegisterPage() {
     }
   }, [password, confirmPassword]);
 
-  const isimSoyisim = isim.length >= 2 && soyisim.length >= 2;
+  const nameSurname = name.length >= 2 && surname.length >= 2;
 
   const validateEmail = (value: string) => {
     const allowedDomain = "std.bogazici.edu.tr";
@@ -80,7 +80,7 @@ export default function RegisterPage() {
     !confirmPasswordError &&
     confirmPassword &&
     email &&
-    isimSoyisim;
+    nameSurname;
 
   const handleSendCode = (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,7 +98,7 @@ export default function RegisterPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // backend login isteği buraya gelecek
-    console.log("Kayıt Olunuyor:", isim, soyisim, email, password);
+    console.log("Kayıt Olunuyor:", name, surname, email, password);
   };
 
   return (
@@ -116,8 +116,8 @@ export default function RegisterPage() {
 
         <div className="flex flex-col gap-3">
           <input
-            value={isim}
-            onChange={(e) => setIsim(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             type="text"
             placeholder="İsim"
             className="border p-2 rounded bg-gray-50"
@@ -125,10 +125,10 @@ export default function RegisterPage() {
             minLength={2}
           />
           <input
-            value={soyisim}
-            onChange={(e) => setSoyisim(e.target.value)}
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
             type="text"
-            placeholder="Soyisim"
+            placeholder="soyisim"
             className="border p-2 rounded bg-gray-50"
             required
             minLength={2}
@@ -195,7 +195,7 @@ export default function RegisterPage() {
               !!confirmPasswordError ||
               !confirmPassword ||
               !email ||
-              !isimSoyisim ||
+              !nameSurname ||
               !isEmailVerified
             }
             className={`${
@@ -205,7 +205,7 @@ export default function RegisterPage() {
               !!confirmPasswordError ||
               !confirmPassword ||
               !email ||
-              !isimSoyisim ||
+              !nameSurname ||
               !isEmailVerified
                 ? "bg-gray-400 cursor-not-allowed w-full p-2 rounded text-white font-semibold mt-3 transition"
                 : "bg-blue-500 hover:bg-blue-700 cursor-pointer w-full p-2 rounded text-white font-semibold mt-3 transition"

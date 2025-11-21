@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchBarTexts } from "../../i18n/translations/search-files";
 import type { Category } from "./CategoryFilter.types";
 import SearchInput from "./SearchInput";
 import SearchResults from "./SearchResults";
@@ -15,6 +16,7 @@ const dummyData = [
 ];
 
 export default function SearchBar({ selectedCategory }: SearchBarProps) {
+  const { searchPlaceholder } = useSearchBarTexts();
   const [inputValue, setInputValue] = useState("");
   const [filteredResult, setFilteredResult] = useState<typeof dummyData>([]);
   const [filterCategory, setFilterCategory] = useState<Category>(null);
@@ -56,7 +58,7 @@ export default function SearchBar({ selectedCategory }: SearchBarProps) {
         value={inputValue}
         onChange={handleInput}
         onSubmit={handleSubmit}
-        placeholder="Ara"
+        placeholder={searchPlaceholder}
       />
       <SearchResults results={filteredResult} category={filterCategory} />
     </div>
