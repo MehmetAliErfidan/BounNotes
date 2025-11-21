@@ -43,3 +43,23 @@ export function useLandingPageTexts() {
     register: useText({ tr: "Kayıt Olun", en: "Register" }),
   };
 }
+
+/* RegisterPage texts */
+export function useRegisterPageTexts() {
+  const allowedDomain = "std.bogazici.edu.tr";
+
+  return {
+    unmatchedPasswordsMessage: useText({
+      tr: "Şifreler eşleşmiyor.",
+      en: "Passwords don't match.",
+    }),
+    emailErrorMessage: useText({
+      tr: `Sadece "${allowedDomain}" uzantılı e-posta adreslerine izin verilir.`,
+      en: `Only email addresses ending with “${allowedDomain}” are allowed.`,
+    }),
+    passwordErrorMessage: useText({
+      tr: "Şifre en az 8 karakter olmalı, büyük/küçük harf, rakam ve özel karakter içermeli.",
+      en: "Password must be at least 8 characters and include uppercase, lowercase, numbers, and special characters.",
+    }),
+  };
+}

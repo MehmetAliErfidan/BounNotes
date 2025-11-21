@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useRegisterPageTexts } from "../i18n/translations/pages";
 import Logo from "../components/common/Logo.tsx";
 import { Link } from "react-router-dom";
 
 export default function RegisterPage() {
+  const { unmatchedPasswordsMessage, emailErrorMessage, passwordErrorMessage } =
+    useRegisterPageTexts();
+
   const [email, setEmail] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [password, setPassword] = useState("");
@@ -17,7 +21,7 @@ export default function RegisterPage() {
   useEffect(() => {
     if (confirmPassword) {
       if (confirmPassword != password) {
-        setConfirmPasswordError("Şifreler Eşleşmiyor");
+        setConfirmPasswordError(unmatchedPasswordsMessage);
       } else {
         setConfirmPasswordError("");
       }
@@ -30,9 +34,7 @@ export default function RegisterPage() {
     const allowedDomain = "std.bogazici.edu.tr";
 
     if (!value.endsWith(allowedDomain)) {
-      setEmailError(
-        `Sadece "${allowedDomain}" uzantılı e-posta adreslerine izin verilir.`
-      );
+      setEmailError(emailErrorMessage);
     } else {
       setEmailError("");
     }
@@ -43,9 +45,7 @@ export default function RegisterPage() {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.,;:])[A-Za-z\d@$!%*?&.,;:]{8,}$/;
 
     if (!requiredPassword.test(password) || password.length == 0) {
-      setPasswordError(
-        "Şifre en az 8 karakter olmalı, büyük/küçük harf, rakam ve özel karakter içermeli."
-      );
+      setPasswordError(passwordErrorMessage);
     } else {
       setPasswordError("");
     }
@@ -67,7 +67,7 @@ export default function RegisterPage() {
     setConfirmPassword(value);
 
     if (password != value) {
-      setConfirmPasswordError("Şifreler eşleşmiyor");
+      setConfirmPasswordError(unmatchedPasswordsMessage);
     } else {
       setConfirmPasswordError("");
     }
