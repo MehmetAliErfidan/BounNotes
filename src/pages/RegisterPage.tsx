@@ -12,7 +12,7 @@ export default function RegisterPage() {
     emailErrorMessage,
     passwordErrorMessage,
     codeSentAlert,
-    registerHeaderText,
+    headerText,
     namePlaceholder,
     surnamePlaceholder,
     emailPlaceholder,
@@ -129,7 +129,7 @@ export default function RegisterPage() {
         <div className="flex flex-col gap-3 w-full text-center">
           <Logo />
           <p className="text-gray-600 text-base md:text-lg font-semibold">
-            {registerHeaderText}
+            {headerText}
           </p>
         </div>
 

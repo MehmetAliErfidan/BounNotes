@@ -40,10 +40,11 @@ export function useLandingPageTexts(lang: "tr" | "en") {
   };
 }
 
+/* allowed domain, used in more than one function */
+const allowedDomain = "@std.bogazici.edu.tr";
+
 /* RegisterPage texts */
 export function useRegisterPageTexts(lang: "tr" | "en") {
-  const allowedDomain = "@std.bogazici.edu.tr";
-
   return {
     unmatchedPasswordsMessage:
       lang === "tr" ? "Şifreler eşleşmiyor." : "Passwords don't match.",
@@ -63,7 +64,7 @@ export function useRegisterPageTexts(lang: "tr" | "en") {
         ? "Doğrulama kodu e-postana gönderildi!"
         : "A verification code has been sent to your email!",
 
-    registerHeaderText:
+    headerText:
       lang === "tr"
         ? "Ders Notu Paylaşmayı Kolaylaştıran Platform"
         : "The Platform That Makes Sharing Course Notes Easy",
@@ -92,5 +93,32 @@ export function useRegisterPageTexts(lang: "tr" | "en") {
         : "Do you already have an account?",
 
     loginLink: lang === "tr" ? "Giriş Yapın" : "Login",
+  };
+}
+
+/* LoginPage texts */
+export function useLoginPageTexts(lang: "tr" | "en") {
+  return {
+    errorMessage:
+      lang === "tr"
+        ? `Sadece "${allowedDomain}" uzantılı e-posta adreslerine izin verilir.`
+        : `Only email addresses ending with “${allowedDomain}” are allowed.`,
+
+    headerText:
+      lang === "tr"
+        ? "Ders Notu Paylaşmayı Kolaylaştıran Platform"
+        : "The Platform That Makes Sharing Course Notes Easy",
+
+    emailPlaceholder:
+      lang === "tr" ? "Öğrenci E-posta Adresi" : "Student Email Address",
+
+    passwordPlaceholder: lang === "tr" ? "Şifre" : "Password",
+
+    login: lang === "tr" ? "Giriş Yapın" : "Login",
+
+    dontHaveAccountText:
+      lang === "tr" ? "Hesabınız yok mu?" : "Don't have an account?",
+
+    registerLink: lang === "tr" ? "Kayıt Olun" : "Register",
   };
 }

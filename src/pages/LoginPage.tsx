@@ -1,8 +1,21 @@
 import { useState } from "react";
+import { useLoginPageTexts } from "../i18n/translations/pages";
+import { useLang } from "../i18n";
 import Logo from "../components/common/Logo.tsx";
 import { Link } from "react-router-dom";
 
 export default function LoginPage() {
+  const { lang } = useLang();
+  const {
+    errorMessage,
+    headerText,
+    emailPlaceholder,
+    passwordPlaceholder,
+    login,
+    dontHaveAccountText,
+    registerLink,
+  } = useLoginPageTexts(lang);
+
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
@@ -11,9 +24,7 @@ export default function LoginPage() {
     const allowedDomain = "std.bogazici.edu.tr";
 
     if (!value.endsWith(allowedDomain)) {
-      setError(
-        `Sadece "${allowedDomain}" uzantılı e-posta adreslerine izin verilir.`
-      );
+      setError(errorMessage);
     } else {
       setError("");
     }
@@ -27,8 +38,8 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // backend login isteği buraya gelecek
-    console.log("Giriş yapılıyor:", email, password);
+    // backend login request is going to be here.
+    console.log("Logging in:", email, password);
   };
 
   return (
@@ -40,14 +51,14 @@ export default function LoginPage() {
         <div className="flex flex-col gap-3 w-full text-center">
           <Logo />
           <p className="text-gray-600 text-base md:text-lg font-semibold">
-            Ders Notu Paylaşmayı Kolaylaştıran Platform
+            {headerText}
           </p>
         </div>
         <label htmlFor="email" className="sr-only">
-          E-posta Adresi
+          {emailPlaceholder}
         </label>
         <input
-          placeholder="E-posta Adresi"
+          placeholder={emailPlaceholder}
           className="border p-2 rounded bg-gray-100"
           id="email"
           type="email"
@@ -56,12 +67,12 @@ export default function LoginPage() {
         />
         {error && <p className="text-red-500 text-sm">{error}</p>}
 
-        <label htmlFor="şifre" className="sr-only">
-          Şifre
+        <label htmlFor="password" className="sr-only">
+          {passwordPlaceholder}
         </label>
         <input
-          id="şifre"
-          placeholder="Şifre"
+          id="password"
+          placeholder={passwordPlaceholder}
           className="border p-2 rounded bg-gray-100"
           type="password"
           value={password}
@@ -76,13 +87,13 @@ export default function LoginPage() {
               : "hover:bg-red-700 bg-red-500 w-full p-2 rounded cursor-pointer text-white font-semibold mt-3 transition"
           }`}
         >
-          Giriş Yapın
+          {login}
         </button>
         <p className="text-gray-600 text-sm mt-2">
-          Hesabınız yok mu?{" "}
+          {dontHaveAccountText}{" "}
           <Link to="/register">
             <span className="underline text-blue-500 hover:text-blue-700 cursor-pointer">
-              Kayıt Olun
+              {registerLink}
             </span>
           </Link>
         </p>
