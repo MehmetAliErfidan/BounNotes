@@ -1,14 +1,14 @@
 import NoteForm from "./NoteForm.tsx";
-import type { Note } from "./NoteTypes.ts";
+import type { FormNote } from "./NoteTypes";
 import { useState } from "react";
 import { useCreateNoteTexts } from "../../i18n/translations/note";
 import { useLang } from "../../i18n";
 
-export default function UploadNote() {
+export default function CreateNote() {
   const { lang } = useLang();
   const { uploadText } = useCreateNoteTexts(lang);
 
-  const [note, setNote] = useState<Partial<Note>>({
+  const [note, setNote] = useState<FormNote>({
     course: "",
     teacher: "",
     date: "",

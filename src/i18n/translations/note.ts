@@ -31,8 +31,6 @@ export function useNoteFormTexts(lang: "tr" | "en") {
 
     instructorPlaceholder: lang === "tr" ? "Dersin Hocası" : "Instructor",
 
-    datePlaceholder: lang === "tr" ? "Dersin Tarihi" : "Course Date",
-
     titlePlaceholder: lang === "tr" ? "Notunuzun Başlığı" : "Note Title",
 
     descriptionPlaceholder:

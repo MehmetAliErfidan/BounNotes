@@ -1,10 +1,11 @@
 import type { Note } from "./NoteTypes";
+import type { FormNote } from "./NoteTypes";
 import { useNoteFormTexts } from "../../i18n/translations/note";
 import { useLang } from "../../i18n";
 
 interface NoteFormProps {
   note: Partial<Note>;
-  setNote: React.Dispatch<React.SetStateAction<any>>;
+  setNote: React.Dispatch<React.SetStateAction<FormNote>>;
 }
 
 export default function NoteForm({ note, setNote }: NoteFormProps) {
@@ -12,7 +13,6 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
   const {
     coursePlaceholder,
     instructorPlaceholder,
-    datePlaceholder,
     titlePlaceholder,
     descriptionPlaceholder,
     pricePlaceholder,
@@ -21,7 +21,11 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setNote({ ...note, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setNote((prev) => ({
+      ...prev,
+      [name]: name === "price" ? Number(value) : value,
+    }));
   };
 
   return (
@@ -49,7 +53,6 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           required
           type="date"
           name="date"
-          placeholder={datePlaceholder}
         />
         <input
           onChange={handleChange}
