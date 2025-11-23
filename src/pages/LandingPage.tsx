@@ -1,17 +1,18 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
 import SearchBar from "../components/search/SearchBar";
-import type { Category } from "../components/search/CategoryFilter.types";
 import CategoryFilter from "../components/search/CategoryFilter";
-import { useState } from "react";
+import type { Category } from "../components/search/CategoryFilter.types";
 import { useLandingPageTexts } from "../i18n/translations/pages";
 import { useLang } from "../i18n";
-
-import { Link } from "react-router-dom";
+import { theme } from "../styles/theme";
+import * as S from "./!LandingPage.styled";
 
 export default function LandingPage() {
   const { lang } = useLang();
-
   const {
     appDefinition,
     noHassleMessage,
@@ -22,55 +23,51 @@ export default function LandingPage() {
     register,
     ifNoAccount,
   } = useLandingPageTexts(lang);
+
   const [selectedCategory, setSelectedCategory] = useState<Category>(null);
 
   return (
-    <main className="min-h-screen font-Prompt">
-      <Navbar />
+    <ThemeProvider theme={theme}>
+      <S.Main>
+        <Navbar />
 
-      <div className="flex flex-col items-center w-full gap-2 mb-16">
-        <SearchBar selectedCategory={selectedCategory} />
-        <CategoryFilter
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-        />
-      </div>
+        <S.SearchSection>
+          <SearchBar selectedCategory={selectedCategory} />
+          <CategoryFilter
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
+        </S.SearchSection>
 
-      <h1 className="text-4xl mt-4 text-gray-900 md:text-6xl font-bold text-primary leading-snug">
-        {appDefinition}
-      </h1>
+        <S.Heading>{appDefinition}</S.Heading>
 
-      <div className="max-w-3xl mx-auto my-6 p-4 text-lg md:text-2xl text-gray-600">
-        <p className="mt-8 text-lg md:text-2xl text-gray-800">
-          {noHassleMessage}
-          <br />
-          {bounNotesDescription}
-        </p>
-        <p className="m-4 p-4 md:p-8 text-lg md:text-2xl text-gray-800">
-          {emailInfo}
-        </p>
-      </div>
+        <S.ContentWrapper>
+          <S.Description>
+            {noHassleMessage}
+            <S.Spacer />
+            {bounNotesDescription}
+          </S.Description>
+          <S.EmailInfo>{emailInfo}</S.EmailInfo>
+        </S.ContentWrapper>
 
-      <div className="mx-4 mt-4 mb-6 p-4 text-lg md:text-2xl font-bold">
-        {buttonDirective}
-        <br />
-        <br />
-        <Link to="/login">
-          <button className="bg-red-500 hover:bg-red-700 text-gray-800 px-6 py-3 rounded-lg shadow transition">
-            {login}
-          </button>
-        </Link>
-        <br />
-        <br />
-        <p>{ifNoAccount}</p>
-        <br />
-        <Link to="/register">
-          <button className="bg-blue-500 text-gray-800 px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition">
-            {register}
-          </button>
-        </Link>
-      </div>
-      <Footer />
-    </main>
+        <S.ButtonSection>
+          {buttonDirective}
+          <S.Spacer />
+          <S.Spacer />
+          <Link to="/login">
+            <S.LoginButton>{login}</S.LoginButton>
+          </Link>
+          <S.Spacer />
+          <S.Spacer />
+          <S.AccountText>{ifNoAccount}</S.AccountText>
+          <S.Spacer />
+          <Link to="/register">
+            <S.RegisterButton>{register}</S.RegisterButton>
+          </Link>
+        </S.ButtonSection>
+
+        <Footer />
+      </S.Main>
+    </ThemeProvider>
   );
 }
