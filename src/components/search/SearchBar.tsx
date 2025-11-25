@@ -3,6 +3,7 @@ import { useSearchBarTexts } from "../../i18n/translations/search-files";
 import type { Category } from "./CategoryFilter.types";
 import SearchInput from "./SearchInput";
 import SearchResults from "./SearchResults";
+import { Container } from "./!SearchBar.styled";
 
 interface SearchBarProps {
   selectedCategory: Category;
@@ -53,7 +54,7 @@ export default function SearchBar({ selectedCategory }: SearchBarProps) {
   };
 
   return (
-    <div className="flex flex-col items-center gap-2 my-4 mt-4 px-4 w-full max-w-2xl mx-auto">
+    <Container>
       <SearchInput
         value={inputValue}
         onChange={handleInput}
@@ -61,6 +62,6 @@ export default function SearchBar({ selectedCategory }: SearchBarProps) {
         placeholder={searchPlaceholder}
       />
       <SearchResults results={filteredResult} category={filterCategory} />
-    </div>
+    </Container>
   );
 }
