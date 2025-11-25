@@ -1,3 +1,5 @@
+import { StyledLabel, StyledInput } from "./!RadioButton.styled";
+
 interface RadioButtonProps {
   id: string;
   label: string;
@@ -14,17 +16,16 @@ export function RadioButton({
   onChange,
 }: RadioButtonProps) {
   return (
-    <label htmlFor={id} className="flex items-center cursor-pointer space-x-2">
-      <input
+    <StyledLabel htmlFor={id}>
+      <StyledInput
         type="radio"
         id={id}
         name="category"
         value={value}
         checked={checked}
         onChange={onChange}
-        className="mr-2 mb-1"
       />
       {label}
-    </label>
+    </StyledLabel>
   );
 }
