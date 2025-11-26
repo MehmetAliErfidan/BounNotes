@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useRegisterPageTexts } from "../i18n/translations/pages";
+import { REGISTER } from "../i18n/translations/pages/Register";
 import { useLang } from "../i18n";
 import Logo from "../components/common/Logo.tsx";
 import { Link } from "react-router-dom";
 import * as S from "./!RegisterPage.styled";
+import { ALLOWED_DOMAIN } from "./constants";
 
 export default function RegisterPage() {
   const { lang } = useLang();
@@ -25,7 +26,7 @@ export default function RegisterPage() {
     codeSentText,
     sendCodeText,
     verifyEmailMessage,
-  } = useRegisterPageTexts(lang);
+  } = REGISTER[lang];
 
   const [email, setEmail] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -51,9 +52,7 @@ export default function RegisterPage() {
   const nameSurname = name.length >= 2 && surname.length >= 2;
 
   const validateEmail = (value: string) => {
-    const allowedDomain = "@std.bogazici.edu.tr";
-
-    if (!value.endsWith(allowedDomain)) {
+    if (!value.endsWith(ALLOWED_DOMAIN)) {
       setEmailError(emailErrorMessage);
     } else {
       setEmailError("");

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLoginPageTexts } from "../i18n/translations/pages";
+import { LOGIN_PAGE } from "../i18n/translations/pages/Login.ts";
 import { useLang } from "../i18n";
 import Logo from "../components/common/Logo.tsx";
 import { Link } from "react-router-dom";
@@ -15,7 +15,7 @@ export default function LoginPage() {
     login,
     dontHaveAccountText,
     registerLink,
-  } = useLoginPageTexts(lang);
+  } = LOGIN_PAGE[lang];
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
