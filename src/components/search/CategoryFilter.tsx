@@ -1,12 +1,15 @@
 import type { CategoryFilterProps, Category } from "./CategoryFilter.types";
 import { RadioButton } from "./RadioButton";
-import { useCategoryFilterTexts } from "../../i18n/translations/search-files";
+import { CATEGORY_FILTER_TEXTS } from "../../i18n/translations/search/CategoryFilter";
+import { useLang } from "../../i18n";
 
 export default function CategoryFilter({
   selectedCategory,
   setSelectedCategory,
 }: CategoryFilterProps) {
-  const { customize, noteOwner, instructor, course } = useCategoryFilterTexts();
+  const { lang } = useLang();
+  const { customize, noteOwner, instructor, course } =
+    CATEGORY_FILTER_TEXTS[lang];
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedCategory(e.target.value as Category);
   };

@@ -5,24 +5,6 @@ export type LangObject = {
   en: string;
 };
 
-/* CategoryFilter texts */
-export function useCategoryFilterTexts() {
-  return {
-    customize: useText({
-      tr: "Aramanızı Özelleştirin:",
-      en: "Customize your search:",
-    }),
-
-    noteOwner: useText({
-      tr: "Kullanıcı (Not Sahibi)",
-      en: "User (Note Owner)",
-    }),
-
-    instructor: useText({ tr: "Hoca", en: "Instructor" }),
-    course: useText({ tr: "Ders", en: "Course" }),
-  };
-}
-
 /* SearchBar texts */
 export function useSearchBarTexts() {
   return {

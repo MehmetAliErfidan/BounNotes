@@ -1,5 +1,6 @@
 import type { Category } from "./CategoryFilter.types";
-import { useSearchResults } from "../../i18n/translations/search-files";
+import { SEARCH_RESULTS_TEXTS } from "../../i18n/translations/search/SearchResults";
+import { useLang } from "../../i18n";
 
 interface SearchResultsProps {
   results: Array<Record<string, string>>;
@@ -10,7 +11,8 @@ export default function SearchResults({
   results,
   category,
 }: SearchResultsProps) {
-  const { noResult } = useSearchResults();
+  const { lang } = useLang();
+  const { noResult } = SEARCH_RESULTS_TEXTS[lang];
   if (!results.length) {
     return <p className="text-gray-500 mt-2">{noResult}</p>;
   }
