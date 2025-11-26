@@ -6,7 +6,7 @@ import Footer from "../components/common/Footer";
 import SearchBar from "../components/search/SearchBar";
 import CategoryFilter from "../components/search/CategoryFilter";
 import type { Category } from "../components/search/CategoryFilter.types";
-import { useLandingPageTexts } from "../i18n/translations/pages";
+import { LANDING_PAGE_TEXTS } from "../i18n/translations/pages/Landing";
 import { useLang } from "../i18n";
 import { theme } from "../styles/theme";
 import * as S from "./!LandingPage.styled";
@@ -22,7 +22,7 @@ export default function LandingPage() {
     login,
     register,
     ifNoAccount,
-  } = useLandingPageTexts(lang);
+  } = LANDING_PAGE_TEXTS[lang];
 
   const [selectedCategory, setSelectedCategory] = useState<Category>(null);
 
