@@ -1,6 +1,6 @@
-// Footer.tsx
+import { FOOTER_TEXTS } from "../../i18n/translations/common/Footer";
+import { useLang } from "../../i18n";
 import Logo from "./Logo";
-import { useFooterTexts } from "../../i18n/translations/common-files";
 import {
   StyledFooter,
   Container,
@@ -22,8 +22,9 @@ import {
 } from "./!Footer.styled";
 
 export default function Footer() {
+  const { lang } = useLang();
   const { appDefinition, contactInfo, email, about, FAQ, copyrightMessage } =
-    useFooterTexts();
+    FOOTER_TEXTS[lang];
 
   return (
     <StyledFooter>

@@ -134,9 +134,11 @@ export const FooterLink = styled.a`
 
 export const PoweredBy = styled.p`
   font-size: 0.75rem;
+  font-family: Prompt;
 
   @media (min-width: 640px) {
     font-size: 0.875rem;
+    font-family: Prompt;
   }
 `;
 

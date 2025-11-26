@@ -1,6 +1,7 @@
 import Logo from "./Logo";
 import { Link } from "react-router-dom";
-import { useNavbarTexts } from "../../i18n/translations/common-files";
+import { useLang } from "../../i18n";
+import { NAVBAR_TEXTS } from "../../i18n/translations/common/Navbar";
 import LanguageSwitcher from "./LanguageSwitcher";
 import {
   StyledNav,
@@ -13,7 +14,8 @@ import {
 } from "./!Navbar.styled";
 
 export default function Navbar() {
-  const { login, register } = useNavbarTexts();
+  const { lang } = useLang();
+  const { login, register } = NAVBAR_TEXTS[lang];
 
   return (
     <StyledNav>
