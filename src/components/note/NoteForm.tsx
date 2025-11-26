@@ -1,6 +1,6 @@
 import type { Note } from "./NoteTypes";
 import type { FormNote } from "./NoteTypes";
-import { useNoteFormTexts } from "../../i18n/translations/note";
+import { NOTE_FORM_TEXTS } from "../../i18n/translations/notes/NoteForm";
 import { useLang } from "../../i18n";
 
 interface NoteFormProps {
@@ -16,7 +16,7 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
     titlePlaceholder,
     descriptionPlaceholder,
     pricePlaceholder,
-  } = useNoteFormTexts(lang);
+  } = NOTE_FORM_TEXTS[lang];
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

@@ -1,12 +1,12 @@
 //this is incomplete
 
 import type { NoteCardProps } from "./NoteTypes";
-import { useNoteDetailPageTexts } from "../../i18n/translations/note";
+import { NOTE_DETAIL_TEXTS } from "../../i18n/translations/notes/NoteDetail";
 import { useLang } from "../../i18n";
 
 export default function NoteDetail({ note }: NoteCardProps) {
   const { lang } = useLang();
-  const { buyText } = useNoteDetailPageTexts(lang);
+  const { buyText } = NOTE_DETAIL_TEXTS[lang];
 
   return (
     <div>
