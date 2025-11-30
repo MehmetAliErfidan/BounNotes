@@ -45,10 +45,10 @@ export default function SearchBar({ selectedCategory }: SearchBarProps) {
     } else {
       setFilteredResult(
         dummyData.filter(
-          (x) =>
-            x.user.toLowerCase().includes(inputValue.toLowerCase()) ||
-            x.course.toLowerCase().includes(inputValue.toLowerCase()) ||
-            x.teacher.toLowerCase().includes(inputValue.toLowerCase())
+          (note) =>
+            note.user.toLowerCase().includes(inputValue.toLowerCase()) ||
+            note.course.toLowerCase().includes(inputValue.toLowerCase()) ||
+            note.teacher.toLowerCase().includes(inputValue.toLowerCase())
         )
       );
       setFilterCategory(null);

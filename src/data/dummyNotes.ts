@@ -1,0 +1,38 @@
+export const dummyNotes = [
+  {
+    id: 1,
+    title: "Fizik Final Notları",
+    course: "Fizik 2",
+    teacher: "Ahmet Hoca",
+    price: 49,
+    username: "mehmet",
+    rating: 4.5,
+  },
+  {
+    id: 2,
+    title: "Matematik Vize Özet",
+    course: "Matematik 1",
+    teacher: "Ayşe Hoca",
+    price: 29,
+    username: "zeynep",
+    rating: 5,
+  },
+  {
+    id: 3,
+    title: "Algoritma Çıkmış Sorular",
+    course: "Algoritmalar",
+    teacher: "Kemal Hoca",
+    price: 39,
+    username: "ali",
+    rating: 4,
+  },
+  {
+    id: 4,
+    title: "Veri Tabanı PDF",
+    course: "Database",
+    teacher: "Burcu Hoca",
+    price: 35,
+    username: "elif",
+    rating: 3.5,
+  },
+];
