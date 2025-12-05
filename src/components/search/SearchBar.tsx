@@ -64,7 +64,11 @@ export default function SearchBar({ selectedCategory }: SearchBarProps) {
         placeholder={searchPlaceholder}
       />
       {inputValue && (
-        <SearchResults results={filteredResult} category={filterCategory} />
+        <SearchResults
+          results={filteredResult}
+          category={filterCategory}
+          inputValue={inputValue}
+        />
       )}
     </Container>
   );

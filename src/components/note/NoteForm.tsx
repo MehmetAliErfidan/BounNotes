@@ -49,13 +49,6 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
         />
         <input
           onChange={handleChange}
-          value={note.date}
-          required
-          type="date"
-          name="date"
-        />
-        <input
-          onChange={handleChange}
           value={note.title}
           required
           type="text"
