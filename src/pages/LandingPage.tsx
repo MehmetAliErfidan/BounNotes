@@ -24,19 +24,14 @@ export default function LandingPage() {
     ifNoAccount,
   } = LANDING_PAGE_TEXTS[lang];
 
-  const [selectedCategory, setSelectedCategory] = useState<Category>(null);
-
   return (
     <ThemeProvider theme={theme}>
       <S.Main>
         <Navbar />
 
         <S.SearchSection>
-          <SearchBar selectedCategory={selectedCategory} />
-          <CategoryFilter
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
+          <SearchBar />
+          <CategoryFilter />
         </S.SearchSection>
 
         <S.Heading>{appDefinition}</S.Heading>
