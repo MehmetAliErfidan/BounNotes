@@ -16,7 +16,7 @@ export type FormNote = {
   teacher: string;
   date: string;
   description: string;
-  price: number;
+  price: string;
   rating: number;
 };
 

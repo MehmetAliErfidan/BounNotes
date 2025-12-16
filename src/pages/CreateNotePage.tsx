@@ -14,7 +14,7 @@ export default function CreateNote() {
     date: "",
     title: "",
     description: "",
-    price: 0,
+    price: "",
     rating: 0,
   });
 

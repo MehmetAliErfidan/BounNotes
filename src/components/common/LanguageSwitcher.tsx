@@ -6,7 +6,7 @@ export default function LanguageSwitcher() {
   return (
     <button
       onClick={() => setLang(lang === "tr" ? "en" : "tr")}
-      className="rounded-l border"
+      className="rounded-l border "
     >
       {lang === "tr" ? "English" : "Türkçe"}
     </button>

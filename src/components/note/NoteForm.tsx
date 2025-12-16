@@ -64,7 +64,7 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
         />
         <input
           onChange={handleChange}
-          value={note.price}
+          value={note.price ?? ""}
           required
           type="number"
           name="price"
