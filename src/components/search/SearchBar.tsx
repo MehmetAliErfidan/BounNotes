@@ -1,28 +1,63 @@
 import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../features/hooks";
+import { setQuery, setResults } from "../../features/search/searchSlice";
+import { useNavigate } from "react-router-dom";
 import { SEARCHBAR_TEXTS } from "../../i18n/translations/search/SearchBar";
 import { useLang } from "../../i18n";
-import type { Category } from "./CategoryFilter.types";
 import SearchInput from "./SearchInput";
-import SearchResults from "./SearchResults";
 import { Container } from "./!SearchBar.styled";
-
-interface SearchBarProps {
-  selectedCategory: Category;
-}
+import type { Note } from "../note/NoteTypes"; // yolu ihtiyacına göre
 
 // Dummy data (until backend)
 const dummyData = [
-  { user: "Ali", course: "Matematik", teacher: "Ahmet" },
-  { user: "Ayşe", course: "Fizik", teacher: "Mehmet" },
-  { user: "Veli", course: "Kimya", teacher: "Samet" },
+  {
+    id: 1,
+    title: "Math101 Final Notları",
+    course: "Math101",
+    teacher: "Ahmet",
+    username: "Ali",
+    rating: 4.8,
+    price: "₺50",
+    date: "2024",
+    description: "math101'dir...",
+  },
+
+  {
+    id: 2,
+    title: "Fizik Final Notları",
+    course: "Fizik",
+    teacher: "Mehmet",
+    username: "Ayşe",
+    rating: 4.5,
+    price: "₺40",
+    date: "2024",
+    description: "fizikdir...",
+  },
+  {
+    id: 3,
+    title: "Kimya Final Notları",
+    course: "Kimya",
+    teacher: "Samet",
+    username: "Veli",
+    rating: 4.7,
+    price: "₺45",
+    date: "2024",
+    description: "kimyadır...",
+  },
 ];
 
-export default function SearchBar({ selectedCategory }: SearchBarProps) {
+export default function SearchBar() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const selectedCategory = useAppSelector(
+    (state) => state.search.selectedCategory
+  );
+
   const { lang } = useLang();
   const { searchPlaceholder } = SEARCHBAR_TEXTS[lang];
+
   const [inputValue, setInputValue] = useState("");
-  const [filteredResult, setFilteredResult] = useState<typeof dummyData>([]);
-  const [filterCategory, setFilterCategory] = useState<Category>(null);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -30,29 +65,36 @@ export default function SearchBar({ selectedCategory }: SearchBarProps) {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!inputValue.trim()) return;
 
-    if (selectedCategory) {
-      setFilterCategory(selectedCategory);
-      setFilteredResult(
-        dummyData.filter((item) =>
-          item[selectedCategory]
-            .toLowerCase()
-            .includes(inputValue.toLowerCase())
-        )
+    dispatch(setQuery(inputValue));
+
+    const lower = inputValue.toLowerCase();
+    let filtered: Note[] = [];
+
+    if (selectedCategory === "user") {
+      filtered = dummyData.filter((item) =>
+        item.username.toLowerCase().includes(lower)
+      );
+    } else if (selectedCategory === "course") {
+      filtered = dummyData.filter((item) =>
+        item.course.toLowerCase().includes(lower)
+      );
+    } else if (selectedCategory === "teacher") {
+      filtered = dummyData.filter((item) =>
+        item.teacher.toLowerCase().includes(lower)
       );
     } else {
-      setFilteredResult(
-        dummyData.filter(
-          (note) =>
-            note.user.toLowerCase().includes(inputValue.toLowerCase()) ||
-            note.course.toLowerCase().includes(inputValue.toLowerCase()) ||
-            note.teacher.toLowerCase().includes(inputValue.toLowerCase())
-        )
+      filtered = dummyData.filter(
+        (item) =>
+          item.username.toLowerCase().includes(lower) ||
+          item.course.toLowerCase().includes(lower) ||
+          item.teacher.toLowerCase().includes(lower)
       );
-      setFilterCategory(null);
     }
+
+    dispatch(setResults(filtered));
+    navigate("/search");
   };
 
   return (
@@ -63,13 +105,6 @@ export default function SearchBar({ selectedCategory }: SearchBarProps) {
         onSubmit={handleSubmit}
         placeholder={searchPlaceholder}
       />
-      {inputValue && (
-        <SearchResults
-          results={filteredResult}
-          category={filterCategory}
-          inputValue={inputValue}
-        />
-      )}
     </Container>
   );
 }

@@ -4,8 +4,10 @@ export type Note = {
   course: string;
   teacher: string;
   username: string;
-  price: number;
   rating: number;
+  price: string;
+  date: string;
+  description: string;
 };
 
 export type FormNote = {
@@ -20,5 +22,4 @@ export type FormNote = {
 
 export interface NoteCardProps {
   note: Note;
-  setNote?: React.Dispatch<React.SetStateAction<Partial<Note>>>;
 }

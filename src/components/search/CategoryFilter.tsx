@@ -1,17 +1,23 @@
-import type { CategoryFilterProps, Category } from "./CategoryFilter.types";
+import { useAppDispatch, useAppSelector } from "../../features/hooks";
+import { setSelectedCategory } from "../../features/search/searchSlice";
+import type { Category } from "./CategoryFilter.types";
 import { RadioButton } from "./RadioButton";
 import { CATEGORY_FILTER_TEXTS } from "../../i18n/translations/search/CategoryFilter";
 import { useLang } from "../../i18n";
 
-export default function CategoryFilter({
-  selectedCategory,
-  setSelectedCategory,
-}: CategoryFilterProps) {
+export default function CategoryFilter() {
+  const dispatch = useAppDispatch();
+
+  const selectedCategory = useAppSelector(
+    (state) => state.search.selectedCategory
+  );
+
   const { lang } = useLang();
   const { customize, noteOwner, instructor, course } =
     CATEGORY_FILTER_TEXTS[lang];
+
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedCategory(e.target.value as Category);
+    dispatch(setSelectedCategory(e.target.value as Category));
   };
 
   return (
