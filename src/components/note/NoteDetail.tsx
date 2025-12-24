@@ -1,65 +1,84 @@
-//this is incomplete
-import { Star } from "lucide-react";
-import { MessageSquareText } from "lucide-react";
+import { Star, MessageSquareText } from "lucide-react";
 import type { NoteCardProps } from "./NoteTypes";
 import { NOTE_DETAIL_TEXTS } from "../../i18n/translations/notes/NoteDetail";
 import { useLang } from "../../i18n";
+
+import {
+  Wrapper,
+  Header,
+  Title,
+  Content,
+  Meta,
+  Course,
+  Teacher,
+  DescriptionBox,
+  DateText,
+  Description,
+  UserRatingRow,
+  UserInfo,
+  Avatar,
+  Username,
+  RatingActions,
+  Stars,
+  CommentButton,
+  PdfPreview,
+  BuyRow,
+  Price,
+  BuyButton,
+} from "./!NoteDetail.styled";
 
 export default function NoteDetail({ note }: NoteCardProps) {
   const { lang } = useLang();
   const { buyText } = NOTE_DETAIL_TEXTS[lang];
 
   return (
-    <div className="bg-blue-100 p-4 rounded-lg shadow-md max-w-3xl mx-auto w-full">
-      <div className="text-center m-auto p-2 border-b-2 border-amber-300">
-        <h1>{note.title}</h1>
-      </div>
+    <Wrapper>
+      <Header>
+        <Title>{note.title}</Title>
+      </Header>
 
-      <div className="m-auto p-1 border-b-2 border-amber-300">
-        <div className="m-auto p-1 border-4 border-amber-200">
-          <p>{note.course}</p>
-          <p>{note.teacher}</p>
-        </div>
+      <Content>
+        <Meta>
+          <Course>{note.course}</Course>
+          <Teacher>{note.teacher}</Teacher>
+        </Meta>
 
-        <div className="m-auto p-1 border-4 border-amber-200">
-          <p className="text-left p-1 text-gray-400 border-b-2 border-amber-200">
-            {note.date}
-          </p>
-          <p className="p-1">{note.description}</p>
-        </div>
-      </div>
+        <DescriptionBox>
+          <DateText>{note.date}</DateText>
+          <Description>{note.description}</Description>
+        </DescriptionBox>
 
-      <div className="m-auto p-2 flex flex-row gap-4 sm:flex-col sm:items-center">
-        <div>
-          <img />
-          <p>{note.username}</p>
-        </div>
+        <UserRatingRow>
+          <UserInfo>
+            <Avatar>{note.username[0]?.toUpperCase()}</Avatar>
+            <Username>{note.username}</Username>
+          </UserInfo>
 
-        <div className="flex flex-col gap-1 items-start">
-          <div className="flex gap-1">
-            {[...Array(5)].map((_, index) => (
-              <Star
-                key={index}
-                fill={index < note.rating ? "currentColor" : "none"}
-                className={
-                  index < note.rating ? "text-yellow-400" : "text-gray-300"
-                }
-              />
-            ))}
-            <button>
-              <MessageSquareText className="bg-pink-600" size={18} />
-            </button>{" "}
-          </div>
-        </div>
+          <RatingActions>
+            <Stars>
+              {[...Array(5)].map((_, index) => (
+                <Star
+                  size={16}
+                  fill="none"
+                  color={index < note.rating ? "#facc15" : "#d1d5db"}
+                  strokeWidth={2}
+                />
+              ))}
+            </Stars>
 
-        <div className="flex flex-col gap-2">
-          // pdf preview on this line
-          <div className="flex flex-row sm:flex-col gap-2 w-full sm:w-auto md:w-auto lg:w-auto">
-            <button>{note.price}</button>
-            <button>{buyText}</button> //buy button
-          </div>
-        </div>
-      </div>
-    </div>
+            <CommentButton>
+              <MessageSquareText size={18} />
+            </CommentButton>
+          </RatingActions>
+        </UserRatingRow>
+
+        <PdfPreview>PDF preview will be shown here</PdfPreview>
+
+        <BuyRow>
+          <Price>{note.price}</Price>
+          <BuyButton>{buyText}</BuyButton>
+        </BuyRow>
+      </Content>
+    </Wrapper>
   );
 }
