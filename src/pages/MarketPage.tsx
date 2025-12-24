@@ -4,39 +4,49 @@ import CategoryFilter from "../components/search/CategoryFilter";
 import NoteCard from "../components/note/NoteCard";
 import { SEARCH_RESULTS_TEXTS } from "../i18n/translations/search/SearchResults";
 import { useLang } from "../i18n";
+import { ThemeProvider } from "styled-components";
+import { theme } from "../styles/theme";
+import { Main, Heading, SearchSection } from "../styles/GlobalStyles";
+import Navbar from "../components/common/Navbar";
+
+import { ResultsWrapper, SearchInfoText, Grid } from "./!MarketPage.styled";
 
 export default function MarketPage() {
   const { lang } = useLang();
-  const { noResult, resultsFound, resultsFor } = SEARCH_RESULTS_TEXTS[lang];
+  const { resultsFound, resultsFor } = SEARCH_RESULTS_TEXTS[lang];
 
   const { results, query } = useAppSelector((state) => state.search);
 
   return (
-    <div className="p-4 font-prompt">
-      <SearchBar />
-      <CategoryFilter />
+    <ThemeProvider theme={theme}>
+      <Main>
+        <Navbar />
 
-      <div className="mt-6">
-        {/* ---------- search title info ---------- */}
-        {query && (
-          <p className="text-sm text-gray-600 mb-3">
-            {results.length > 0
-              ? `${results.length} ${resultsFound} "${query}"`
-              : `${resultsFor} "${query}"`}
-          </p>
-        )}
+        <SearchSection>
+          <SearchBar />
+          <CategoryFilter />
+        </SearchSection>
 
-        {/* ---------- Results ---------- */}
-        {results.length === 0 ? (
-          <p className="text-gray-500">{noResult}</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {results.map((note) => (
-              <NoteCard key={note.id} note={note} />
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
+        <ResultsWrapper>
+          {/* ---------- search title info ---------- */}
+          {query && (
+            <SearchInfoText>
+              {results.length > 0
+                ? `${results.length} ${resultsFound} "${query}"`
+                : `${resultsFor} "${query}"`}
+            </SearchInfoText>
+          )}
+
+          {/* ---------- Results ---------- */}
+          {results.length !== 0 && (
+            <Grid>
+              {results.map((note) => (
+                <NoteCard key={note.id} note={note} />
+              ))}
+            </Grid>
+          )}
+        </ResultsWrapper>
+      </Main>
+    </ThemeProvider>
   );
 }
