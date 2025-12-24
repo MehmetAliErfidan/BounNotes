@@ -6,9 +6,10 @@ import { SEARCHBAR_TEXTS } from "../../i18n/translations/search/SearchBar";
 import { useLang } from "../../i18n";
 import SearchInput from "./SearchInput";
 import { Container } from "./!SearchBar.styled";
-import type { Note } from "../note/NoteTypes"; // yolu ihtiyacına göre
+import type { Note } from "../note/NoteTypes";
+import { dummyData } from "../../data/dummyData";
 
-// Dummy data (until backend)
+/* // Dummy data (until backend)
 const dummyData = [
   {
     id: 1,
@@ -44,7 +45,7 @@ const dummyData = [
     date: "2024",
     description: "kimyadır...",
   },
-];
+]; */
 
 export default function SearchBar() {
   const dispatch = useAppDispatch();
