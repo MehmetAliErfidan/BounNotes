@@ -19,7 +19,7 @@ export const dummyData: Note[] = [
     teacher: "Mehmet",
     username: "Ayşe",
     rating: 4.3,
-    price: "₺15",
+    price: "₺40",
     date: "2023",
     description: "Kısa ama etkili bir özet.",
   },
