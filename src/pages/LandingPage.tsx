@@ -8,6 +8,7 @@ import { LANDING_PAGE_TEXTS } from "../i18n/translations/pages/Landing";
 import { useLang } from "../i18n";
 import { theme } from "../styles/theme";
 import * as S from "./!LandingPage.styled";
+import { Main, Heading, SearchSection } from "../styles/GlobalStyles";
 
 export default function LandingPage() {
   const { lang } = useLang();
@@ -24,15 +25,15 @@ export default function LandingPage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <S.Main>
+      <Main>
         <Navbar />
 
-        <S.SearchSection>
+        <SearchSection>
           <SearchBar />
           <CategoryFilter />
-        </S.SearchSection>
+        </SearchSection>
 
-        <S.Heading>{appDefinition}</S.Heading>
+        <Heading>{appDefinition}</Heading>
 
         <S.ContentWrapper>
           <S.Description>
@@ -60,7 +61,7 @@ export default function LandingPage() {
         </S.ButtonSection>
 
         <Footer />
-      </S.Main>
+      </Main>
     </ThemeProvider>
   );
 }

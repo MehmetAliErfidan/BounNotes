@@ -1,31 +1,5 @@
 import styled from "styled-components";
 
-export const Main = styled.main`
-  min-height: 100vh;
-  font-family: "Prompt", sans-serif;
-`;
-
-export const SearchSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  gap: 0.5rem;
-  margin-bottom: 4rem;
-`;
-
-export const Heading = styled.h1`
-  font-size: 2.25rem;
-  margin-top: 1rem;
-  color: ${(props) => props.theme.colors.gray[900]};
-  font-weight: bold;
-  line-height: 1.375;
-
-  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
-    font-size: 3.75rem;
-  }
-`;
-
 export const ContentWrapper = styled.div`
   max-width: 48rem;
   margin: 1.5rem auto;
