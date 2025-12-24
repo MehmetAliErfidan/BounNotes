@@ -6,7 +6,7 @@ import { SEARCH_RESULTS_TEXTS } from "../i18n/translations/search/SearchResults"
 import { useLang } from "../i18n";
 import { ThemeProvider } from "styled-components";
 import { theme } from "../styles/theme";
-import { Main, Heading, SearchSection } from "../styles/GlobalStyles";
+import { Main, SearchSection } from "../styles/GlobalStyles";
 import Navbar from "../components/common/Navbar";
 
 import { ResultsWrapper, SearchInfoText, Grid } from "./!MarketPage.styled";
