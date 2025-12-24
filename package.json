@@ -18,6 +18,7 @@
     "react-pdf": "^10.2.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.4",
+    "redux-logger": "^3.0.6",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
@@ -25,6 +26,7 @@
     "@types/node": "^24.6.0",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
+    "@types/redux-logger": "^3.0.13",
     "@types/styled-components": "^5.1.36",
     "@vitejs/plugin-react": "^5.0.4",
     "autoprefixer": "^10.4.21",

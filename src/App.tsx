@@ -1,3 +1,4 @@
+import { Provider } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import LandingPage from "./pages/LandingPage";
@@ -6,7 +7,6 @@ import LoginPage from "./pages/LoginPage.tsx";
 import MarketPage from "./pages/MarketPage.tsx";
 import NoteDetailPage from "./pages/NoteDetailPage.tsx";
 import { store } from "./features/store.ts";
-import { Provider } from "react-redux";
 
 function App() {
   return (
