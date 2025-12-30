@@ -9,13 +9,20 @@ import { theme } from "../styles/theme";
 import { Main, SearchSection } from "../styles/GlobalStyles";
 import Navbar from "../components/common/Navbar";
 
-import { ResultsWrapper, SearchInfoText, Grid } from "./!MarketPage.styled";
+import {
+  ResultsWrapper,
+  SearchInfoText,
+  Grid,
+  NoResultsWrapper,
+} from "./!MarketPage.styled";
 
 export default function MarketPage() {
   const { lang } = useLang();
-  const { resultsFound, resultsFor } = SEARCH_RESULTS_TEXTS[lang];
+  const { resultsFound, resultsFor, emptyResults } = SEARCH_RESULTS_TEXTS[lang];
 
-  const { results, query } = useAppSelector((state) => state.search);
+  const { results, query, hasSearched } = useAppSelector(
+    (state) => state.search
+  );
 
   return (
     <ThemeProvider theme={theme}>
@@ -28,17 +35,25 @@ export default function MarketPage() {
         </SearchSection>
 
         <ResultsWrapper>
-          {/* ---------- search title info ---------- */}
-          {query && (
+          {/* search made, no input */}
+          {hasSearched && query.length === 0 && (
+            <NoResultsWrapper>{emptyResults}</NoResultsWrapper>
+          )}
+
+          {/* search made, no result */}
+          {hasSearched && query.length > 0 && results.length === 0 && (
+            <NoResultsWrapper>{`${resultsFor} "${query}"`}</NoResultsWrapper>
+          )}
+
+          {/* there are results  */}
+          {results.length > 0 && (
             <SearchInfoText>
-              {results.length > 0
-                ? `${results.length} ${resultsFound} "${query}"`
-                : `${resultsFor} "${query}"`}
+              {`${results.length} ${resultsFound} "${query}"`}
             </SearchInfoText>
           )}
 
-          {/* ---------- Results ---------- */}
-          {results.length !== 0 && (
+          {/* results */}
+          {results.length > 0 && (
             <Grid>
               {results.map((note) => (
                 <NoteCard key={note.id} note={note} />

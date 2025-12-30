@@ -8,6 +8,7 @@ interface SearchState {
   selectedCategory: Category | null;
   results: Note[];
   status: "idle" | "loading" | "success" | "error";
+  hasSearched: boolean;
 }
 
 const initialState: SearchState = {
@@ -15,6 +16,7 @@ const initialState: SearchState = {
   selectedCategory: null,
   results: [],
   status: "idle",
+  hasSearched: false,
 };
 
 const searchSlice = createSlice({
@@ -30,10 +32,14 @@ const searchSlice = createSlice({
     setResults(state, action: PayloadAction<Note[]>) {
       state.results = action.payload;
     },
+
+    searchTriggered(state) {
+      state.hasSearched = true;
+    },
   },
 });
 
-export const { setQuery, setSelectedCategory, setResults } =
+export const { setQuery, setSelectedCategory, setResults, searchTriggered } =
   searchSlice.actions;
 
 export default searchSlice.reducer;

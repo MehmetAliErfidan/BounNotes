@@ -9,6 +9,12 @@ export const ResultsWrapper = styled.div`
   margin-top: 1.5rem;
 `;
 
+export const NoResultsWrapper = styled.p`
+  font-size: 0.875rem;
+  color: #6b7280; /* text-gray-500 */
+  margin-bottom: 0.75rem;
+`;
+
 export const SearchInfoText = styled.p`
   font-size: 0.875rem;
   color: #4b5563; /* text-gray-600 */

@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../features/hooks";
-import { setQuery, setResults } from "../../features/search/searchSlice";
+import {
+  setQuery,
+  setResults,
+  searchTriggered,
+} from "../../features/search/searchSlice";
 import { useNavigate } from "react-router-dom";
 import { SEARCHBAR_TEXTS } from "../../i18n/translations/search/SearchBar";
 import { useLang } from "../../i18n";
@@ -58,7 +62,12 @@ export default function SearchBar() {
   const { lang } = useLang();
   const { searchPlaceholder } = SEARCHBAR_TEXTS[lang];
 
-  const [inputValue, setInputValue] = useState("");
+  const query = useAppSelector((state) => state.search.query);
+  const [inputValue, setInputValue] = useState(query);
+
+  useEffect(() => {
+    setInputValue(query);
+  }, [query]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -66,9 +75,14 @@ export default function SearchBar() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!inputValue.trim()) return;
-
+    dispatch(searchTriggered());
     dispatch(setQuery(inputValue));
+
+    if (!inputValue.trim()) {
+      dispatch(setResults([]));
+      navigate("/search");
+      return;
+    }
 
     const lower = inputValue.toLowerCase();
     let filtered: Note[] = [];
