@@ -1,4 +1,5 @@
 import { FOOTER_TEXTS } from "../../i18n/translations/common/Footer";
+import { Link } from "react-router-dom";
 import { useLang } from "../../i18n";
 import Logo from "./Logo";
 import {
@@ -71,8 +72,12 @@ export default function Footer() {
 
         <BottomSection>
           <FooterLinks>
-            <FooterLink href="/about">{about}</FooterLink>
-            <FooterLink href="/faq">{FAQ}</FooterLink>
+            <FooterLink as={Link} to="/about">
+              {about}
+            </FooterLink>
+            <FooterLink as={Link} to="/faq">
+              {FAQ}
+            </FooterLink>
           </FooterLinks>
           <PoweredBy>
             Powered by <AuthorName>Mehmet Ali Erfidan</AuthorName>
