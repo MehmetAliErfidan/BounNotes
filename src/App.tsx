@@ -6,6 +6,7 @@ import RegisterPage from "./pages/RegisterPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import MarketPage from "./pages/MarketPage.tsx";
 import NoteDetailPage from "./pages/NoteDetailPage.tsx";
+import CheckoutPage from "./pages/CheckoutPage.tsx";
 import { store } from "./features/store.ts";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/search" element={<MarketPage />} />
         <Route path="/note/:id" element={<NoteDetailPage />} />
+        <Route path="/note/:id/buy" element={<CheckoutPage />} />
       </Routes>
     </Provider>
   );

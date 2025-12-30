@@ -1,5 +1,5 @@
 import { Star, MessageSquareText } from "lucide-react";
-import type { NoteCardProps } from "./NoteTypes";
+import type { Note } from "./NoteTypes";
 import { NOTE_DETAIL_TEXTS } from "../../i18n/translations/notes/NoteDetail";
 import { useLang } from "../../i18n";
 
@@ -27,7 +27,12 @@ import {
   BuyButton,
 } from "./!NoteDetail.styled";
 
-export default function NoteDetail({ note }: NoteCardProps) {
+type Props = {
+  note: Note;
+  onBuy: () => void;
+};
+
+export default function NoteDetailUI({ note, onBuy }: Props) {
   const { lang } = useLang();
   const { buyText } = NOTE_DETAIL_TEXTS[lang];
 
@@ -76,7 +81,7 @@ export default function NoteDetail({ note }: NoteCardProps) {
 
         <BuyRow>
           <Price>{note.price}</Price>
-          <BuyButton>{buyText}</BuyButton>
+          <BuyButton onClick={onBuy}>{buyText}</BuyButton>
         </BuyRow>
       </Content>
     </Wrapper>
