@@ -3,7 +3,7 @@ import styled from "styled-components";
 /* Wrapper */
 export const Wrapper = styled.div`
   max-width: 48rem; /* max-w-3xl */
-  margin: 0 auto;
+  margin: 1rem auto;
   width: 100%;
 
   background-color: #ffffff;

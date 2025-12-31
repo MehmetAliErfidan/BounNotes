@@ -29,10 +29,11 @@ import {
 
 type Props = {
   note: Note;
-  onBuy: () => void;
+  onBuy?: () => void;
+  mode?: "detail" | "checkout";
 };
 
-export default function NoteDetailUI({ note, onBuy }: Props) {
+export default function NoteDetailUI({ note, onBuy, mode = "detail" }: Props) {
   const { lang } = useLang();
   const { buyText } = NOTE_DETAIL_TEXTS[lang];
 
@@ -63,6 +64,7 @@ export default function NoteDetailUI({ note, onBuy }: Props) {
             <Stars>
               {[...Array(5)].map((_, index) => (
                 <Star
+                  key={index}
                   size={16}
                   fill="none"
                   color={index < note.rating ? "#facc15" : "#d1d5db"}
@@ -77,12 +79,16 @@ export default function NoteDetailUI({ note, onBuy }: Props) {
           </RatingActions>
         </UserRatingRow>
 
-        <PdfPreview>PDF preview will be shown here</PdfPreview>
+        {mode !== "checkout" && (
+          <PdfPreview>PDF preview will be shown here</PdfPreview>
+        )}
 
-        <BuyRow>
-          <Price>{note.price}</Price>
-          <BuyButton onClick={onBuy}>{buyText}</BuyButton>
-        </BuyRow>
+        {mode === "detail" && onBuy && (
+          <BuyRow>
+            <Price>{note.price}</Price>
+            <BuyButton onClick={onBuy}>{buyText}</BuyButton>
+          </BuyRow>
+        )}
       </Content>
     </Wrapper>
   );

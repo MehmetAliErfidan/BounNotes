@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import NoteDetailUI from "../components/note/NoteDetailUI";
 import { dummyData } from "../data/dummyData";
+import Navbar from "../components/common/Navbar";
+import { Main } from "../styles/GlobalStyles";
 
 export default function NoteDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -14,5 +16,10 @@ export default function NoteDetailPage() {
     navigate(`/note/${note.id}/buy`);
   };
 
-  return <NoteDetailUI note={note} onBuy={handleBuy} />;
+  return (
+    <Main>
+      <Navbar />
+      <NoteDetailUI note={note} onBuy={handleBuy} />
+    </Main>
+  );
 }
