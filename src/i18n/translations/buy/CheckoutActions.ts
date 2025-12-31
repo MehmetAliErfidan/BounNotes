@@ -4,7 +4,7 @@ export const CHECKOUT_ACTIONS_TEXTS = {
     digitalProduct: "Dijital Ürün",
     cost: "Toplam: ",
     initiatePayment: "Ödemeyi Başlat",
-    accessInfo: "Ödeme sonrası içeriğe anında erişim sağlanır.",
+    accessInfo: "Ödeme sonrası içeriğe anında erişim.",
   },
 
   en: {

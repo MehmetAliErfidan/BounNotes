@@ -1,5 +1,10 @@
 import type { Note } from "../note/NoteTypes";
-import { CheckoutActionsBox } from "./!CheckoutActions.styled";
+import { MdLockOutline } from "react-icons/md";
+import {
+  CheckoutActionsBox,
+  SecurityInfo,
+  TotalLabel,
+} from "./!CheckoutActions.styled";
 import { CHECKOUT_ACTIONS_TEXTS } from "../../i18n/translations/buy/CheckoutActions";
 import { useLang } from "../../i18n";
 
@@ -25,14 +30,16 @@ export default function CheckoutActions({ note, onProceed }: Props) {
       <hr />
 
       <p>
-        <span>{cost}</span>
-        <span>{note.price}</span>
+        <TotalLabel className="total-label">{cost}</TotalLabel>
+        <TotalLabel className="total-label">{note.price}</TotalLabel>
       </p>
       <hr />
 
       <button onClick={onProceed}>{initiatePayment}</button>
-
-      <small>{accessInfo}</small>
+      <SecurityInfo>
+        <MdLockOutline />
+        <span>{accessInfo}</span>
+      </SecurityInfo>
     </CheckoutActionsBox>
   );
 }

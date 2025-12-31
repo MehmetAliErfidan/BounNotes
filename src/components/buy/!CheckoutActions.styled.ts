@@ -22,12 +22,7 @@ export const CheckoutActionsBox = styled.div`
     margin: 1rem 0;
   }
 
-  span {
-    font-size: 1.5rem;
-  }
-
   small {
-    display: block;
     margin-top: 0.75rem;
   }
 
@@ -55,5 +50,30 @@ export const CheckoutActionsBox = styled.div`
   button:active {
     transform: scale(0.97);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  }
+`;
+
+export const TotalLabel = styled.span`
+  font-size: 1.5rem;
+`;
+
+export const SecurityInfo = styled.small`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  font-size: 0.81rem;
+  color: ${(p) => p.theme.colors.gray[600]};
+  line-height: 1.4;
+  width: fit-content;
+
+  span {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  svg {
+    font-size: 0.875rem;
+    flex-shrink: 0;
   }
 `;
