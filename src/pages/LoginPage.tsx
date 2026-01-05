@@ -1,11 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { LOGIN_PAGE } from "../i18n/translations/pages/Login.ts";
 import { useLang } from "../i18n";
 import Logo from "../components/common/Logo.tsx";
 import { Link } from "react-router-dom";
 import * as S from "./!LoginPage.styled";
+import { useAppDispatch } from "../features/hooks";
+import { setUser } from "../features/auth/authSlice";
 
 export default function LoginPage() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { lang } = useLang();
   const {
     errorMessage,
@@ -39,8 +44,16 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // backend login request is going to be here.
-    console.log("Logging in:", email, password);
+
+    // for now mock login, until backend login request is going to be here.
+    dispatch(
+      setUser({
+        username: email.split("@")[0],
+        avatarUrl: "",
+      })
+    );
+
+    navigate("/");
   };
 
   return (

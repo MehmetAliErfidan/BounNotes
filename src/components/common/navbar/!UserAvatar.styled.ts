@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 export const Avatar = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 9999px;
-  overflow: hidden; /* kritik */
+  overflow: hidden;
   background: linear-gradient(135deg, #60a5fa, #2563eb);
 
   display: flex;
