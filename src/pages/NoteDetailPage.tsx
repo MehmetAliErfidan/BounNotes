@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import NoteDetailUI from "../components/note/NoteDetailUI";
 import { dummyData } from "../data/dummyData";
-import Navbar from "../components/common/Navbar";
+import Navbar from "../components/common/navbar/Navbar";
 import { Main } from "../styles/GlobalStyles";
 
 export default function NoteDetailPage() {

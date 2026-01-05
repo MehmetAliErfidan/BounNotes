@@ -9,7 +9,7 @@ import {
   ActionWrapper,
   BackMessage,
 } from "./!CheckoutPage.styled";
-import Navbar from "../components/common/Navbar";
+import Navbar from "../components/common/navbar/Navbar";
 import CheckoutActions from "../components/buy/CheckoutActions";
 import { CHECKOUT_PAGE_TEXTS } from "../i18n/translations/pages/Checkout";
 import { useLang } from "../i18n";

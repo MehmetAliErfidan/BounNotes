@@ -5,7 +5,7 @@ import NoteCard from "../components/note/NoteCard";
 import { SEARCH_RESULTS_TEXTS } from "../i18n/translations/search/SearchResults";
 import { useLang } from "../i18n";
 import { Main, SearchSection } from "../styles/GlobalStyles";
-import Navbar from "../components/common/Navbar";
+import Navbar from "../components/common/navbar/Navbar";
 
 import {
   ResultsWrapper,
