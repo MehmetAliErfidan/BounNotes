@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { REGISTER } from "../i18n/translations/pages/Register";
 import { useLang } from "../i18n";
 import Logo from "../components/common/Logo.tsx";
@@ -7,6 +8,8 @@ import * as S from "./!RegisterPage.styled";
 import { ALLOWED_DOMAIN } from "./constants";
 
 export default function RegisterPage() {
+  const navigate = useNavigate();
+
   const { lang } = useLang();
 
   const {
@@ -118,6 +121,7 @@ export default function RegisterPage() {
     e.preventDefault();
     // backend login request is going to be here.
     console.log("Registering", name, surname, email, password);
+    navigate("/login");
   };
 
   const isRegisterDisabled =
