@@ -6,7 +6,7 @@ import {
   RegisterButton,
 } from "./!GuestAction.styled";
 import { useLang } from "../../../i18n";
-import { NAVBAR_TEXTS } from "../../../i18n/translations/common/Navbar";
+import { NAVBAR_TEXTS } from "../../../i18n/translations/common/navbar/Navbar";
 
 export default function GuestActions() {
   const { lang } = useLang();
