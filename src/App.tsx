@@ -1,5 +1,6 @@
 import { Provider } from "react-redux";
 import { Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./routes/ProtectedRoute.tsx";
 import "./App.css";
 import LandingPage from "./pages/LandingPage";
 import RegisterPage from "./pages/RegisterPage.tsx";
@@ -16,9 +17,11 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/search" element={<MarketPage />} />
-        <Route path="/note/:id" element={<NoteDetailPage />} />
-        <Route path="/note/:id/buy" element={<CheckoutPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/search" element={<MarketPage />} />
+          <Route path="/note/:id" element={<NoteDetailPage />} />
+          <Route path="/note/:id/buy" element={<CheckoutPage />} />
+        </Route>
       </Routes>
     </Provider>
   );
