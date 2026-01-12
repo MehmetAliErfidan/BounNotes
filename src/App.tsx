@@ -9,6 +9,7 @@ import MarketPage from "./pages/MarketPage.tsx";
 import NoteDetailPage from "./pages/NoteDetailPage.tsx";
 import CheckoutPage from "./pages/CheckoutPage.tsx";
 import { store } from "./features/store.ts";
+import MyNotesPage from "./pages/MyNotesPage.tsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/search" element={<MarketPage />} />
           <Route path="/note/:id" element={<NoteDetailPage />} />
           <Route path="/note/:id/buy" element={<CheckoutPage />} />
+          <Route path="/my-notes" element={<MyNotesPage />} />
         </Route>
       </Routes>
     </Provider>

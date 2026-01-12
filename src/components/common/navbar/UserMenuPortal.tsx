@@ -1,4 +1,5 @@
 import { useLayoutEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { MenuWrapper, MenuItem } from "./!UserMenuPortal.styled";
 import { User, ReceiptText, LogOut } from "lucide-react";
@@ -18,13 +19,18 @@ export default function UserMenuPortal({
   onLogout,
   onClose,
 }: Props) {
+  const navigate = useNavigate();
   const { lang } = useLang();
-  const { MyProfile, MyPurchases, Logout } = USER_MENU_PORTAL_TEXTS[lang];
+  const { MyProfile, MyNotes, Logout } = USER_MENU_PORTAL_TEXTS[lang];
 
   const [pos, setPos] = useState<{ top: number; left: number }>({
     top: 0,
     left: 0,
   });
+
+  const handleMyNotes = () => {
+    return navigate("/my-notes");
+  };
 
   useLayoutEffect(() => {
     if (!open || !anchorEl) return;
@@ -89,8 +95,8 @@ export default function UserMenuPortal({
       <MenuItem className="flex gap-3" type="button">
         <User size={16} /> {MyProfile}
       </MenuItem>
-      <MenuItem className="flex gap-3" type="button">
-        <ReceiptText size={16} /> {MyPurchases}{" "}
+      <MenuItem className="flex gap-3" type="button" onClick={handleMyNotes}>
+        <ReceiptText size={16} /> {MyNotes}{" "}
       </MenuItem>
       <MenuItem className="flex gap-3" type="button" danger onClick={onLogout}>
         <LogOut size={16} /> {Logout}
