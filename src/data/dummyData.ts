@@ -11,6 +11,8 @@ export const dummyData: Note[] = [
     price: "₺10",
     date: "2024",
     description: "Bu notlar sınavda çıkan tüm önemli konuları içerir.",
+    isPurchased: true,
+    isUploaded: false,
   },
   {
     id: 2,
@@ -22,6 +24,8 @@ export const dummyData: Note[] = [
     price: "₺40",
     date: "2023",
     description: "Kısa ama etkili bir özet.",
+    isPurchased: true,
+    isUploaded: false,
   },
   {
     id: 3,
@@ -33,5 +37,22 @@ export const dummyData: Note[] = [
     price: "₺45",
     date: "2024",
     description: "kimyadır...",
+    isPurchased: false,
+    isUploaded: false,
+  },
+
+  {
+    id: 4,
+    title: "CE 408 Notları",
+    course: "Chemical Engineering",
+    teacher: "Prof. Gökhan",
+    username: "Yavuz Göktürk",
+    rating: 4.1,
+    price: "₺200",
+    date: "2025",
+    description:
+      "Çok faydalı notlardır, bana finali kazandırdı, alın rahatlayın.",
+    isPurchased: true,
+    isUploaded: false,
   },
 ];

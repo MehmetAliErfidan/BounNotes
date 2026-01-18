@@ -8,6 +8,8 @@ export type Note = {
   price: string;
   date: string;
   description: string;
+  isPurchased: boolean; // After backend, this will be removed
+  isUploaded: boolean; // After backend, this will be removed
 };
 
 export type FormNote = {

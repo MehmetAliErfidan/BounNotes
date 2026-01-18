@@ -10,7 +10,8 @@ export const SwitchModeButton = styled.button<{ $active: boolean }>`
   position: relative;
   padding: 0.5rem 0;
   background: none;
-  border: none;
+  border: 1px solid transparent;
+  font-size: 1.5rem;
   font-weight: 500;
   cursor: pointer;
   color: ${(p) =>
@@ -18,6 +19,14 @@ export const SwitchModeButton = styled.button<{ $active: boolean }>`
 
   &:hover {
     color: ${(p) => p.theme.colors.gray[900]};
+    background: linear-gradient(
+      to right,
+      #fafafa 0%,
+      #f0f0f0 25%,
+      #f0f0f0 75%,
+      #fafafa 100%
+    );
+    /*  background-color: #f0f0f0; */
   }
 
   &::after {
