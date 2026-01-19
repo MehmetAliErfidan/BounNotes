@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { MY_NOTE_PAGE_TEXTS } from "../i18n/translations/pages/MyNotes";
 import { useLang } from "../i18n";
@@ -17,6 +18,7 @@ import { dummyData } from "../data/dummyData";
 import NoteCard from "../components/note/NoteCard";
 
 export default function MyNotesPage() {
+  const navigate = useNavigate();
   const { lang } = useLang();
   const { noPurchaseYet, noUploadsYet } = MY_NOTE_PAGE_TEXTS[lang];
 
@@ -27,6 +29,12 @@ export default function MyNotesPage() {
   const notesToShow =
     activeTab === "purchased" ? purchasedNotes : uploadedNotes;
   const isEmpty = notesToShow.length === 0;
+
+  const handleOpenNote = (noteID: number) => {
+    navigate(`/note/${noteID}`, {
+      state: { mode: activeTab },
+    });
+  };
 
   return (
     <Main>
@@ -41,7 +49,11 @@ export default function MyNotesPage() {
       {activeTab === "purchased" && !isEmpty && (
         <Grid>
           {notesToShow.map((note) => (
-            <NoteCard key={note.id} note={note} />
+            <NoteCard
+              key={note.id}
+              note={note}
+              onOpen={() => handleOpenNote(note.id)}
+            />
           ))}
         </Grid>
       )}
@@ -49,7 +61,11 @@ export default function MyNotesPage() {
       {activeTab === "uploaded" && !isEmpty && (
         <Grid>
           {notesToShow.map((note) => (
-            <NoteCard key={note.id} note={note} />
+            <NoteCard
+              key={note.id}
+              note={note}
+              onOpen={() => handleOpenNote(note.id)}
+            />
           ))}
         </Grid>
       )}

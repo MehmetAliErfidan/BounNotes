@@ -13,7 +13,7 @@ export const MenuWrapper = styled.div<{ $top: number; $left: number }>`
   z-index: 9999;
 `;
 
-export const MenuItem = styled.button<{ danger?: boolean }>`
+export const MenuItem = styled.button<{ $danger?: boolean }>`
   min-height: 40px;
   display: flex;
   align-items: center;
@@ -24,7 +24,7 @@ export const MenuItem = styled.button<{ danger?: boolean }>`
   background: none;
   border: none;
   cursor: pointer;
-  color: ${(p) => (p.danger ? "#dc2626" : "#111827")};
+  color: ${(p) => (p.$danger ? "#dc2626" : "#111827")};
 
   &:hover {
     background-color: #f3f4f6;

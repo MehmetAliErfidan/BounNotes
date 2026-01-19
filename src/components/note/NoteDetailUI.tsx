@@ -27,15 +27,22 @@ import {
   BuyButton,
 } from "./!NoteDetail.styled";
 
+type NoteDetailMode = "market" | "purchased" | "uploaded" | "checkout";
+
 type Props = {
   note: Note;
   onBuy?: () => void;
-  mode?: "detail" | "checkout";
+  mode?: NoteDetailMode;
 };
 
-export default function NoteDetailUI({ note, onBuy, mode = "detail" }: Props) {
+export default function NoteDetailUI({ note, onBuy, mode = "market" }: Props) {
   const { lang } = useLang();
   const { buyText } = NOTE_DETAIL_TEXTS[lang];
+
+  const isMarket = mode === "market";
+  /// const isPurchased = mode === "purchased";  this line is unused, maybe for future use
+  const isUploaded = mode === "uploaded";
+  const isCheckout = mode === "checkout";
 
   return (
     <Wrapper>
@@ -55,10 +62,12 @@ export default function NoteDetailUI({ note, onBuy, mode = "detail" }: Props) {
         </DescriptionBox>
 
         <UserRatingRow>
-          <UserInfo>
-            <Avatar>{note.username[0]?.toUpperCase()}</Avatar>
-            <Username>{note.username}</Username>
-          </UserInfo>
+          {!isUploaded && (
+            <UserInfo>
+              <Avatar>{note.username[0]?.toUpperCase()}</Avatar>
+              <Username>{note.username}</Username>
+            </UserInfo>
+          )}
 
           <RatingActions>
             <Stars>
@@ -73,17 +82,17 @@ export default function NoteDetailUI({ note, onBuy, mode = "detail" }: Props) {
               ))}
             </Stars>
 
-            <CommentButton>
-              <MessageSquareText size={18} />
-            </CommentButton>
+            {!isUploaded && (
+              <CommentButton>
+                <MessageSquareText size={18} />
+              </CommentButton>
+            )}
           </RatingActions>
         </UserRatingRow>
 
-        {mode !== "checkout" && (
-          <PdfPreview>PDF preview will be shown here</PdfPreview>
-        )}
+        {!isCheckout && <PdfPreview>PDF preview will be shown here</PdfPreview>}
 
-        {mode === "detail" && onBuy && (
+        {isMarket && onBuy && (
           <BuyRow>
             <Price>{note.price}</Price>
             <BuyButton onClick={onBuy}>{buyText}</BuyButton>

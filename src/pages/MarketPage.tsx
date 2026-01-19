@@ -19,7 +19,7 @@ export default function MarketPage() {
   const { resultsFound, resultsFor, emptyResults } = SEARCH_RESULTS_TEXTS[lang];
 
   const { results, query, hasSearched } = useAppSelector(
-    (state) => state.search
+    (state) => state.search,
   );
 
   return (

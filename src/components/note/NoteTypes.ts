@@ -24,4 +24,5 @@ export type FormNote = {
 
 export interface NoteCardProps {
   note: Note;
+  onOpen?: () => void;
 }

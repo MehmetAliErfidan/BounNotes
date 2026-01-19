@@ -11,8 +11,8 @@ export const dummyData: Note[] = [
     price: "₺10",
     date: "2024",
     description: "Bu notlar sınavda çıkan tüm önemli konuları içerir.",
-    isPurchased: true,
-    isUploaded: false,
+    isPurchased: false,
+    isUploaded: true,
   },
   {
     id: 2,
@@ -38,7 +38,7 @@ export const dummyData: Note[] = [
     date: "2024",
     description: "kimyadır...",
     isPurchased: false,
-    isUploaded: false,
+    isUploaded: true,
   },
 
   {
@@ -52,7 +52,7 @@ export const dummyData: Note[] = [
     date: "2025",
     description:
       "Çok faydalı notlardır, bana finali kazandırdı, alın rahatlayın.",
-    isPurchased: true,
-    isUploaded: false,
+    isPurchased: false,
+    isUploaded: true,
   },
 ];

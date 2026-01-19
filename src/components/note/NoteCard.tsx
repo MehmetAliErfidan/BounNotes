@@ -20,13 +20,19 @@ import {
   CTAButton,
 } from "./!NoteCard.styled";
 
-export default function NoteCard({ note }: NoteCardProps) {
+export default function NoteCard({ note, onOpen }: NoteCardProps) {
   const { lang } = useLang();
   const { seeDetailText } = NOTE_CARD_TEXTS[lang];
   const navigate = useNavigate();
 
-  const handleSeeDetail = () => {
-    navigate(`/note/${note.id}`);
+  const handleOpen = () => {
+    if (onOpen) {
+      onOpen();
+    } else {
+      navigate(`/note/${note.id}`, {
+        state: { mode: "market" },
+      });
+    }
   };
 
   return (
@@ -51,7 +57,7 @@ export default function NoteCard({ note }: NoteCardProps) {
           <Price>{note.price}</Price>
         </RatingPriceRow>
 
-        <CTAButton onClick={handleSeeDetail}>{seeDetailText}</CTAButton>
+        <CTAButton onClick={handleOpen}>{seeDetailText}</CTAButton>
       </Bottom>
     </Card>
   );

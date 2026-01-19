@@ -98,10 +98,10 @@ export default function UserMenuPortal({
       <MenuItem className="flex gap-3" type="button" onClick={handleMyNotes}>
         <ReceiptText size={16} /> {MyNotes}{" "}
       </MenuItem>
-      <MenuItem className="flex gap-3" type="button" danger onClick={onLogout}>
+      <MenuItem className="flex gap-3" type="button" $danger onClick={onLogout}>
         <LogOut size={16} /> {Logout}
       </MenuItem>
     </MenuWrapper>,
-    document.body
+    document.body,
   );
 }

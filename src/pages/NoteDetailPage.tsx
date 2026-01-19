@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import NoteDetailUI from "../components/note/NoteDetailUI";
 import { dummyData } from "../data/dummyData";
 import Navbar from "../components/common/navbar/Navbar";
@@ -7,6 +8,9 @@ import { Main } from "../styles/GlobalStyles";
 export default function NoteDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const mode = location.state?.mode ?? "market";
 
   const note = dummyData.find((n) => n.id === Number(id));
 
@@ -19,7 +23,7 @@ export default function NoteDetailPage() {
   return (
     <Main>
       <Navbar />
-      <NoteDetailUI note={note} onBuy={handleBuy} />
+      <NoteDetailUI note={note} mode={mode} onBuy={handleBuy} />
     </Main>
   );
 }
