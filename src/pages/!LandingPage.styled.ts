@@ -54,6 +54,7 @@ export const LoginButton = styled.button`
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   transition: background-color 0.2s;
+  cursor: pointer;
 
   &:hover {
     background-color: ${(props) => props.theme.colors.red[700]};
@@ -67,6 +68,7 @@ export const RegisterButton = styled.button`
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   transition: background-color 0.2s;
+  cursor: pointer;
 
   &:hover {
     background-color: ${(props) => props.theme.colors.blue[700]};

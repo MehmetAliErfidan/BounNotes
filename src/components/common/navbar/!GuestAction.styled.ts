@@ -9,7 +9,10 @@ export const LoginButton = styled.button`
   font-weight: 500;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   font-size: 0.875rem;
-  transition: background-color 200ms, color 200ms;
+  transition:
+    background-color 200ms,
+    color 200ms;
+  cursor: pointer;
 
   &:hover {
     background-color: #eff6ff;
@@ -23,6 +26,7 @@ export const LoginButton = styled.button`
 
 export const RegisterLinkWrapper = styled.div`
   flex: 1;
+  cursor: pointer;
 
   @media (min-width: 640px) {
     flex: none;
