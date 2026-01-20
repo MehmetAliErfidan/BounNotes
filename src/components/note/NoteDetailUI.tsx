@@ -1,4 +1,10 @@
-import { Star, MessageSquareText } from "lucide-react";
+import {
+  Star,
+  MessageSquareText,
+  Download,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import type { Note } from "./NoteTypes";
 import { NOTE_DETAIL_TEXTS } from "../../i18n/translations/notes/NoteDetail";
 import { useLang } from "../../i18n";
@@ -14,17 +20,20 @@ import {
   DescriptionBox,
   DateText,
   Description,
-  UserRatingRow,
+  UserActionsRow,
   UserInfo,
   Avatar,
   Username,
   RatingActions,
+  EditButton,
+  DownloadButton,
   Stars,
   CommentButton,
   PdfPreview,
   BuyRow,
   Price,
   BuyButton,
+  DeleteButton,
 } from "./!NoteDetail.styled";
 
 type NoteDetailMode = "market" | "purchased" | "uploaded" | "checkout";
@@ -37,17 +46,22 @@ type Props = {
 
 export default function NoteDetailUI({ note, onBuy, mode = "market" }: Props) {
   const { lang } = useLang();
-  const { buyText } = NOTE_DETAIL_TEXTS[lang];
+  const { buyText, download, edit } = NOTE_DETAIL_TEXTS[lang];
 
   const isMarket = mode === "market";
-  /// const isPurchased = mode === "purchased";  this line is unused, maybe for future use
+  const isPurchased = mode === "purchased";
   const isUploaded = mode === "uploaded";
-  const isCheckout = mode === "checkout";
+  // const isCheckout = mode === "checkout";  for future use
 
   return (
     <Wrapper>
       <Header>
         <Title>{note.title}</Title>
+        {isUploaded && (
+          <DeleteButton>
+            <Trash2 color="#ef4444" size={18} />
+          </DeleteButton>
+        )}
       </Header>
 
       <Content>
@@ -61,12 +75,26 @@ export default function NoteDetailUI({ note, onBuy, mode = "market" }: Props) {
           <Description>{note.description}</Description>
         </DescriptionBox>
 
-        <UserRatingRow>
+        <UserActionsRow>
           {!isUploaded && (
             <UserInfo>
               <Avatar>{note.username[0]?.toUpperCase()}</Avatar>
               <Username>{note.username}</Username>
             </UserInfo>
+          )}
+
+          {isUploaded && (
+            <EditButton>
+              <Pencil size={20} />
+              <span>{edit}</span>
+            </EditButton>
+          )}
+
+          {(isUploaded || isPurchased) && (
+            <DownloadButton>
+              <Download size={20} />
+              <span>{download}</span>
+            </DownloadButton>
           )}
 
           <RatingActions>
@@ -88,9 +116,9 @@ export default function NoteDetailUI({ note, onBuy, mode = "market" }: Props) {
               </CommentButton>
             )}
           </RatingActions>
-        </UserRatingRow>
+        </UserActionsRow>
 
-        {!isCheckout && <PdfPreview>PDF preview will be shown here</PdfPreview>}
+        {isMarket && <PdfPreview>PDF preview will be shown here</PdfPreview>}
 
         {isMarket && onBuy && (
           <BuyRow>

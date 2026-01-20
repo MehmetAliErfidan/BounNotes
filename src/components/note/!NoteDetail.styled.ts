@@ -15,6 +15,9 @@ export const Wrapper = styled.div`
 
 /* Header */
 export const Header = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
   padding: 1.25rem 1.5rem;
   border-bottom: 1px solid #e5e7eb;
 `;
@@ -22,8 +25,16 @@ export const Header = styled.div`
 export const Title = styled.h1`
   font-size: 1.25rem;
   font-weight: 600;
-  color: #111827; /* gray-900 */
-  text-align: center;
+  color: #111827;
+`;
+
+export const DeleteButton = styled.button`
+  position: absolute;
+  right: 1.5rem;
+  background: none;
+  margin-left: auto;
+  border: none;
+  cursor: pointer;
 `;
 
 /* Content */
@@ -72,7 +83,7 @@ export const Description = styled.p`
 `;
 
 /* User & Rating */
-export const UserRatingRow = styled.div`
+export const UserActionsRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -113,6 +124,66 @@ export const RatingActions = styled.div`
   gap: 0.75rem;
 `;
 
+export const EditButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.4rem 0.75rem;
+  border-radius: 9999px;
+
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+
+  &:hover {
+    background-color: #f3f4f6;
+    border-color: #d1d5db;
+  }
+
+  &:active {
+    background-color: #e5e7eb;
+  }
+`;
+
+export const DownloadButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.4rem 0.75rem;
+  border-radius: 9999px;
+
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+
+  &:hover {
+    background-color: #f3f4f6;
+    border-color: #d1d5db;
+  }
+
+  &:active {
+    background-color: #e5e7eb;
+  }
+`;
+
 export const Stars = styled.div`
   display: flex;
   gap: 0.25rem;
@@ -123,11 +194,11 @@ export const CommentButton = styled.button`
   border: none;
   cursor: pointer;
 
-  color: #9ca3af; /* gray-400 */
+  color: #9ca3af;
   transition: color 0.2s ease;
 
   &:hover {
-    color: #2563eb; /* blue-600 */
+    c;
   }
 `;
 
@@ -136,7 +207,7 @@ export const PdfPreview = styled.div`
   height: 12rem;
   border-radius: 0.5rem;
 
-  border: 1px dashed #d1d5db; /* gray-300 */
+  border: 1px dashed #d1d5db;
 
   display: flex;
   align-items: center;
@@ -158,14 +229,14 @@ export const BuyRow = styled.div`
 export const Price = styled.span`
   font-size: 1.125rem;
   font-weight: 600;
-  color: #111827; /* gray-900 */
+  color: #111827;
 `;
 
 export const BuyButton = styled.button`
   padding: 0.5rem 1.5rem;
   border-radius: 0.5rem;
 
-  background-color: #2563eb; /* blue-600 */
+  background-color: #2563eb;
   color: #ffffff;
 
   font-size: 0.875rem;
@@ -178,6 +249,6 @@ export const BuyButton = styled.button`
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: #1d4ed8; /* blue-700 */
+    background-color: #1d4ed8;
   }
 `;
