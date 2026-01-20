@@ -44,7 +44,6 @@ export default function UserActions() {
           setOpen(false);
         }}
       />
-
       <LanguageSwitcher />
     </div>
   );

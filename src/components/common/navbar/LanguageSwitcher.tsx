@@ -1,12 +1,16 @@
 import { useLang } from "../../../i18n";
+import { NAVBAR_TEXTS } from "../../../i18n/translations/common/navbar/Navbar";
+import Tooltip from "../../tooltip/Tooltip";
 
 export default function LanguageSwitcher() {
   const { lang, setLang } = useLang();
+  const { switchLanguage } = NAVBAR_TEXTS[lang];
 
   return (
-    <button
-      onClick={() => setLang(lang === "tr" ? "en" : "tr")}
-      className="
+    <Tooltip content={switchLanguage} delay={400}>
+      <button
+        onClick={() => setLang(lang === "tr" ? "en" : "tr")}
+        className="
         flex items-center justify-center
 
         rounded-full
@@ -23,8 +27,9 @@ export default function LanguageSwitcher() {
         md:px-3.5 md:py-2 md:text-sm
         lg:px-4 lg:py-2 lg:text-sm
       "
-    >
-      {lang === "tr" ? "EN" : "TR"}
-    </button>
+      >
+        {lang === "tr" ? "EN" : "TR"}
+      </button>
+    </Tooltip>
   );
 }
