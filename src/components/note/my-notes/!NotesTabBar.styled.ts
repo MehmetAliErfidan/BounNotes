@@ -39,3 +39,31 @@ export const SwitchModeButton = styled.button<{ $active: boolean }>`
     background: ${(p) => (p.$active ? p.theme.colors.primary : "transparent")};
   }
 `;
+
+export const UploadButton = styled.button<{ $enabled: boolean }>`
+  margin-left: auto;
+  background: none;
+  border: none;
+
+  color: ${(p) =>
+    p.$enabled ? p.theme.colors.gray[900] : p.theme.colors.gray[300]};
+
+  cursor: ${(p) => (p.$enabled ? "pointer" : "default")};
+
+  transition:
+    color 0.2s ease,
+    transform 0.15s ease;
+
+  ${(p) =>
+    p.$enabled &&
+    `
+    &:hover {
+      color: ${p.theme.colors.gray[900]};
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
+  `}
+`;

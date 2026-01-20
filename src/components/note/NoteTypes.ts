@@ -10,6 +10,10 @@ export type Note = {
   description: string;
   isPurchased: boolean; // After backend, this will be removed
   isUploaded: boolean; // After backend, this will be removed
+  isLiked: boolean;
+  likeCount: number;
+  dislikeCount: number;
+  isDisliked: boolean;
 };
 
 export type FormNote = {
