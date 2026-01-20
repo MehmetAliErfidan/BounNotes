@@ -35,6 +35,10 @@ export const DeleteButton = styled.button`
   margin-left: auto;
   border: none;
   cursor: pointer;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
 `;
 
 /* Content */
@@ -184,9 +188,34 @@ export const DownloadButton = styled.button`
   }
 `;
 
-export const Stars = styled.div`
+export const LikeButtons = styled.div`
   display: flex;
-  gap: 0.25rem;
+  gap: 1rem;
+  align-items: center;
+`;
+
+export const LikeButton = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  font-size: 0.875rem;
+  color: ${(p) => p.theme.colors.gray[600]};
+  cursor: pointer;
+
+  transition:
+    color 0.15s ease,
+    transform 0.1s ease;
+
+  &:hover {
+    color: ${(p) => p.theme.colors.gray[800]};
+    transform: translateY(-1px);
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
 `;
 
 export const CommentButton = styled.button`
@@ -198,7 +227,8 @@ export const CommentButton = styled.button`
   transition: color 0.2s ease;
 
   &:hover {
-    c;
+    color: #2563eb;
+    transform: translateY(-1px);
   }
 `;
 

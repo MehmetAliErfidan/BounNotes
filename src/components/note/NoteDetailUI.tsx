@@ -1,9 +1,10 @@
 import {
-  Star,
   MessageSquareText,
   Download,
   Pencil,
   Trash2,
+  ThumbsUp,
+  ThumbsDown,
 } from "lucide-react";
 import type { Note } from "./NoteTypes";
 import { NOTE_DETAIL_TEXTS } from "../../i18n/translations/notes/NoteDetail";
@@ -26,9 +27,10 @@ import {
   Avatar,
   Username,
   RatingActions,
+  LikeButtons,
+  LikeButton,
   EditButton,
   DownloadButton,
-  Stars,
   CommentButton,
   PdfPreview,
   BuyRow,
@@ -47,7 +49,17 @@ type Props = {
 
 export default function NoteDetailUI({ note, onBuy, mode = "market" }: Props) {
   const { lang } = useLang();
-  const { buyText, download, edit, deleteNote } = NOTE_DETAIL_TEXTS[lang];
+  const {
+    buyText,
+    download,
+    edit,
+    deleteNote,
+    liked,
+    like,
+    dislike,
+    disliked,
+    makeComment,
+  } = NOTE_DETAIL_TEXTS[lang];
 
   const isMarket = mode === "market";
   const isPurchased = mode === "purchased";
@@ -101,23 +113,32 @@ export default function NoteDetailUI({ note, onBuy, mode = "market" }: Props) {
           )}
 
           <RatingActions>
-            <Stars>
-              {[...Array(5)].map((_, index) => (
-                <Star
-                  key={index}
-                  size={16}
-                  fill="none"
-                  color={index < note.rating ? "#facc15" : "#d1d5db"}
-                  strokeWidth={2}
-                />
-              ))}
-            </Stars>
+            {isMarket ||
+              (isPurchased && (
+                <LikeButtons>
+                  <Tooltip content={note.isLiked ? liked : like} delay={300}>
+                    <LikeButton>
+                      <ThumbsUp />
+                      <span>{note.likeCount}</span>
+                    </LikeButton>
+                  </Tooltip>
 
-            {!isUploaded && (
+                  <Tooltip
+                    content={note.isDisliked ? disliked : dislike}
+                    delay={400}
+                  >
+                    <LikeButton>
+                      <ThumbsDown />
+                      <span>{note.dislikeCount}</span>
+                    </LikeButton>
+                  </Tooltip>
+                </LikeButtons>
+              ))}
+            <Tooltip content={makeComment} delay={300}>
               <CommentButton>
                 <MessageSquareText size={18} />
               </CommentButton>
-            )}
+            </Tooltip>
           </RatingActions>
         </UserActionsRow>
 

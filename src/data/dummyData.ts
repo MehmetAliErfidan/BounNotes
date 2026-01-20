@@ -13,6 +13,10 @@ export const dummyData: Note[] = [
     description: "Bu notlar sınavda çıkan tüm önemli konuları içerir.",
     isPurchased: false,
     isUploaded: true,
+    likeCount: 34, // when backend is ready, this will be fetched from server, the data source will change
+    dislikeCount: 5,
+    isLiked: false, // when backend is ready, this will be fetched from server, the data source will change
+    isDisliked: false,
   },
   {
     id: 2,
@@ -26,6 +30,10 @@ export const dummyData: Note[] = [
     description: "Kısa ama etkili bir özet.",
     isPurchased: true,
     isUploaded: false,
+    likeCount: 21,
+    dislikeCount: 14,
+    isLiked: false,
+    isDisliked: false,
   },
   {
     id: 3,
@@ -39,6 +47,10 @@ export const dummyData: Note[] = [
     description: "kimyadır...",
     isPurchased: false,
     isUploaded: true,
+    likeCount: 19,
+    dislikeCount: 41,
+    isLiked: false,
+    isDisliked: false,
   },
 
   {
@@ -54,5 +66,9 @@ export const dummyData: Note[] = [
       "Çok faydalı notlardır, bana finali kazandırdı, alın rahatlayın.",
     isPurchased: false,
     isUploaded: true,
+    likeCount: 42,
+    dislikeCount: 0,
+    isLiked: false,
+    isDisliked: false,
   },
 ];
