@@ -7,6 +7,7 @@ export const FOOTER_TEXTS = {
     about: "Hakkında",
     FAQ: "SSS",
     copyrightMessage: "© 2025 Tüm hakları saklıdır.",
+    hiMessage: "Hey, merhaba!",
   },
   en: {
     appDefinition:
@@ -16,5 +17,6 @@ export const FOOTER_TEXTS = {
     about: "About",
     FAQ: "FAQ",
     copyrightMessage: "© 2025 All rights reserved.",
+    hiMessage: "Oh, hi there!",
   },
 };

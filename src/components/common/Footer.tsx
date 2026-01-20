@@ -21,11 +21,19 @@ import {
   AuthorName,
   Copyright,
 } from "./!Footer.styled";
+import Tooltip from "../tooltip/Tooltip";
 
 export default function Footer() {
   const { lang } = useLang();
-  const { appDefinition, contactInfo, email, about, FAQ, copyrightMessage } =
-    FOOTER_TEXTS[lang];
+  const {
+    appDefinition,
+    contactInfo,
+    email,
+    about,
+    FAQ,
+    copyrightMessage,
+    hiMessage,
+  } = FOOTER_TEXTS[lang];
 
   return (
     <StyledFooter>
@@ -80,7 +88,10 @@ export default function Footer() {
             </FooterLink>
           </FooterLinks>
           <PoweredBy>
-            Powered by <AuthorName>Mehmet Ali Erfidan</AuthorName>
+            Powered by{" "}
+            <Tooltip content={hiMessage} delay={750}>
+              <AuthorName>Mehmet Ali Erfidan</AuthorName>
+            </Tooltip>
           </PoweredBy>
           <Copyright>{copyrightMessage}</Copyright>
         </BottomSection>

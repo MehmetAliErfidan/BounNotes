@@ -6,11 +6,17 @@ type Props = {
   content: ReactNode;
   children: ReactNode;
   side?: "top" | "bottom" | "left" | "right";
+  delay?: number;
 };
 
-export default function Tooltip({ content, children, side = "top" }: Props) {
+export default function Tooltip({
+  content,
+  children,
+  side = "top",
+  delay = 300,
+}: Props) {
   return (
-    <RadixTooltip.Provider delayDuration={300}>
+    <RadixTooltip.Provider delayDuration={delay}>
       <RadixTooltip.Root>
         <RadixTooltip.Trigger asChild>{children}</RadixTooltip.Trigger>
 
