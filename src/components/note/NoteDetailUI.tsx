@@ -8,6 +8,7 @@ import {
 import type { Note } from "./NoteTypes";
 import { NOTE_DETAIL_TEXTS } from "../../i18n/translations/notes/NoteDetail";
 import { useLang } from "../../i18n";
+import Tooltip from "../tooltip/Tooltip";
 
 import {
   Wrapper,
@@ -46,7 +47,7 @@ type Props = {
 
 export default function NoteDetailUI({ note, onBuy, mode = "market" }: Props) {
   const { lang } = useLang();
-  const { buyText, download, edit } = NOTE_DETAIL_TEXTS[lang];
+  const { buyText, download, edit, deleteNote } = NOTE_DETAIL_TEXTS[lang];
 
   const isMarket = mode === "market";
   const isPurchased = mode === "purchased";
@@ -58,9 +59,11 @@ export default function NoteDetailUI({ note, onBuy, mode = "market" }: Props) {
       <Header>
         <Title>{note.title}</Title>
         {isUploaded && (
-          <DeleteButton>
-            <Trash2 color="#ef4444" size={18} />
-          </DeleteButton>
+          <Tooltip content={deleteNote}>
+            <DeleteButton>
+              <Trash2 color="#ef4444" size={18} />
+            </DeleteButton>
+          </Tooltip>
         )}
       </Header>
 
