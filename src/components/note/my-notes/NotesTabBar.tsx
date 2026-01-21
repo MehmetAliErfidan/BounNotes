@@ -8,6 +8,7 @@ import { useLang } from "../../../i18n";
 import type { NotesTab } from "./NotesTabBar.types";
 import { Plus } from "lucide-react";
 import Tooltip from "../../tooltip/Tooltip";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   activateTab: NotesTab;
@@ -15,12 +16,18 @@ type Props = {
 };
 
 export default function NotesTabBar({ activateTab, onChange }: Props) {
+  const navigate = useNavigate();
   const { lang } = useLang();
   const { purchased, uploaded, uploadNewNote, tooltipForDisabled } =
     NOTES_TAB_BAR_TEXTS[lang];
 
   const isUploadEnabled = activateTab === "uploaded";
   const tooltipText = isUploadEnabled ? uploadNewNote : tooltipForDisabled;
+
+  const handleNoteUpload = () => {
+    if (!isUploadEnabled) return;
+    navigate("/my-notes/upload");
+  };
 
   return (
     <ButtonContainer>
@@ -39,7 +46,11 @@ export default function NotesTabBar({ activateTab, onChange }: Props) {
 
       <Tooltip content={tooltipText}>
         <span>
-          <UploadButton $enabled={isUploadEnabled} disabled={!isUploadEnabled}>
+          <UploadButton
+            onClick={handleNoteUpload}
+            $enabled={isUploadEnabled}
+            disabled={!isUploadEnabled}
+          >
             <Plus size={40} />
           </UploadButton>
         </span>
