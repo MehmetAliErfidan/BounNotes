@@ -45,21 +45,50 @@ export const NoNotesText = styled.div`
 `;
 
 export const EmptyIllustration = styled.img`
-  position: absolute;
-
-  top: 58%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
   max-height: clamp(200px, 40vh, 420px);
   width: auto;
+  opacity: 0.6;
+  pointer-events: none;
 
-  opacity: 0.65;
+  margin-top: 1.5rem;
+`;
 
-  @media (max-width: 768px) {
-    position: static;
-    transform: none;
-    margin-top: 2rem;
-    max-height: 160px;
+export const UploadNoteCTAButton = styled.button`
+  border-radius: 0.5rem;
+  font-size: 2rem;
+  font-weight: 500;
+  width: 30%;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  outline: none;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  justify-content: center;
+
+  background-color: #fcd34d;
+  color: #1f2937;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    transform 0.05s ease,
+    box-shadow 0.05s ease;
+
+  &:hover {
+    background-color: #fbbf24;
+  }
+
+  &:active {
+    transform: scale(0.97);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  }
+
+  svg {
+    flex-shrink: 0;
   }
 `;

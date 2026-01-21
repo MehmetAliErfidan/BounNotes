@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { CirclePlus } from "lucide-react";
 import { MY_NOTE_PAGE_TEXTS } from "../i18n/translations/pages/MyNotes";
 import { useLang } from "../i18n";
 import Navbar from "../components/common/navbar/Navbar";
@@ -10,6 +11,7 @@ import {
   NoNotesText,
   NoNotesWrapper,
   EmptyIllustration,
+  UploadNoteCTAButton,
 } from "./!MyNotesPage.styled";
 import OxNoUpload from "../assets/illustrations/no-uploads-yet/OxNoUpload.jpg";
 import { Main } from "../styles/GlobalStyles";
@@ -20,7 +22,8 @@ import NoteCard from "../components/note/NoteCard";
 export default function MyNotesPage() {
   const navigate = useNavigate();
   const { lang } = useLang();
-  const { noPurchaseYet, noUploadsYet } = MY_NOTE_PAGE_TEXTS[lang];
+  const { noPurchaseYet, noUploadsYet, uploadFirstNote } =
+    MY_NOTE_PAGE_TEXTS[lang];
 
   const [activeTab, setActiveTab] = useState<NotesTab>("purchased");
 
@@ -81,6 +84,9 @@ export default function MyNotesPage() {
         <NoNotesWrapper>
           <NoNotesText>{noUploadsYet}</NoNotesText>
           <EmptyIllustration src={OxNoUpload} alt="No notes yet" />
+          <UploadNoteCTAButton onClick={() => navigate("/my-notes/upload")}>
+            {uploadFirstNote} <CirclePlus size={34} />
+          </UploadNoteCTAButton>
         </NoNotesWrapper>
       )}
     </Main>
