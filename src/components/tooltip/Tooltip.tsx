@@ -24,7 +24,7 @@ export default function Tooltip({
           <RadixTooltip.Content side={side} sideOffset={6} asChild>
             <TooltipContent>
               {content}
-              <RadixTooltip.Arrow asChild>
+              <RadixTooltip.Arrow>
                 <TooltipArrow />
               </RadixTooltip.Arrow>
             </TooltipContent>

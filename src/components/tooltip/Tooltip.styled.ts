@@ -15,6 +15,6 @@ export const TooltipContent = styled.div`
   z-index: 1000;
 `;
 
-export const TooltipArrow = styled.div`
+export const TooltipArrow = styled.svg`
   fill: #111827;
 `;
