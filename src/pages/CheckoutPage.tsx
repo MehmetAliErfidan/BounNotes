@@ -13,6 +13,7 @@ import Navbar from "../components/common/navbar/Navbar";
 import CheckoutActions from "../components/buy/CheckoutActions";
 import { CHECKOUT_PAGE_TEXTS } from "../i18n/translations/pages/Checkout";
 import { useLang } from "../i18n";
+import { notePermissionsFromContext } from "../components/note/notePermissionsFromContext";
 
 export default function CheckoutPage() {
   const { lang } = useLang();
@@ -29,18 +30,27 @@ export default function CheckoutPage() {
   };
 
   const { id } = useParams<{ id: string }>();
-  const note = dummyData.find((n) => n.id === Number(id));
+  const item = dummyData.find((n) => n.note.id === Number(id));
 
-  if (!note) {
+  if (!item) {
     return <p>Note not found.</p>;
   }
+
+  const { note, context } = item;
+
+  const basePermissions = notePermissionsFromContext(context);
+
+  const checkoutPermissions = {
+    ...basePermissions,
+    canBuy: false,
+  };
 
   return (
     <Main>
       <Navbar />
       <CheckoutLayout>
         <CheckoutContent>
-          <NoteDetailUI note={note} mode="checkout" />
+          <NoteDetailUI note={note} permissions={checkoutPermissions} />
         </CheckoutContent>
         <ActionWrapper>
           <CheckoutActions
