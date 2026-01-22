@@ -1,11 +1,4 @@
-import {
-  MessageSquareText,
-  Download,
-  Pencil,
-  Trash2,
-  ThumbsUp,
-  ThumbsDown,
-} from "lucide-react";
+import { Trash2 } from "lucide-react";
 import type { Note } from "./NoteTypes";
 import { NOTE_DETAIL_TEXTS } from "../../i18n/translations/notes/NoteDetail";
 import { useLang } from "../../i18n";
@@ -22,55 +15,43 @@ import {
   DescriptionBox,
   DateText,
   Description,
-  UserActionsRow,
-  UserInfo,
-  Avatar,
-  Username,
-  RatingActions,
-  LikeButtons,
-  LikeButton,
-  EditButton,
-  DownloadButton,
-  CommentButton,
   PdfPreview,
   BuyRow,
   Price,
   BuyButton,
   DeleteButton,
 } from "./!NoteDetail.styled";
+import UserActionsRow from "./my-notes/UserActionsRow";
 
-type NoteDetailMode = "market" | "purchased" | "uploaded" | "checkout";
+type NoteMode = "market" | "purchased" | "uploaded";
 
 type Props = {
   note: Note;
   onBuy?: () => void;
-  mode?: NoteDetailMode;
+  mode?: NoteMode;
 };
 
 export default function NoteDetailUI({ note, onBuy, mode = "market" }: Props) {
   const { lang } = useLang();
-  const {
-    buyText,
-    download,
-    edit,
-    deleteNote,
-    liked,
-    like,
-    dislike,
-    disliked,
-    makeComment,
-  } = NOTE_DETAIL_TEXTS[lang];
+  const { buyText, deleteNote } = NOTE_DETAIL_TEXTS[lang];
 
   const isMarket = mode === "market";
   const isPurchased = mode === "purchased";
   const isUploaded = mode === "uploaded";
   // const isCheckout = mode === "checkout";  for future use
 
+  const canEdit = isUploaded;
+  const canDownload = isUploaded || isPurchased;
+  const canRate = isPurchased;
+  const showUserInfo = !isUploaded;
+  const showBuy = isMarket && onBuy;
+  const canComment = isPurchased || isUploaded;
+
   return (
     <Wrapper>
       <Header>
         <Title>{note.title}</Title>
-        {isUploaded && (
+        {canEdit && (
           <Tooltip content={deleteNote}>
             <DeleteButton>
               <Trash2 color="#ef4444" size={18} />
@@ -90,61 +71,18 @@ export default function NoteDetailUI({ note, onBuy, mode = "market" }: Props) {
           <Description>{note.description}</Description>
         </DescriptionBox>
 
-        <UserActionsRow>
-          {!isUploaded && (
-            <UserInfo>
-              <Avatar>{note.username[0]?.toUpperCase()}</Avatar>
-              <Username>{note.username}</Username>
-            </UserInfo>
-          )}
-
-          {isUploaded && (
-            <EditButton>
-              <Pencil size={20} />
-              <span>{edit}</span>
-            </EditButton>
-          )}
-
-          {(isUploaded || isPurchased) && (
-            <DownloadButton>
-              <Download size={20} />
-              <span>{download}</span>
-            </DownloadButton>
-          )}
-
-          <RatingActions>
-            {isMarket ||
-              (isPurchased && (
-                <LikeButtons>
-                  <Tooltip content={note.isLiked ? liked : like} delay={300}>
-                    <LikeButton>
-                      <ThumbsUp />
-                      <span>{note.likeCount}</span>
-                    </LikeButton>
-                  </Tooltip>
-
-                  <Tooltip
-                    content={note.isDisliked ? disliked : dislike}
-                    delay={400}
-                  >
-                    <LikeButton>
-                      <ThumbsDown />
-                      <span>{note.dislikeCount}</span>
-                    </LikeButton>
-                  </Tooltip>
-                </LikeButtons>
-              ))}
-            <Tooltip content={makeComment} delay={300}>
-              <CommentButton>
-                <MessageSquareText size={18} />
-              </CommentButton>
-            </Tooltip>
-          </RatingActions>
-        </UserActionsRow>
+        <UserActionsRow
+          note={note}
+          canEdit={canEdit}
+          canDownload={canDownload}
+          canRate={canRate}
+          showUserInfo={showUserInfo}
+          canComment={canComment}
+        />
 
         {isMarket && <PdfPreview>PDF preview will be shown here</PdfPreview>}
 
-        {isMarket && onBuy && (
+        {showBuy && (
           <BuyRow>
             <Price>{note.price}</Price>
             <BuyButton onClick={onBuy}>{buyText}</BuyButton>
