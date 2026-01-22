@@ -2,20 +2,32 @@ export type Note = {
   id: number;
   title: string;
   course: string;
-  term: string;
+  term: "spring" | "summer" | "fall";
   year: number;
   teacher: string;
-  username: string;
-  rating: number;
-  price: string;
-  date: string;
   description: string;
-  isPurchased: boolean; // After backend, this will be removed
-  isUploaded: boolean; // After backend, this will be removed
-  isLiked: boolean;
-  likeCount: number;
-  dislikeCount: number;
-  isDisliked: boolean;
+  price: number;
+  createdAt: string;
+
+  owner: {
+    id: number;
+    username: string;
+  };
+
+  stats: {
+    rating: number;
+    likeCount: number;
+    dislikeCount: number;
+  };
+};
+
+export type NoteWithContext = {
+  note: Note;
+  context: {
+    isOwner: boolean;
+    isPurchased: boolean;
+    isLiked: boolean;
+  };
 };
 
 export type FormNote = {
@@ -27,8 +39,6 @@ export type FormNote = {
   description: string;
   price: number | "";
 };
-
-export type NoteMode = "market" | "purchased" | "uploaded" | "checkout";
 
 export interface NoteCardProps {
   note: Note;
