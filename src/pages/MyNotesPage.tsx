@@ -49,7 +49,7 @@ export default function MyNotesPage() {
         />
       </NotesTabBarContainer>
 
-      {["purchased", "upload"].includes(activeTab) && !isEmpty && (
+      {["purchased", "uploaded"].includes(activeTab) && !isEmpty && (
         <Grid>
           {notesToShow.map((note) => (
             <NoteCard
@@ -61,6 +61,7 @@ export default function MyNotesPage() {
         </Grid>
       )}
 
+      {/* --- EMPTY STATE --- */}
       {["purchased", "uploaded"].includes(activeTab) && isEmpty && (
         <NoNotesWrapper>
           <NoNotesText>

@@ -12,7 +12,7 @@ export const dummyData: Note[] = [
     date: "2024",
     description: "Bu notlar sınavda çıkan tüm önemli konuları içerir.",
     isPurchased: false,
-    isUploaded: false,
+    isUploaded: true,
     likeCount: 34, // when backend is ready, this will be fetched from server, the data source will change
     dislikeCount: 5,
     isLiked: false, // when backend is ready, this will be fetched from server, the data source will change
@@ -29,7 +29,7 @@ export const dummyData: Note[] = [
     date: "2023",
     description: "Kısa ama etkili bir özet.",
     isPurchased: false,
-    isUploaded: false,
+    isUploaded: true,
     likeCount: 21,
     dislikeCount: 14,
     isLiked: false,
@@ -64,7 +64,7 @@ export const dummyData: Note[] = [
     date: "2025",
     description:
       "Çok faydalı notlardır, bana finali kazandırdı, alın rahatlayın.",
-    isPurchased: false,
+    isPurchased: true,
     isUploaded: false,
     likeCount: 42,
     dislikeCount: 0,
