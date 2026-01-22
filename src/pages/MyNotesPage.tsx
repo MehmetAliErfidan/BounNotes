@@ -27,16 +27,18 @@ export default function MyNotesPage() {
 
   const [activeTab, setActiveTab] = useState<NotesTab>("purchased");
 
-  const purchasedNotes = dummyData.filter((note) => note.isPurchased);
-  const uploadedNotes = dummyData.filter((note) => note.isUploaded);
+  const purchasedNotes = dummyData
+    .filter((x) => x.context.isPurchased)
+    .map((x) => x.note);
+  const uploadedNotes = dummyData
+    .filter((x) => x.context.isOwner)
+    .map((x) => x.note);
   const notesToShow =
     activeTab === "purchased" ? purchasedNotes : uploadedNotes;
   const isEmpty = notesToShow.length === 0;
 
   const handleOpenNote = (noteID: number) => {
-    navigate(`/note/${noteID}`, {
-      state: { mode: activeTab },
-    });
+    navigate(`/note/${noteID}`);
   };
 
   return (
