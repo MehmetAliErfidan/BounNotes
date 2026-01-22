@@ -1,10 +1,9 @@
-import type { Note } from "./NoteTypes";
 import type { FormNote } from "./NoteTypes";
 import { NOTE_FORM_TEXTS } from "../../i18n/translations/notes/NoteForm";
 import { useLang } from "../../i18n";
 
 interface NoteFormProps {
-  note: Partial<Note>;
+  note: FormNote;
   setNote: React.Dispatch<React.SetStateAction<FormNote>>;
 }
 
@@ -12,6 +11,11 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
   const { lang } = useLang();
   const {
     coursePlaceholder,
+    selectTerm,
+    fallTerm,
+    springTerm,
+    summerTerm,
+    yearPlaceholder,
     instructorPlaceholder,
     titlePlaceholder,
     descriptionPlaceholder,
@@ -19,14 +23,18 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
   } = NOTE_FORM_TEXTS[lang];
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value } = e.target;
     setNote((prev) => ({
       ...prev,
-      [name]: name === "price" ? Number(value) : value,
+      [name]: ["price", "year"].includes(name) ? Number(value) : value,
     }));
   };
+
+  const currentYear = new Date().getFullYear();
 
   return (
     <>
@@ -38,6 +46,26 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           type="text"
           name="course"
           placeholder={coursePlaceholder}
+        />
+        <select name="term" onChange={handleChange} value={note.term} required>
+          <option value="" disabled>
+            {selectTerm}
+          </option>
+          <option value="spring">{springTerm}</option>
+          <option value="summer">{summerTerm}</option>
+          <option value="fall">{fallTerm}</option>
+        </select>
+        <input
+          onChange={handleChange}
+          value={note.year}
+          required
+          min={2020}
+          max={currentYear + 1}
+          step={1}
+          type="number"
+          inputMode="numeric"
+          name="year"
+          placeholder={yearPlaceholder}
         />
         <input
           onChange={handleChange}
@@ -67,9 +95,11 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           value={note.price ?? ""}
           required
           type="number"
+          inputMode="numeric"
           name="price"
           placeholder={pricePlaceholder}
-          min="20"
+          min={20}
+          step={1}
         />
       </form>
     </>

@@ -2,6 +2,8 @@ export type Note = {
   id: number;
   title: string;
   course: string;
+  term: string;
+  year: number;
   teacher: string;
   username: string;
   rating: number;
@@ -19,11 +21,11 @@ export type Note = {
 export type FormNote = {
   title: string;
   course: string;
+  term: "" | "spring" | "summer" | "fall";
+  year: number | "";
   teacher: string;
-  date: string;
   description: string;
-  price: string;
-  rating: number;
+  price: number | "";
 };
 
 export interface NoteCardProps {
