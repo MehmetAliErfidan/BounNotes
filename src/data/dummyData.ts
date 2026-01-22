@@ -65,7 +65,7 @@ export const dummyData: Note[] = [
     description:
       "Çok faydalı notlardır, bana finali kazandırdı, alın rahatlayın.",
     isPurchased: false,
-    isUploaded: true,
+    isUploaded: false,
     likeCount: 42,
     dislikeCount: 0,
     isLiked: false,

@@ -56,7 +56,7 @@ export default function SearchBar() {
   const navigate = useNavigate();
 
   const selectedCategory = useAppSelector(
-    (state) => state.search.selectedCategory
+    (state) => state.search.selectedCategory,
   );
 
   const { lang } = useLang();
@@ -89,22 +89,23 @@ export default function SearchBar() {
 
     if (selectedCategory === "user") {
       filtered = dummyData.filter((item) =>
-        item.username.toLowerCase().includes(lower)
+        item.username.toLowerCase().includes(lower),
       );
     } else if (selectedCategory === "course") {
       filtered = dummyData.filter((item) =>
-        item.course.toLowerCase().includes(lower)
+        item.course.toLowerCase().includes(lower),
       );
     } else if (selectedCategory === "teacher") {
       filtered = dummyData.filter((item) =>
-        item.teacher.toLowerCase().includes(lower)
+        item.teacher.toLowerCase().includes(lower),
       );
     } else {
       filtered = dummyData.filter(
         (item) =>
           item.username.toLowerCase().includes(lower) ||
           item.course.toLowerCase().includes(lower) ||
-          item.teacher.toLowerCase().includes(lower)
+          item.teacher.toLowerCase().includes(lower) ||
+          item.title.toLowerCase().includes(lower),
       );
     }
 
