@@ -1,5 +1,5 @@
 import { Trash2, Dot } from "lucide-react";
-import type { Note } from "./NoteTypes";
+import type { Note, NoteMode } from "./NoteTypes";
 import { NOTE_DETAIL_TEXTS } from "../../i18n/translations/notes/NoteDetail";
 import { useLang } from "../../i18n";
 import Tooltip from "../tooltip/Tooltip";
@@ -26,8 +26,6 @@ import {
   DeleteButton,
 } from "./!NoteDetail.styled";
 import UserActionsRow from "./my-notes/UserActionsRow";
-
-type NoteMode = "market" | "purchased" | "uploaded" | "checkout";
 
 type Props = {
   note: Note;

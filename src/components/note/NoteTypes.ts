@@ -28,6 +28,8 @@ export type FormNote = {
   price: number | "";
 };
 
+export type NoteMode = "market" | "purchased" | "uploaded" | "checkout";
+
 export interface NoteCardProps {
   note: Note;
   onOpen?: () => void;
