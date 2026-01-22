@@ -55,7 +55,7 @@ export const Meta = styled.div``;
 export const Course = styled.p`
   font-size: 0.875rem;
   font-weight: 500;
-  color: #2563eb; /* blue-600 */
+  color: #2563eb;
 `;
 
 export const Teacher = styled.p`
@@ -65,7 +65,7 @@ export const Teacher = styled.p`
 
 /* Description box */
 export const DescriptionBox = styled.div`
-  background-color: #f9fafb; /* gray-50 */
+  background-color: #f9fafb;
   border-radius: 0.5rem;
   padding: 1rem;
 
@@ -74,8 +74,34 @@ export const DescriptionBox = styled.div`
   gap: 0.5rem;
 `;
 
-export const DateText = styled.p`
+export const DateRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+`;
+
+export const CourseDate = styled.div`
+  display: flex;
+  gap: 0.5rem;
   font-size: 0.75rem;
+  color: #6b7280; /* gray-500 */
+`;
+
+export const CourseYear = styled.span`
+  color: #2563eb;
+`;
+export const CourseTerm = styled.span`
+  color: #2563eb;
+`;
+
+export const UploadDate = styled.p`
+  font-size: 0.6rem;
   color: #9ca3af; /* gray-400 */
   text-align: left;
 `;
@@ -85,8 +111,6 @@ export const Description = styled.p`
   color: #374151; /* gray-700 */
   line-height: 1.6;
 `;
-
-/* User & Rating */
 
 /* PDF Preview */
 export const PdfPreview = styled.div`

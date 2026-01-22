@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { Trash2, Dot } from "lucide-react";
 import type { Note } from "./NoteTypes";
 import { NOTE_DETAIL_TEXTS } from "../../i18n/translations/notes/NoteDetail";
 import { useLang } from "../../i18n";
@@ -13,7 +13,11 @@ import {
   Course,
   Teacher,
   DescriptionBox,
-  DateText,
+  DateRow,
+  CourseDate,
+  CourseYear,
+  CourseTerm,
+  UploadDate,
   Description,
   PdfPreview,
   BuyRow,
@@ -23,7 +27,7 @@ import {
 } from "./!NoteDetail.styled";
 import UserActionsRow from "./my-notes/UserActionsRow";
 
-type NoteMode = "market" | "purchased" | "uploaded";
+type NoteMode = "market" | "purchased" | "uploaded" | "checkout";
 
 type Props = {
   note: Note;
@@ -67,7 +71,14 @@ export default function NoteDetailUI({ note, onBuy, mode = "market" }: Props) {
         </Meta>
 
         <DescriptionBox>
-          <DateText>{note.date}</DateText>
+          <DateRow>
+            <CourseDate>
+              <CourseYear>{note.year}</CourseYear>
+              <CourseTerm>{note.term}</CourseTerm>
+            </CourseDate>
+            <Dot color="#d1d5db" size={16} />
+            <UploadDate>{note.date}</UploadDate>
+          </DateRow>
           <Description>{note.description}</Description>
         </DescriptionBox>
 
