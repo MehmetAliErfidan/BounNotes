@@ -28,7 +28,7 @@ export const dummyData: Note[] = [
     price: "₺40",
     date: "2023",
     description: "Kısa ama etkili bir özet.",
-    isPurchased: true,
+    isPurchased: false,
     isUploaded: false,
     likeCount: 21,
     dislikeCount: 14,

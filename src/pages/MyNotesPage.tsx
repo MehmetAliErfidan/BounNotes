@@ -49,7 +49,7 @@ export default function MyNotesPage() {
         />
       </NotesTabBarContainer>
 
-      {activeTab === "purchased" && !isEmpty && (
+      {["purchased", "upload"].includes(activeTab) && !isEmpty && (
         <Grid>
           {notesToShow.map((note) => (
             <NoteCard
@@ -61,32 +61,17 @@ export default function MyNotesPage() {
         </Grid>
       )}
 
-      {activeTab === "uploaded" && !isEmpty && (
-        <Grid>
-          {notesToShow.map((note) => (
-            <NoteCard
-              key={note.id}
-              note={note}
-              onOpen={() => handleOpenNote(note.id)}
-            />
-          ))}
-        </Grid>
-      )}
-
-      {activeTab === "purchased" && isEmpty && (
+      {["purchased", "uploaded"].includes(activeTab) && isEmpty && (
         <NoNotesWrapper>
-          <NoNotesText>{noPurchaseYet}</NoNotesText>
+          <NoNotesText>
+            {activeTab === "purchased" ? noPurchaseYet : noUploadsYet}
+          </NoNotesText>
           <EmptyIllustration src={OxNoUpload} alt="No notes yet" />
-        </NoNotesWrapper>
-      )}
-
-      {activeTab === "uploaded" && isEmpty && (
-        <NoNotesWrapper>
-          <NoNotesText>{noUploadsYet}</NoNotesText>
-          <EmptyIllustration src={OxNoUpload} alt="No notes yet" />
-          <UploadNoteCTAButton onClick={() => navigate("/my-notes/upload")}>
-            {uploadFirstNote} <CirclePlus size={34} />
-          </UploadNoteCTAButton>
+          {activeTab === "uploaded" && (
+            <UploadNoteCTAButton onClick={() => navigate("/my-notes/upload")}>
+              {uploadFirstNote} <CirclePlus size={34} />
+            </UploadNoteCTAButton>
+          )}
         </NoNotesWrapper>
       )}
     </Main>
