@@ -29,9 +29,7 @@ export default function NoteCard({ note, onOpen }: NoteCardProps) {
     if (onOpen) {
       onOpen();
     } else {
-      navigate(`/note/${note.id}`, {
-        state: { mode: "market" },
-      });
+      navigate(`/note/${note.id}`);
     }
   };
 
@@ -48,12 +46,12 @@ export default function NoteCard({ note, onOpen }: NoteCardProps) {
 
       <Bottom>
         <UserRow>
-          <Avatar>{note.username[0]?.toUpperCase()}</Avatar>
-          <Username>{note.username}</Username>
+          <Avatar>{note.owner.username[0]?.toUpperCase() ?? "?"}</Avatar>
+          <Username>{note.owner.username}</Username>
         </UserRow>
 
         <RatingPriceRow>
-          <Rating>{note.rating} / 5</Rating>
+          <Rating>{note.stats.rating} / 5</Rating>
           <Price>{note.price}</Price>
         </RatingPriceRow>
 
