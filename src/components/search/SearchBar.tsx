@@ -10,7 +10,7 @@ import { SEARCHBAR_TEXTS } from "../../i18n/translations/search/SearchBar";
 import { useLang } from "../../i18n";
 import SearchInput from "./SearchInput";
 import { Container } from "./!SearchBar.styled";
-import type { Note } from "../note/NoteTypes";
+import type { NoteWithContext, Note } from "../note/NoteTypes";
 import { dummyData } from "../../data/dummyData";
 
 /* // Dummy data (until backend)
@@ -87,26 +87,32 @@ export default function SearchBar() {
     const lower = inputValue.toLowerCase();
     let filtered: Note[] = [];
 
+    const matches = (item: NoteWithContext) => {
+      const n = item.note;
+      return (
+        n.owner.username.toLowerCase().includes(lower) ||
+        n.course.toLowerCase().includes(lower) ||
+        n.teacher.toLowerCase().includes(lower) ||
+        n.title.toLowerCase().includes(lower)
+      );
+    };
+
     if (selectedCategory === "user") {
-      filtered = dummyData.filter((item) =>
-        item.username.toLowerCase().includes(lower),
-      );
+      filtered = dummyData
+        .filter((item) =>
+          item.note.owner.username.toLowerCase().includes(lower),
+        )
+        .map((item) => item.note);
     } else if (selectedCategory === "course") {
-      filtered = dummyData.filter((item) =>
-        item.course.toLowerCase().includes(lower),
-      );
+      filtered = dummyData
+        .filter((item) => item.note.course.toLowerCase().includes(lower))
+        .map((item) => item.note);
     } else if (selectedCategory === "teacher") {
-      filtered = dummyData.filter((item) =>
-        item.teacher.toLowerCase().includes(lower),
-      );
+      filtered = dummyData
+        .filter((item) => item.note.teacher.toLowerCase().includes(lower))
+        .map((item) => item.note);
     } else {
-      filtered = dummyData.filter(
-        (item) =>
-          item.username.toLowerCase().includes(lower) ||
-          item.course.toLowerCase().includes(lower) ||
-          item.teacher.toLowerCase().includes(lower) ||
-          item.title.toLowerCase().includes(lower),
-      );
+      filtered = dummyData.filter(matches).map((item) => item.note);
     }
 
     dispatch(setResults(filtered));
