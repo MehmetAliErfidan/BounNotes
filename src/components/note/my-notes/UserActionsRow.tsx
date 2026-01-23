@@ -19,6 +19,8 @@ type Props = {
   canRate: boolean;
   showUserInfo: boolean;
   canComment: boolean;
+  isLiked?: boolean;
+  isDisliked?: boolean;
 };
 
 export default function UserActionsRow({
@@ -28,6 +30,8 @@ export default function UserActionsRow({
   canRate,
   showUserInfo,
   canComment,
+  isLiked = false,
+  isDisliked = false,
 }: Props) {
   const { lang } = useLang();
   const { download, edit, liked, like, dislike, disliked, makeComment } =
@@ -37,8 +41,8 @@ export default function UserActionsRow({
     <S.UserActionsRow>
       {showUserInfo && (
         <S.UserInfo>
-          <S.Avatar>{note.username[0]?.toUpperCase() ?? "?"}</S.Avatar>
-          <S.Username>{note.username}</S.Username>
+          <S.Avatar>{note.owner.username[0]?.toUpperCase() ?? "?"}</S.Avatar>
+          <S.Username>{note.owner.username}</S.Username>
         </S.UserInfo>
       )}
 
@@ -59,17 +63,17 @@ export default function UserActionsRow({
       <S.RatingActions>
         {canRate && (
           <S.LikeButtons>
-            <Tooltip content={note.isLiked ? liked : like} delay={300}>
+            <Tooltip content={isLiked ? liked : like} delay={300}>
               <S.LikeButton>
                 <ThumbsUp />
-                <span>{note.likeCount}</span>
+                <span>{note.stats.likeCount}</span>
               </S.LikeButton>
             </Tooltip>
 
-            <Tooltip content={note.isDisliked ? disliked : dislike} delay={400}>
+            <Tooltip content={isDisliked ? disliked : dislike} delay={400}>
               <S.LikeButton>
                 <ThumbsDown />
-                <span>{note.dislikeCount}</span>
+                <span>{note.stats.dislikeCount}</span>
               </S.LikeButton>
             </Tooltip>
           </S.LikeButtons>
