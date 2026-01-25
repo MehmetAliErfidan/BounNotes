@@ -5,6 +5,7 @@ import { useLang } from "../i18n";
 import Logo from "../components/common/Logo.tsx";
 import { Link } from "react-router-dom";
 import * as S from "./!RegisterPage.styled";
+import { Form, Input } from "../styles/GlobalStyles.ts";
 import { ALLOWED_DOMAIN } from "./constants";
 
 export default function RegisterPage() {
@@ -136,14 +137,14 @@ export default function RegisterPage() {
 
   return (
     <S.Container>
-      <S.Form onSubmit={handleSubmit}>
+      <Form variant="card" size="normal" onSubmit={handleSubmit}>
         <S.Header>
           <Logo />
           <S.HeaderText>{headerText}</S.HeaderText>
         </S.Header>
 
         <S.InputContainer>
-          <S.Input
+          <Input
             value={name}
             onChange={(e) => setName(e.target.value)}
             type="text"
@@ -151,7 +152,7 @@ export default function RegisterPage() {
             required
             minLength={2}
           />
-          <S.Input
+          <Input
             value={surname}
             onChange={(e) => setSurname(e.target.value)}
             type="text"
@@ -159,7 +160,7 @@ export default function RegisterPage() {
             required
             minLength={2}
           />
-          <S.Input
+          <Input
             value={email}
             onChange={handleChange}
             type="email"
@@ -167,7 +168,7 @@ export default function RegisterPage() {
           />
           {emailError && <S.ErrorText>{emailError}</S.ErrorText>}
 
-          <S.Input
+          <Input
             value={password}
             onChange={handlePassword}
             type="password"
@@ -175,7 +176,7 @@ export default function RegisterPage() {
           />
           {passwordError && <S.ErrorText>{passwordError}</S.ErrorText>}
 
-          <S.Input
+          <Input
             type="password"
             placeholder={confirmPasswordPlaceholder}
             value={confirmPassword}
@@ -214,7 +215,7 @@ export default function RegisterPage() {
             </Link>
           </S.FooterText>
         </S.ButtonSection>
-      </S.Form>
+      </Form>
     </S.Container>
   );
 }

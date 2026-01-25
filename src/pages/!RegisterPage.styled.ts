@@ -9,28 +9,6 @@ export const Container = styled.div`
   padding: 1rem;
 `;
 
-export const Form = styled.form`
-  overflow-y: auto;
-  scroll-behavior: smooth;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  width: 100%;
-  max-width: 24rem;
-  box-shadow: 0 0 12px 2px rgba(96, 165, 250, 0.4);
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  background-color: #bfdbfe;
-
-  @media (min-width: 768px) {
-    max-width: 28rem;
-  }
-
-  @media (min-width: 1024px) {
-    max-width: 32rem;
-  }
-`;
-
 export const Header = styled.div`
   display: flex;
   flex-direction: column;
@@ -53,13 +31,6 @@ export const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-`;
-
-export const Input = styled.input`
-  border: 1px solid;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  background-color: #fafafa;
 `;
 
 export const ErrorText = styled.p`

@@ -5,6 +5,7 @@ import { useLang } from "../i18n";
 import Logo from "../components/common/Logo.tsx";
 import { Link } from "react-router-dom";
 import * as S from "./!LoginPage.styled";
+import { Form, Input } from "../styles/GlobalStyles.ts";
 import { useAppDispatch } from "../features/hooks";
 import { setUser } from "../features/auth/authSlice";
 
@@ -50,7 +51,7 @@ export default function LoginPage() {
       setUser({
         username: email.split("@")[0],
         avatarUrl: "",
-      })
+      }),
     );
 
     navigate("/");
@@ -58,14 +59,14 @@ export default function LoginPage() {
 
   return (
     <S.Container>
-      <S.Form onSubmit={handleSubmit}>
+      <Form variant="card" size="normal" onSubmit={handleSubmit}>
         <S.Header>
           <Logo />
           <S.HeaderText>{headerText}</S.HeaderText>
         </S.Header>
 
         <S.Label htmlFor="email">{emailPlaceholder}</S.Label>
-        <S.Input
+        <Input
           placeholder={emailPlaceholder}
           id="email"
           type="email"
@@ -75,7 +76,7 @@ export default function LoginPage() {
         {error && <S.ErrorText>{error}</S.ErrorText>}
 
         <S.Label htmlFor="password">{passwordPlaceholder}</S.Label>
-        <S.Input
+        <Input
           id="password"
           placeholder={passwordPlaceholder}
           type="password"
@@ -98,7 +99,7 @@ export default function LoginPage() {
             <S.RegisterLinkSpan>{registerLink}</S.RegisterLinkSpan>
           </Link>
         </S.FooterText>
-      </S.Form>
+      </Form>
     </S.Container>
   );
 }
