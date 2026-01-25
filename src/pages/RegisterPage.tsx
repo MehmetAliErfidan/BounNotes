@@ -5,7 +5,7 @@ import { useLang } from "../i18n";
 import Logo from "../components/common/Logo.tsx";
 import { Link } from "react-router-dom";
 import * as S from "./!RegisterPage.styled";
-import { Form, Input } from "../styles/GlobalStyles.ts";
+import { Form, Input, HeaderText, Header } from "../styles/GlobalStyles.ts";
 import { ALLOWED_DOMAIN } from "./constants";
 
 export default function RegisterPage() {
@@ -138,10 +138,10 @@ export default function RegisterPage() {
   return (
     <S.Container>
       <Form variant="card" size="normal" onSubmit={handleSubmit}>
-        <S.Header>
+        <Header>
           <Logo />
-          <S.HeaderText>{headerText}</S.HeaderText>
-        </S.Header>
+          <HeaderText>{headerText}</HeaderText>
+        </Header>
 
         <S.InputContainer>
           <Input

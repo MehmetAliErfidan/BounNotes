@@ -5,7 +5,7 @@ import { useLang } from "../i18n";
 import Logo from "../components/common/Logo.tsx";
 import { Link } from "react-router-dom";
 import * as S from "./!LoginPage.styled";
-import { Form, Input } from "../styles/GlobalStyles.ts";
+import { Form, Input, Header, HeaderText } from "../styles/GlobalStyles.ts";
 import { useAppDispatch } from "../features/hooks";
 import { setUser } from "../features/auth/authSlice";
 
@@ -60,10 +60,10 @@ export default function LoginPage() {
   return (
     <S.Container>
       <Form variant="card" size="normal" onSubmit={handleSubmit}>
-        <S.Header>
+        <Header>
           <Logo />
-          <S.HeaderText>{headerText}</S.HeaderText>
-        </S.Header>
+          <HeaderText>{headerText}</HeaderText>
+        </Header>
 
         <S.Label htmlFor="email">{emailPlaceholder}</S.Label>
         <Input

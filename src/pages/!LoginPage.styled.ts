@@ -9,24 +9,6 @@ export const Container = styled.div`
   justify-content: center;
 `;
 
-export const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  width: 100%;
-  text-align: center;
-`;
-
-export const HeaderText = styled.p`
-  color: #4b5563;
-  font-size: 1rem;
-  font-weight: 600;
-
-  @media (min-width: 768px) {
-    font-size: 1.125rem;
-  }
-`;
-
 export const Label = styled.label`
   position: absolute;
   width: 1px;
