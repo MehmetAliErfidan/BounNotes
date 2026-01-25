@@ -1,4 +1,6 @@
 import NoteForm from "../components/note/NoteForm.tsx";
+import Navbar from "../components/common/navbar/Navbar";
+import { Main } from "../styles/GlobalStyles";
 import type { FormNote } from "../components/note/NoteTypes.ts";
 import { useState } from "react";
 import { useLang } from "../i18n/index.tsx";
@@ -18,10 +20,22 @@ export default function NoteUpload() {
     price: "",
   });
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!note.term) {
+      console.log("Term is required");
+      return;
+    }
+
+    console.log("Note to be uploaded:", note);
+    // Here you would typically send the note data to your backend server
+  };
+
   return (
-    <>
+    <Main>
+      <Navbar />
       <NoteForm note={note} setNote={setNote} />
-      <button>{uploadText}</button>
-    </>
+      <button onClick={handleSubmit}>{uploadText}</button>
+    </Main>
   );
 }
