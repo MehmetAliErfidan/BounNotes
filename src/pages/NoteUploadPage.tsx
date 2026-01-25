@@ -1,8 +1,9 @@
+import { useState } from "react";
 import NoteForm from "../components/note/NoteForm.tsx";
 import Navbar from "../components/common/navbar/Navbar";
 import { Main } from "../styles/GlobalStyles";
 import type { FormNote } from "../components/note/NoteTypes.ts";
-import { useState } from "react";
+import ImageUpload from "../components/pdf/ImageUpload.tsx";
 import { useLang } from "../i18n/index.tsx";
 import { CREATE_NOTE_TEXTS } from "../i18n/translations/notes/CreateNote.ts";
 
@@ -20,6 +21,8 @@ export default function NoteUpload() {
     price: "",
   });
 
+  const [images, setImages] = useState<File[]>([]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!note.term) {
@@ -35,6 +38,7 @@ export default function NoteUpload() {
     <Main>
       <Navbar />
       <NoteForm note={note} setNote={setNote} />
+      <ImageUpload images={images} onChange={setImages} min={1} max={3} />
       <button onClick={handleSubmit}>{uploadText}</button>
     </Main>
   );
