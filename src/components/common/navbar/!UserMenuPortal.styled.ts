@@ -22,7 +22,7 @@ export const MenuItem = styled.button<{ $danger?: boolean }>`
   padding: 0.6rem 0.75rem;
   text-align: left;
   background: none;
-  border: none;
+  border-bottom: 1px solid #e5e7eb;
   cursor: pointer;
   color: ${(p) => (p.$danger ? "#dc2626" : "#111827")};
 
