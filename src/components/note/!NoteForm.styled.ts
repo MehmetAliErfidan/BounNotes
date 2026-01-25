@@ -1,13 +1,5 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  padding: 1rem;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 export const Select = styled.select`
   border: 1px solid;
   padding: 0.5rem;
@@ -27,4 +19,10 @@ export const SelectOption = styled.option`
   &:hover {
     background-color: #f3f4f6;
   }
+`;
+
+export const Container = styled.div`
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
 `;

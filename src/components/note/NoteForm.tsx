@@ -46,13 +46,13 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           onChange={handleChange}
           value={note.course}
           required
-          type="text"
           name="course"
           placeholder={coursePlaceholder}
         />
+
         <Select<Term>
           value={note.term}
-          onChange={(value) => setNote((prev) => ({ ...prev, term: value }))}
+          onChange={(value) => setNote((p) => ({ ...p, term: value }))}
           placeholder={selectTerm}
           options={[
             { value: "spring", label: springTerm },
@@ -65,30 +65,29 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           onChange={handleChange}
           value={note.year}
           required
+          type="number"
+          name="year"
           min={2020}
           max={currentYear + 1}
-          step={1}
-          type="number"
-          inputMode="numeric"
-          name="year"
           placeholder={yearPlaceholder}
         />
+
         <Input
           onChange={handleChange}
           value={note.teacher}
           required
-          type="text"
           name="teacher"
           placeholder={instructorPlaceholder}
         />
+
         <Input
           onChange={handleChange}
           value={note.title}
           required
-          type="text"
           name="title"
           placeholder={titlePlaceholder}
         />
+
         <textarea
           onChange={handleChange}
           value={note.description}
@@ -96,16 +95,15 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           name="description"
           placeholder={descriptionPlaceholder}
         />
+
         <Input
           onChange={handleChange}
           value={note.price ?? ""}
           required
           type="number"
-          inputMode="numeric"
           name="price"
-          placeholder={pricePlaceholder}
           min={20}
-          step={1}
+          placeholder={pricePlaceholder}
         />
       </Form>
     </Container>
