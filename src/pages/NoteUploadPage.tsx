@@ -4,6 +4,7 @@ import Navbar from "../components/common/navbar/Navbar";
 import { Main } from "../styles/GlobalStyles";
 import type { FormNote } from "../components/note/NoteTypes.ts";
 import ImageUpload from "../components/pdf/ImageUpload.tsx";
+import PdfUpload from "../components/pdf/PDFUpload.tsx";
 import { useLang } from "../i18n/index.tsx";
 import { CREATE_NOTE_TEXTS } from "../i18n/translations/notes/CreateNote.ts";
 
@@ -22,6 +23,7 @@ export default function NoteUpload() {
   });
 
   const [images, setImages] = useState<File[]>([]);
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,6 +41,7 @@ export default function NoteUpload() {
       <Navbar />
       <NoteForm note={note} setNote={setNote} />
       <ImageUpload images={images} onChange={setImages} min={1} max={3} />
+      <PdfUpload file={pdfFile} onChange={setPdfFile} />
       <button onClick={handleSubmit}>{uploadText}</button>
     </Main>
   );
