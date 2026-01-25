@@ -1,12 +1,12 @@
 export const IMAGE_UPLOAD_TEXTS = {
   tr: {
-    onlyImageFiles: "Sadece görsel dosyalar yüklenebilir.",
+    onlyImageFiles: "Sadece Görsel Dosyalar Yüklenebilir.",
     previewTitleText: "Önizlemede Gösterilecek Görseller",
-    minImagesError: "En az {{min}} görsel eklemelisin",
+    minImagesError: "En Az {{min}} Görsel Eklemelisiniz",
   },
   en: {
-    onlyImageFiles: "Only image files can be uploaded.",
+    onlyImageFiles: "Only Image Files Can Be Uploaded.",
     previewTitleText: "Preview Images to Display",
-    minImagesError: "Add at least {{min}} image",
+    minImagesError: "Add at Least {{min}} Image",
   },
 };
