@@ -1,4 +1,7 @@
 import type { FormNote } from "./NoteTypes";
+import { Container } from "./!NoteForm.styled";
+import { Form, Input } from "../../styles/GlobalStyles";
+import { Select } from "../ui/select";
 import { NOTE_FORM_TEXTS } from "../../i18n/translations/notes/NoteForm";
 import { useLang } from "../../i18n";
 
@@ -6,6 +9,8 @@ interface NoteFormProps {
   note: FormNote;
   setNote: React.Dispatch<React.SetStateAction<FormNote>>;
 }
+
+type Term = FormNote["term"];
 
 export default function NoteForm({ note, setNote }: NoteFormProps) {
   const { lang } = useLang();
@@ -23,9 +28,7 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
   } = NOTE_FORM_TEXTS[lang];
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setNote((prev) => ({
@@ -37,9 +40,9 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
   const currentYear = new Date().getFullYear();
 
   return (
-    <>
-      <form>
-        <input
+    <Container>
+      <Form variant="plain" size="wide">
+        <Input
           onChange={handleChange}
           value={note.course}
           required
@@ -47,15 +50,18 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           name="course"
           placeholder={coursePlaceholder}
         />
-        <select name="term" onChange={handleChange} value={note.term} required>
-          <option value="" disabled>
-            {selectTerm}
-          </option>
-          <option value="spring">{springTerm}</option>
-          <option value="summer">{summerTerm}</option>
-          <option value="fall">{fallTerm}</option>
-        </select>
-        <input
+        <Select<Term>
+          value={note.term}
+          onChange={(value) => setNote((prev) => ({ ...prev, term: value }))}
+          placeholder={selectTerm}
+          options={[
+            { value: "spring", label: springTerm },
+            { value: "summer", label: summerTerm },
+            { value: "fall", label: fallTerm },
+          ]}
+        />
+
+        <Input
           onChange={handleChange}
           value={note.year}
           required
@@ -67,7 +73,7 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           name="year"
           placeholder={yearPlaceholder}
         />
-        <input
+        <Input
           onChange={handleChange}
           value={note.teacher}
           required
@@ -75,7 +81,7 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           name="teacher"
           placeholder={instructorPlaceholder}
         />
-        <input
+        <Input
           onChange={handleChange}
           value={note.title}
           required
@@ -90,7 +96,7 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           name="description"
           placeholder={descriptionPlaceholder}
         />
-        <input
+        <Input
           onChange={handleChange}
           value={note.price ?? ""}
           required
@@ -101,7 +107,7 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           min={20}
           step={1}
         />
-      </form>
-    </>
+      </Form>
+    </Container>
   );
 }
