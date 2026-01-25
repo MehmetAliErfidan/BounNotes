@@ -1,5 +1,6 @@
 export const NOTE_FORM_TEXTS = {
   tr: {
+    headerText: "Not Bilgileri",
     coursePlaceholder: "Ders Adı",
     selectTerm: "Dönem Seçiniz",
     fallTerm: "Güz",
@@ -12,6 +13,7 @@ export const NOTE_FORM_TEXTS = {
     pricePlaceholder: "Fiyat (TL)",
   },
   en: {
+    headerText: "Note Details",
     coursePlaceholder: "Course Name",
     selectTerm: "Select Term",
     fallTerm: "Fall",

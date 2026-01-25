@@ -1,6 +1,6 @@
 import type { FormNote } from "./NoteTypes";
-import { Container } from "./!NoteForm.styled";
-import { Form, Input } from "../../styles/GlobalStyles";
+import { Container, HeaderText } from "./!NoteForm.styled";
+import { Form, Input, Header, Textarea } from "../../styles/GlobalStyles";
 import { Select } from "../ui/select";
 import { NOTE_FORM_TEXTS } from "../../i18n/translations/notes/NoteForm";
 import { useLang } from "../../i18n";
@@ -15,6 +15,7 @@ type Term = FormNote["term"];
 export default function NoteForm({ note, setNote }: NoteFormProps) {
   const { lang } = useLang();
   const {
+    headerText,
     coursePlaceholder,
     selectTerm,
     fallTerm,
@@ -31,9 +32,15 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
+
     setNote((prev) => ({
       ...prev,
-      [name]: ["price", "year"].includes(name) ? Number(value) : value,
+      [name]:
+        name === "price" || name === "year"
+          ? value === ""
+            ? ""
+            : Number(value)
+          : value,
     }));
   };
 
@@ -42,6 +49,10 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
   return (
     <Container>
       <Form variant="plain" size="wide">
+        <Header>
+          <HeaderText>{headerText}</HeaderText>
+        </Header>
+
         <Input
           onChange={handleChange}
           value={note.course}
@@ -88,13 +99,17 @@ export default function NoteForm({ note, setNote }: NoteFormProps) {
           placeholder={titlePlaceholder}
         />
 
-        <textarea
+        <Textarea
           onChange={handleChange}
           value={note.description}
           required
           name="description"
           placeholder={descriptionPlaceholder}
+          maxLength={500}
         />
+        <p style={{ fontSize: "0.75rem", opacity: 0.6 }}>
+          {note.description.length}/500
+        </p>
 
         <Input
           onChange={handleChange}
