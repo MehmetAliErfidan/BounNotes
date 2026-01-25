@@ -106,3 +106,46 @@ export const Input = styled.input`
   border-radius: 0.25rem;
   background-color: #fafafa;
 `;
+
+// Textarea style used across the app
+export const Textarea = styled.textarea`
+  width: 100%;
+  min-height: 6rem;
+  max-height: 16rem;
+  font-family: inherit;
+  line-height: 1.5;
+  resize: vertical;
+  color: #111;
+  border: 1px solid;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  background-color: #fafafa;
+
+  &:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.25);
+  }
+
+  &:disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+  }
+`;
+
+export const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  text-align: center;
+`;
+
+export const HeaderText = styled.p`
+  color: #4b5563;
+  font-size: 1rem;
+  font-weight: 600;
+
+  @media (min-width: 768px) {
+    font-size: 1.125rem;
+  }
+`;
