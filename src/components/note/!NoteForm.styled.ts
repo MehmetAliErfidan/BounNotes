@@ -7,12 +7,6 @@ export const Select = styled.select`
   background-color: #fafafa;
 `;
 
-export const Container = styled.div`
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
-`;
-
 export const Header = styled.div`
   display: flex;
   flex-direction: column;
@@ -21,20 +15,27 @@ export const Header = styled.div`
   text-align: center;
 `;
 
-export const HeaderText = styled.p`
+export const CharCount = styled.p`
+  font-size: 0.75rem;
+  opacity: 0.6;
+  align-self: flex-end;
+`;
+
+export const SectionHeader = styled.h3`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
   font-size: 1.25rem;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.gray[800]};
 
-  display: flex;
-  align-items: center;
-  justify-content: center; /* yatay ortalama */
-  gap: 0.25rem;
-
-  text-align: center;
   margin-bottom: 0.5rem;
 
-  @media (min-width: 768px) {
-    font-size: 1.125rem;
+  svg {
+    width: 16px;
+    height: 16px;
+    opacity: 0.7;
+    margin: 0 0.125rem;
   }
 `;
