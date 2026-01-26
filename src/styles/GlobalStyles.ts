@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, css } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
   * {
@@ -13,23 +13,20 @@ export const GlobalStyles = createGlobalStyle`
 `;
 
 // Heading style used across the app
-export const Heading = styled.h1`
-  font-size: 2.25rem;
+export const Heading = styled.h1<{ $compact?: boolean }>`
+  font-size: ${({ $compact }) => ($compact ? "2rem" : "2.25rem")};
   margin-top: 1rem;
-  color: ${(props) => props.theme.colors.gray[900]};
   font-weight: bold;
-  line-height: 1.375;
 
-  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
-    font-size: 3.75rem;
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: ${({ $compact }) => ($compact ? "2.5rem" : "3.75rem")};
   }
 `;
 
 //Search section wrapper style used across the app
 export const SearchSection = styled.div`
-  position: sticky;
-  top: 0;
-  z-index: 30;
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,21 +51,21 @@ export const Main = styled.main`
 {
   /* --- Form and Input styles used across the app ---*/
 }
-export const Form = styled.form<{
-  variant?: "card" | "plain";
-  size?: "normal" | "wide";
+
+const formBaseStyles = css<{
+  $variant?: "card" | "plain";
+  $size?: "normal" | "wide";
 }>`
   overflow-y: auto;
   scroll-behavior: smooth;
   display: flex;
   flex-direction: column;
   width: 100%;
-  box-shadow: 0 0 12px 2px rgba(96, 165, 250, 0.4);
   border-radius: 0.5rem;
   background-color: #bfdbfe;
 
-  ${({ size = "normal" }) =>
-    size === "normal"
+  ${({ $size = "normal" }) =>
+    $size === "normal"
       ? `
         max-width: 28rem;
         padding: 1.5rem;
@@ -76,12 +73,12 @@ export const Form = styled.form<{
       `
       : `
         max-width: 42rem;
-        padding: 3rem 3rem;
-        gap: 1.75rem;
+        padding: 2rem;
+        gap: 1.25rem;
       `}
 
-  ${({ variant = "card" }) =>
-    variant === "card"
+  ${({ $variant = "card" }) =>
+    $variant === "card"
       ? `
         box-shadow: 0 0 12px 2px rgba(96, 165, 250, 0.4);
       `
@@ -97,6 +94,20 @@ export const Form = styled.form<{
   @media (min-width: 1024px) {
     max-width: 32rem;
   }
+`;
+
+export const Form = styled.form<{
+  $variant?: "card" | "plain";
+  $size?: "normal" | "wide";
+}>`
+  ${formBaseStyles}
+`;
+
+export const FormSection = styled.div<{
+  $variant?: "card" | "plain";
+  $size?: "normal" | "wide";
+}>`
+  ${formBaseStyles}
 `;
 
 // Input style used across the app
