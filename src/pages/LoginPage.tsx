@@ -59,7 +59,7 @@ export default function LoginPage() {
 
   return (
     <S.Container>
-      <Form variant="card" size="normal" onSubmit={handleSubmit}>
+      <Form $variant="card" $size="normal" onSubmit={handleSubmit}>
         <Header>
           <Logo />
           <HeaderText>{headerText}</HeaderText>
