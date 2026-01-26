@@ -1,4 +1,4 @@
-import { Slash } from "lucide-react";
+import { Images } from "lucide-react";
 import * as S from "./!ImageUpload.styled";
 import { IMAGE_UPLOAD_TEXTS } from "../../i18n/translations/pdf/ImageUpload";
 import { useLang } from "../../i18n";
@@ -17,7 +17,7 @@ export default function ImageUpload({
   max = 3,
 }: Props) {
   const { lang } = useLang();
-  const { onlyImageFiles, previewTitleText, minImagesError } =
+  const { onlyImageFiles, previewTitleText, minImagesError, deleteImage } =
     IMAGE_UPLOAD_TEXTS[lang];
 
   const canAddMore = images.length < max;
@@ -39,23 +39,19 @@ export default function ImageUpload({
   return (
     <S.Container>
       <S.Card>
-        <S.Label>
-          {previewTitleText} ({images.length}
-          <Slash />
-          {max})
-        </S.Label>
-
+        <S.SectionHeader>
+          <Images /> {previewTitleText} ({images.length} / {max})
+        </S.SectionHeader>
         <S.ImagesRow $full={images.length === max}>
           {images.map((img, i) => (
             <S.ImageCard key={i}>
               <S.PreviewImage src={URL.createObjectURL(img)} />
               <S.RemoveButton onClick={() => handleRemove(i)}>
-                Sil
+                {deleteImage}
               </S.RemoveButton>
             </S.ImageCard>
           ))}
         </S.ImagesRow>
-
         <S.FileInput
           type="file"
           accept="image/*"
@@ -66,7 +62,6 @@ export default function ImageUpload({
             e.currentTarget.value = "";
           }}
         />
-
         {images.length < min && (
           <S.ErrorText>
             {minImagesError.replace("{{min}}", String(min))}
