@@ -1,3 +1,4 @@
+import { Upload } from "lucide-react";
 import { PDF_UPLOAD_TEXTS } from "../../i18n/translations/pdf/PDFUpload";
 import { useLang } from "../../i18n";
 import * as S from "./!PDFUpload.styled";
@@ -22,7 +23,9 @@ export default function PdfUpload({ file, onChange }: Props) {
   return (
     <S.Container>
       <S.Card>
-        <S.Label>{uploadPdfTitle}</S.Label>
+        <S.SectionHeader>
+          <Upload /> {uploadPdfTitle}
+        </S.SectionHeader>
 
         <S.FileInput
           type="file"
