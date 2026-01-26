@@ -2,7 +2,11 @@
 import styled from "styled-components";
 
 export const StyledNav = styled.nav`
-  overflow-x: hidden;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  background: linear-gradient(to right, #93c5fd, #d8b4fe, #f472b6);
 `;
 
 export const NavContainer = styled.div`
