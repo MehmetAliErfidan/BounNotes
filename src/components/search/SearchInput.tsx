@@ -1,5 +1,5 @@
 import SearchIcon from "./SearchIcon";
-import { Form } from "./!SearchInput.styled";
+import { SearchForm } from "./!SearchInput.styled";
 
 interface SearchInputProps {
   value: string;
@@ -15,7 +15,7 @@ export default function SearchInput({
   placeholder = "",
 }: SearchInputProps) {
   return (
-    <Form onSubmit={onSubmit}>
+    <SearchForm onSubmit={onSubmit}>
       <input
         type="search"
         value={value}
@@ -29,6 +29,6 @@ export default function SearchInput({
       >
         <SearchIcon className="w-5 h-5 sm:w-6 sm:h-6" />
       </button>
-    </Form>
+    </SearchForm>
   );
 }
