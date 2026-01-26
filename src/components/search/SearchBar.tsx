@@ -10,7 +10,7 @@ import { SEARCHBAR_TEXTS } from "../../i18n/translations/search/SearchBar";
 import { useLang } from "../../i18n";
 import SearchInput from "./SearchInput";
 import { Container } from "./!SearchBar.styled";
-import type { NoteWithContext, Note } from "../note/NoteTypes";
+import type { NoteWithContext, Note } from "../../config/note.types";
 import { dummyData } from "../../data/dummyData";
 
 /* // Dummy data (until backend)

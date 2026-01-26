@@ -1,5 +1,5 @@
 import { Trash2, Dot } from "lucide-react";
-import type { Note } from "./NoteTypes";
+import type { Note } from "../../config/note.types";
 import type { NotePermissions } from "./NotePermissions";
 import { NOTE_DETAIL_TEXTS } from "../../i18n/translations/notes/NoteDetail";
 import { useLang } from "../../i18n";

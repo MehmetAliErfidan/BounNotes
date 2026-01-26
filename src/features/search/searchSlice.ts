@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { Note } from "../../components/note/NoteTypes";
+import type { Note } from "../../config/note.types";
 import type { Category } from "../../components/search/CategoryFilter.types";
 
 interface SearchState {

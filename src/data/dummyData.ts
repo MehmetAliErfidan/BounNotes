@@ -1,4 +1,4 @@
-import type { NoteWithContext } from "../components/note/NoteTypes";
+import type { NoteWithContext } from "../config/note.types";
 
 export const dummyData: NoteWithContext[] = [
   {

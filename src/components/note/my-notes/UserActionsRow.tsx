@@ -10,7 +10,7 @@ import { NOTE_DETAIL_TEXTS } from "../../../i18n/translations/notes/NoteDetail";
 import { useLang } from "../../../i18n";
 
 import Tooltip from "../../tooltip/Tooltip";
-import type { Note } from "../NoteTypes";
+import type { Note } from "../../../config/note.types";
 
 type Props = {
   note: Note;

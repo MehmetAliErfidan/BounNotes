@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { NOTE_CARD_TEXTS } from "../../i18n/translations/notes/NoteCard";
 import { useLang } from "../../i18n";
-import type { NoteCardProps } from "./NoteTypes";
+import type { NoteCardProps } from "../../config/note.types";
 
 import {
   Card,

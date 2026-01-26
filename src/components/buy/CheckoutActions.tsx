@@ -1,4 +1,4 @@
-import type { Note } from "../note/NoteTypes";
+import type { Note } from "../../config/note.types";
 import { MdLockOutline } from "react-icons/md";
 import {
   CheckoutActionsBox,
