@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { NOTE_RULES } from "../config/note.rules";
 
 export interface INote extends Document {
   title: string;
@@ -18,7 +19,10 @@ const noteSchema = new Schema<INote>(
       type: String,
       required: [true, "Title is required"],
       trim: true,
-      maxLength: [100, "Title cannot exceed 100 characters"],
+      maxLength: [
+        NOTE_RULES.MAX_TITLE_LENGTH,
+        `Title cannot exceed ${NOTE_RULES.MAX_TITLE_LENGTH} characters`,
+      ],
     },
     course: {
       type: String,
@@ -34,12 +38,18 @@ const noteSchema = new Schema<INote>(
       type: String,
       required: [true, "Description is required"],
       trim: true,
-      maxLength: [1000, "Description cannot exceed 1000 characters"],
+      maxLength: [
+        NOTE_RULES.MAX_DESCRIPTION_LENGTH,
+        `Description cannot exceed ${NOTE_RULES.MAX_DESCRIPTION_LENGTH} characters`,
+      ],
     },
     price: {
       type: Number,
       required: [true, "Price is required"],
-      min: [20, "Price must be at least 20 TL"],
+      min: [
+        NOTE_RULES.MIN_PRICE,
+        `Price must be at least ₺${NOTE_RULES.MIN_PRICE}`,
+      ],
     },
     username: {
       type: String,
@@ -55,7 +65,7 @@ const noteSchema = new Schema<INote>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export default mongoose.model<INote>("Note", noteSchema);
