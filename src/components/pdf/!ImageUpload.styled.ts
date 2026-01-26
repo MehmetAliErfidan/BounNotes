@@ -30,24 +30,22 @@ export const Card = styled.div`
   }
 `;
 
-export const Label = styled.label`
-  font-size: 1.25rem;
+export const SectionHeader = styled.h3`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  font-size: 1.125rem;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.gray[800]};
 
-  display: flex;
-  align-items: center;
-  justify-content: center; /* yatay ortalama */
-  gap: 0.25rem;
-
-  text-align: center;
   margin-bottom: 0.5rem;
 
   svg {
     width: 16px;
     height: 16px;
     opacity: 0.7;
-    margin: 0 0.125rem;
+    flex-shrink: 0;
   }
 `;
 
@@ -112,9 +110,9 @@ export const ImagesRow = styled.div<{ $full?: boolean }>`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  padding: 0.75rem;
 
-  min-height: 96px;
+  padding: ${({ $full }) => ($full ? "0.75rem" : "0.5rem")};
+  min-height: ${({ $full }) => ($full ? "96px" : "48px")};
 
   border-radius: 0.5rem;
   border: ${({ theme, $full }) =>
@@ -123,12 +121,15 @@ export const ImagesRow = styled.div<{ $full?: boolean }>`
       : `1px dashed ${theme.colors.gray[800]}`};
 
   justify-content: ${({ $full }) => ($full ? "space-between" : "flex-start")};
-
   align-items: center;
 
-  transition: border 0.2s ease;
+  transition:
+    border 0.2s ease,
+    min-height 0.2s ease,
+    padding 0.2s ease;
+
   cursor: default;
-  opacity: ${({ $full }) => ($full ? 1 : 0.5)};
+  opacity: ${({ $full }) => ($full ? 1 : 0.65)};
 `;
 
 export const ImageCard = styled.div`
