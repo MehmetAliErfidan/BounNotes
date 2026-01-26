@@ -23,41 +23,42 @@ export default function MarketPage() {
   );
 
   return (
-    <Main>
+    <>
       <Navbar />
+      <Main>
+        <SearchSection>
+          <SearchBar />
+          <CategoryFilter />
+        </SearchSection>
 
-      <SearchSection>
-        <SearchBar />
-        <CategoryFilter />
-      </SearchSection>
+        <ResultsWrapper>
+          {/* search made, no input */}
+          {hasSearched && query.length === 0 && (
+            <NoResultsWrapper>{emptyResults}</NoResultsWrapper>
+          )}
 
-      <ResultsWrapper>
-        {/* search made, no input */}
-        {hasSearched && query.length === 0 && (
-          <NoResultsWrapper>{emptyResults}</NoResultsWrapper>
-        )}
+          {/* search made, no result */}
+          {hasSearched && query.length > 0 && results.length === 0 && (
+            <NoResultsWrapper>{`${resultsFor} "${query}"`}</NoResultsWrapper>
+          )}
 
-        {/* search made, no result */}
-        {hasSearched && query.length > 0 && results.length === 0 && (
-          <NoResultsWrapper>{`${resultsFor} "${query}"`}</NoResultsWrapper>
-        )}
+          {/* there are results  */}
+          {results.length > 0 && (
+            <SearchInfoText>
+              {`${results.length} ${resultsFound} "${query}"`}
+            </SearchInfoText>
+          )}
 
-        {/* there are results  */}
-        {results.length > 0 && (
-          <SearchInfoText>
-            {`${results.length} ${resultsFound} "${query}"`}
-          </SearchInfoText>
-        )}
-
-        {/* results */}
-        {results.length > 0 && (
-          <Grid>
-            {results.map((note) => (
-              <NoteCard key={note.id} note={note} />
-            ))}
-          </Grid>
-        )}
-      </ResultsWrapper>
-    </Main>
+          {/* results */}
+          {results.length > 0 && (
+            <Grid>
+              {results.map((note) => (
+                <NoteCard key={note.id} note={note} />
+              ))}
+            </Grid>
+          )}
+        </ResultsWrapper>
+      </Main>
+    </>
   );
 }

@@ -22,42 +22,43 @@ export default function LandingPage() {
   } = LANDING_PAGE_TEXTS[lang];
 
   return (
-    <Main>
+    <>
       <Navbar />
+      <Main>
+        <SearchSection>
+          <SearchBar />
+          <CategoryFilter />
+        </SearchSection>
 
-      <SearchSection>
-        <SearchBar />
-        <CategoryFilter />
-      </SearchSection>
+        <Heading>{appDefinition}</Heading>
 
-      <Heading>{appDefinition}</Heading>
+        <S.ContentWrapper>
+          <S.Description>
+            {noHassleMessage}
+            <S.Spacer />
+            {bounNotesDescription}
+          </S.Description>
+          <S.EmailInfo>{emailInfo}</S.EmailInfo>
+        </S.ContentWrapper>
 
-      <S.ContentWrapper>
-        <S.Description>
-          {noHassleMessage}
+        <S.ButtonSection>
+          {buttonDirective}
           <S.Spacer />
-          {bounNotesDescription}
-        </S.Description>
-        <S.EmailInfo>{emailInfo}</S.EmailInfo>
-      </S.ContentWrapper>
+          <S.Spacer />
+          <Link to="/login">
+            <S.LoginButton>{login}</S.LoginButton>
+          </Link>
+          <S.Spacer />
+          <S.Spacer />
+          <S.AccountText>{ifNoAccount}</S.AccountText>
+          <S.Spacer />
+          <Link to="/register">
+            <S.RegisterButton>{register}</S.RegisterButton>
+          </Link>
+        </S.ButtonSection>
 
-      <S.ButtonSection>
-        {buttonDirective}
-        <S.Spacer />
-        <S.Spacer />
-        <Link to="/login">
-          <S.LoginButton>{login}</S.LoginButton>
-        </Link>
-        <S.Spacer />
-        <S.Spacer />
-        <S.AccountText>{ifNoAccount}</S.AccountText>
-        <S.Spacer />
-        <Link to="/register">
-          <S.RegisterButton>{register}</S.RegisterButton>
-        </Link>
-      </S.ButtonSection>
-
-      <Footer />
-    </Main>
+        <Footer />
+      </Main>
+    </>
   );
 }

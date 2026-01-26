@@ -42,41 +42,43 @@ export default function MyNotesPage() {
   };
 
   return (
-    <Main>
+    <>
       <Navbar />
-      <NotesTabBarContainer>
-        <NotesTabBar
-          activateTab={activeTab}
-          onChange={(tab) => setActiveTab(tab)}
-        />
-      </NotesTabBarContainer>
+      <Main>
+        <NotesTabBarContainer>
+          <NotesTabBar
+            activateTab={activeTab}
+            onChange={(tab) => setActiveTab(tab)}
+          />
+        </NotesTabBarContainer>
 
-      {["purchased", "uploaded"].includes(activeTab) && !isEmpty && (
-        <Grid>
-          {notesToShow.map((note) => (
-            <NoteCard
-              key={note.id}
-              note={note}
-              onOpen={() => handleOpenNote(note.id)}
-            />
-          ))}
-        </Grid>
-      )}
+        {["purchased", "uploaded"].includes(activeTab) && !isEmpty && (
+          <Grid>
+            {notesToShow.map((note) => (
+              <NoteCard
+                key={note.id}
+                note={note}
+                onOpen={() => handleOpenNote(note.id)}
+              />
+            ))}
+          </Grid>
+        )}
 
-      {/* --- EMPTY STATE --- */}
-      {["purchased", "uploaded"].includes(activeTab) && isEmpty && (
-        <NoNotesWrapper>
-          <NoNotesText>
-            {activeTab === "purchased" ? noPurchaseYet : noUploadsYet}
-          </NoNotesText>
-          <EmptyIllustration src={OxNoUpload} alt="No notes yet" />
-          {activeTab === "uploaded" && (
-            <UploadNoteCTAButton onClick={() => navigate("/my-notes/upload")}>
-              {uploadFirstNote} <CirclePlus size={34} />
-            </UploadNoteCTAButton>
-          )}
-        </NoNotesWrapper>
-      )}
-    </Main>
+        {/* --- EMPTY STATE --- */}
+        {["purchased", "uploaded"].includes(activeTab) && isEmpty && (
+          <NoNotesWrapper>
+            <NoNotesText>
+              {activeTab === "purchased" ? noPurchaseYet : noUploadsYet}
+            </NoNotesText>
+            <EmptyIllustration src={OxNoUpload} alt="No notes yet" />
+            {activeTab === "uploaded" && (
+              <UploadNoteCTAButton onClick={() => navigate("/my-notes/upload")}>
+                {uploadFirstNote} <CirclePlus size={34} />
+              </UploadNoteCTAButton>
+            )}
+          </NoNotesWrapper>
+        )}
+      </Main>
+    </>
   );
 }

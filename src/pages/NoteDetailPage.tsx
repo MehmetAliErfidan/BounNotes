@@ -21,13 +21,15 @@ export default function NoteDetailPage() {
   };
 
   return (
-    <Main>
+    <>
       <Navbar />
-      <NoteDetailUI
-        note={note}
-        permissions={notePermissionsFromContext(context)}
-        onBuy={handleBuy}
-      />
-    </Main>
+      <Main>
+        <NoteDetailUI
+          note={note}
+          permissions={notePermissionsFromContext(context)}
+          onBuy={handleBuy}
+        />
+      </Main>
+    </>
   );
 }
