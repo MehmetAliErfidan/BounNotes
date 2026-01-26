@@ -30,24 +30,22 @@ export const Card = styled.div`
   }
 `;
 
-export const Label = styled.label`
-  font-size: 1.25rem;
+export const SectionHeader = styled.h3`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  font-size: 1.125rem;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.gray[800]};
 
-  display: flex;
-  align-items: center;
-  justify-content: center; /* yatay ortalama */
-  gap: 0.25rem;
-
-  text-align: center;
   margin-bottom: 0.5rem;
 
   svg {
     width: 16px;
     height: 16px;
     opacity: 0.7;
-    margin: 0 0.125rem;
+    flex-shrink: 0;
   }
 `;
 
