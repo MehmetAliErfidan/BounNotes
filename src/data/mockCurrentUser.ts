@@ -2,12 +2,15 @@ import type { CurrentUser } from "../config/user.types";
 
 export const mockCurrentUser: CurrentUser = {
   id: 1,
-  email: "mehmet@example.com",
+  email: "mehmet.erfidan@std.bogazici.edu.tr",
   username: "Mehmet",
   profile: {
     fullName: null,
     department: null,
-    university: null,
+    grade: null,
+    favoriteClass: null,
+    favoriteTeacher: null,
+    favoriteHangoutPlace: null,
     bio: null,
     avatarUrl: "",
   },
