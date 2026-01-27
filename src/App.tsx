@@ -11,6 +11,8 @@ import CheckoutPage from "./pages/CheckoutPage.tsx";
 import { store } from "./features/store.ts";
 import MyNotesPage from "./pages/MyNotesPage.tsx";
 import NoteUploadPage from "./pages/NoteUploadPage.tsx";
+import ProfilePage from "./pages/ProfilePage.tsx";
+import PublicProfilePage from "./pages/PublicProfilePage.tsx";
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
           <Route path="/note/:id/buy" element={<CheckoutPage />} />
           <Route path="/my-notes" element={<MyNotesPage />} />
           <Route path="/my-notes/upload" element={<NoteUploadPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/users/:username" element={<PublicProfilePage />} />
         </Route>
       </Routes>
     </Provider>
