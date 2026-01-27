@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import useOpenUserProfile from "../../hooks/useOpenUserProfile";
 import { NOTE_CARD_TEXTS } from "../../i18n/translations/notes/NoteCard";
 import { useLang } from "../../i18n";
 import type { NoteCardProps } from "../../config/note.types";
@@ -24,6 +25,7 @@ export default function NoteCard({ note, onOpen }: NoteCardProps) {
   const { lang } = useLang();
   const { seeDetailText } = NOTE_CARD_TEXTS[lang];
   const navigate = useNavigate();
+  const openUserProfile = useOpenUserProfile();
 
   const handleOpen = () => {
     if (onOpen) {
@@ -45,7 +47,7 @@ export default function NoteCard({ note, onOpen }: NoteCardProps) {
       </MetaWrapper>
 
       <Bottom>
-        <UserRow>
+        <UserRow onClick={() => openUserProfile(note.owner.username)}>
           <Avatar>{note.owner.username[0]?.toUpperCase() ?? "?"}</Avatar>
           <Username>{note.owner.username}</Username>
         </UserRow>

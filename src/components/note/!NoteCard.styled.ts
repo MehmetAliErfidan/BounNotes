@@ -12,7 +12,9 @@ export const Card = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 
   &:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
@@ -63,6 +65,11 @@ export const UserRow = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.85;
+  }
 `;
 
 export const Avatar = styled.div`
@@ -124,7 +131,9 @@ export const CTAButton = styled.button`
   border: none;
   cursor: pointer;
 
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover {
     background-color: #1d4ed8;
