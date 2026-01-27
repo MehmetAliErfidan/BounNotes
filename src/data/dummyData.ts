@@ -1,4 +1,5 @@
 import type { NoteWithContext } from "../config/note.types";
+import type { CurrentUser } from "../config/user.types";
 
 export const dummyData: NoteWithContext[] = [
   {
@@ -67,3 +68,15 @@ export const dummyData: NoteWithContext[] = [
     context: { isOwner: false, isPurchased: true, isLiked: false },
   },
 ];
+
+export const mockCurrentUser: CurrentUser = {
+  id: 1,
+  email: "ali@example.com",
+  username: "Ali",
+  profile: {
+    fullName: null,
+    department: null,
+    university: null,
+    bio: null,
+  },
+};
