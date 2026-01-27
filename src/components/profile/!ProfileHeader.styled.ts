@@ -13,7 +13,7 @@ export const TextBlock = styled.div`
 `;
 
 export const Username = styled.h1`
-  font-size: 1.25rem;
+  font-size: 2.25rem;
   font-weight: 600;
 `;
 
