@@ -28,6 +28,10 @@ export default function UserMenuPortal({
     left: 0,
   });
 
+  const handleProfile = () => {
+    return navigate("/profile");
+  };
+
   const handleMyNotes = () => {
     return navigate("/my-notes");
   };
@@ -92,7 +96,7 @@ export default function UserMenuPortal({
       $left={pos.left}
       role="menu"
     >
-      <MenuItem className="flex gap-3" type="button">
+      <MenuItem className="flex gap-3" type="button" onClick={handleProfile}>
         <User size={16} /> {MyProfile}
       </MenuItem>
       <MenuItem className="flex gap-3" type="button" onClick={handleMyNotes}>
