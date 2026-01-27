@@ -11,7 +11,7 @@ import PdfUpload from "../components/pdf/PDFUpload.tsx";
 import { useLang } from "../i18n/index.tsx";
 import { CREATE_NOTE_TEXTS } from "../i18n/translations/notes/CreateNote.ts";
 
-export default function NoteUpload() {
+export default function NoteUploadPage() {
   const { lang } = useLang();
   const { uploadText, headerText, headerExplanation } = CREATE_NOTE_TEXTS[lang];
 
