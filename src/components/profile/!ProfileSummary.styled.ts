@@ -2,12 +2,25 @@ import styled from "styled-components";
 
 export const Wrapper = styled.section`
   margin-top: 1.5rem;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
 `;
 
 export const Header = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+`;
+
+export const TitleRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+`;
+
+export const Title = styled.h2`
+  font-size: 2rem;
+  font-weight: 600;
+  color: #111827; /* gray-900 */
 `;
 
 export const EditButton = styled.button`
@@ -16,6 +29,11 @@ export const EditButton = styled.button`
   border: none;
   color: #2563eb;
   cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const EmptyText = styled.p`
