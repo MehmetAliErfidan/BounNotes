@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { NOTE_DETAIL_TEXTS } from "../../../i18n/translations/notes/NoteDetail";
 import { useLang } from "../../../i18n";
-
+import useOpenUserProfile from "../../../hooks/useOpenUserProfile";
 import Tooltip from "../../tooltip/Tooltip";
 import type { Note } from "../../../config/note.types";
 
@@ -36,11 +36,12 @@ export default function UserActionsRow({
   const { lang } = useLang();
   const { download, edit, liked, like, dislike, disliked, makeComment } =
     NOTE_DETAIL_TEXTS[lang];
+  const openUserProfile = useOpenUserProfile();
 
   return (
     <S.UserActionsRow>
       {showUserInfo && (
-        <S.UserInfo>
+        <S.UserInfo onClick={() => openUserProfile(note.owner.username)}>
           <S.Avatar>{note.owner.username[0]?.toUpperCase() ?? "?"}</S.Avatar>
           <S.Username>{note.owner.username}</S.Username>
         </S.UserInfo>

@@ -12,6 +12,11 @@ export const UserInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.85;
+  }
 `;
 
 export const Avatar = styled.div`
