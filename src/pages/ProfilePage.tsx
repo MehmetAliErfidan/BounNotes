@@ -20,27 +20,28 @@ export default function ProfilePage() {
   };
 
   return (
-    <Main>
+    <>
       <Navbar />
+      <Main>
+        <ProfileHeader user={user} />
 
-      <ProfileHeader user={user} />
+        {!isEditing && (
+          <ProfileSummary
+            profile={user.profile}
+            onEdit={() => setIsEditing(true)}
+          />
+        )}
 
-      {!isEditing && (
-        <ProfileSummary
-          profile={user.profile}
-          onEdit={() => setIsEditing(true)}
-        />
-      )}
+        {isEditing && (
+          <ProfileEditForm
+            initialProfile={user.profile}
+            onCancel={() => setIsEditing(false)}
+            onSave={handleSave}
+          />
+        )}
 
-      {isEditing && (
-        <ProfileEditForm
-          initialProfile={user.profile}
-          onCancel={() => setIsEditing(false)}
-          onSave={handleSave}
-        />
-      )}
-
-      <button onClick={() => navigate("/my-notes")}>Notlarım</button>
-    </Main>
+        <button onClick={() => navigate("/my-notes")}>Notlarım</button>
+      </Main>
+    </>
   );
 }
