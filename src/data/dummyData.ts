@@ -76,7 +76,11 @@ export const mockCurrentUser: CurrentUser = {
   profile: {
     fullName: null,
     department: null,
-    university: null,
+    grade: null,
+    favoriteClass: null,
+    favoriteTeacher: null,
+    favoriteHangoutPlace: null,
     bio: null,
+    avatarUrl: null,
   },
 };
