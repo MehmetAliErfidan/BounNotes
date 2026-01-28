@@ -9,7 +9,6 @@ export const Wrapper = styled.section`
 
 export const Textarea = styled.textarea`
   padding: 0.5rem;
-  font-size: 0.875rem;
   min-height: 80px;
   border: 1px solid;
   border-radius: 0.25rem;
