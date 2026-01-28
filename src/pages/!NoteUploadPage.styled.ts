@@ -73,6 +73,7 @@ export const FlexContainer = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
+    gap: 1.25rem;
   }
 `;
 
@@ -81,11 +82,20 @@ export const FileUploadContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    flex: none;
+    width: 100%;
+  }
 `;
 
 export const NoteFormWrapper = styled.div`
   flex: 1;
   min-width: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const PageContainer = styled.div`
@@ -98,6 +108,10 @@ export const ContentContainer = styled.div`
   width: 100%;
   max-width: 1100px;
   padding: 0 1rem;
+
+  @media (max-width: 768px) {
+    padding: 0 1.25rem; /* mobilde daha ferah */
+  }
 `;
 
 export const SubmitArea = styled.div`
