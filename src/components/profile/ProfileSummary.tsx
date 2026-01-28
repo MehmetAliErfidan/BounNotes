@@ -2,7 +2,7 @@ import type { UserProfile } from "../../config/user.types";
 import { UserPen } from "lucide-react";
 import * as S from "./!ProfileSummary.styled";
 import Tooltip from "../tooltip/Tooltip";
-import { PROFILE_SUMMARY_TEXTS } from "../../i18n/translations/profile/user-profile/Profilesummary";
+import { PROFILE_SUMMARY_TEXTS } from "../../i18n/translations/profile/user-profile/ProfileSummary";
 import { useLang } from "../../i18n";
 
 type Props = {
@@ -12,7 +12,18 @@ type Props = {
 
 export default function ProfileSummary({ profile, onEdit }: Props) {
   const { lang } = useLang();
-  const { profileInformation, editProfile } = PROFILE_SUMMARY_TEXTS[lang];
+  const {
+    profileInformation,
+    editProfile,
+    noInfoYet,
+    fullName,
+    department,
+    grade,
+    favoriteCourse,
+    favoriteProfessor,
+    favoritePlace,
+    aboutMe,
+  } = PROFILE_SUMMARY_TEXTS[lang];
 
   const isEmpty =
     !profile ||
@@ -38,22 +49,51 @@ export default function ProfileSummary({ profile, onEdit }: Props) {
       </S.Header>
 
       {isEmpty ? (
-        <S.EmptyText>Henüz profil bilgisi eklenmedi.</S.EmptyText>
+        <S.EmptyText>{noInfoYet}</S.EmptyText>
       ) : (
         <S.List>
-          {profile?.fullName && <li>Ad Soyad: {profile.fullName}</li>}
-          {profile?.department && <li>Bölüm: {profile.department}</li>}
-          {profile?.grade && <li>Sınıf: {profile.grade}</li>}
+          {profile?.fullName && (
+            <li>
+              <span className="label">{fullName}</span>
+              <span className="value">{profile.fullName}</span>
+            </li>
+          )}
+          {profile?.department && (
+            <li>
+              <span className="label">{department}</span>
+              <span className="value">{profile.department}</span>
+            </li>
+          )}
+          {profile?.grade && (
+            <li>
+              <span className="label">{grade}</span>
+              <span className="value">{profile.grade}</span>
+            </li>
+          )}
           {profile?.favoriteClass && (
-            <li>Favori Ders: {profile.favoriteClass}</li>
+            <li>
+              <span className="label">{favoriteCourse}</span>
+              <span className="value">{profile.favoriteClass}</span>
+            </li>
           )}
           {profile?.favoriteTeacher && (
-            <li>Favori Hoca: {profile.favoriteTeacher}</li>
+            <li>
+              <span className="label">{favoriteProfessor}</span>
+              <span className="value">{profile.favoriteTeacher}</span>
+            </li>
           )}
           {profile?.favoriteHangoutPlace && (
-            <li>Kampüste Takılma Mekanı: {profile.favoriteHangoutPlace}</li>
+            <li>
+              <span className="label">{favoritePlace}</span>
+              <span className="value">{profile.favoriteHangoutPlace}</span>
+            </li>
           )}
-          {profile?.bio && <li>Hakkımda: {profile.bio}</li>}
+          {profile?.bio && (
+            <li>
+              <span className="label">{aboutMe}:</span>
+              <span className="value">{profile.bio}</span>
+            </li>
+          )}
         </S.List>
       )}
     </S.Wrapper>
