@@ -4,6 +4,7 @@ export const Wrapper = styled.section`
   margin-top: 1.5rem;
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
+  text-align: left;
 `;
 
 export const Header = styled.div`
@@ -45,5 +46,33 @@ export const EmptyText = styled.p`
 export const List = styled.ul`
   margin-top: 0.75rem;
   font-size: 0.875rem;
-  line-height: 1.6;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  li {
+    margin-left: 0.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+
+  .label {
+    min-width: 140px;
+    color: #6b7280;
+    font-weight: 500;
+  }
+
+  .value {
+    color: #111827;
+    max-width: 420px;
+    word-break: break-word;
+  }
 `;
