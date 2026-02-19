@@ -16,7 +16,6 @@ import {
   Avatar,
   Username,
   RatingPriceRow,
-  Rating,
   Price,
   CTAButton,
 } from "./!NoteCard.styled";
@@ -53,7 +52,6 @@ export default function NoteCard({ note, onOpen }: NoteCardProps) {
         </UserRow>
 
         <RatingPriceRow>
-          <Rating>{note.stats.rating} / 5</Rating>
           <Price>{note.price}</Price>
         </RatingPriceRow>
 

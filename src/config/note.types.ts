@@ -15,7 +15,6 @@ export type Note = {
   };
 
   stats: {
-    rating: number;
     likeCount: number;
     dislikeCount: number;
   };
