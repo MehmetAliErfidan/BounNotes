@@ -9,13 +9,16 @@ import { findNoteRowById } from "../notes/notes.repository";
 
 import { mapReactionRowToItem } from "./reactions.mapper";
 
-import type { NoteReactionItem, ReactionType } from "./reactions.types";
-import { resolveSoa } from "dns";
+import type { ReactionType } from "./reactions.types";
+import { requireAuth } from "../../../src/middlewares/auth.middleware";
 
 const validReactions: ReactionType[] = ["like", "dislike"];
 const reactionsRouter = Router();
 
-reactionsRouter.post("/note/:noteId", async (req, res) => {
+reactionsRouter.post("/note/:noteId", requireAuth, async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
   try {
     const noteId = Number(req.params.noteId);
     if (!Number.isInteger(noteId)) {
@@ -45,10 +48,9 @@ reactionsRouter.post("/note/:noteId", async (req, res) => {
       });
     }
 
-    // TODO: replace "userId: 1" with authenticated userId
     const reactionRow = await setReaction({
       noteId,
-      userId: 1,
+      userId: req.user!.id,
       reaction: safeReaction as ReactionType,
     });
     const reactionItem = mapReactionRowToItem(reactionRow);
@@ -62,8 +64,11 @@ reactionsRouter.post("/note/:noteId", async (req, res) => {
   }
 });
 
-reactionsRouter.delete("/note/:noteId", async (req, res) => {
+reactionsRouter.delete("/note/:noteId", requireAuth, async (req, res) => {
   try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     const noteId = Number(req.params.noteId);
     if (!Number.isInteger(noteId)) {
       return res.status(400).json({
@@ -78,8 +83,10 @@ reactionsRouter.delete("/note/:noteId", async (req, res) => {
         .status(404)
         .json({ error: "NOTE_NOT_FOUND", message: "Note not found" });
     }
-    // TODO: replace "1" with authenticated userId
-    const deleteReaction = await deleteReactionByNoteAndUser(noteId, 1);
+    const deleteReaction = await deleteReactionByNoteAndUser(
+      noteId,
+      req.user!.id,
+    );
     if (!deleteReaction) {
       return res
         .status(404)

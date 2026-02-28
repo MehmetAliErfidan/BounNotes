@@ -11,6 +11,7 @@ import {
   mapNoteRowToNoteListItem,
 } from "./notes.mapper";
 import { NOTE_RULES } from "../../config/note.rules";
+import { requireAuth } from "../../middlewares/auth.middleware";
 
 const notesRouter = Router();
 const VALID_TERMS = new Set(["spring", "summer", "fall"]);
@@ -46,7 +47,10 @@ notesRouter.get("/:id", async (req, res) => {
   }
 });
 
-notesRouter.post("/", async (req, res) => {
+notesRouter.post("/", requireAuth, async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
   const { title, course, term, year, teacher, description, price } =
     req.body ?? {};
 
@@ -95,7 +99,7 @@ notesRouter.post("/", async (req, res) => {
 
   try {
     const noteRow = await createNote({
-      ownerId: 1, // Temporary until auth is implemented.
+      ownerId: req.user.id,
       title: safeTitle,
       course: safeCourse,
       term: safeTerm as "spring" | "summer" | "fall",
@@ -113,8 +117,11 @@ notesRouter.post("/", async (req, res) => {
   }
 });
 
-notesRouter.patch("/:id", async (req, res) => {
+notesRouter.patch("/:id", requireAuth, async (req, res) => {
   try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     const id = Number(req.params.id);
     if (!Number.isInteger(id)) {
       return res.status(400).json({ error: "Id must be a number" });
@@ -123,6 +130,10 @@ notesRouter.patch("/:id", async (req, res) => {
 
     if (!existingNoteRow) {
       return res.status(404).json({ error: "Note not found" });
+    }
+
+    if (existingNoteRow.owner_id !== req.user.id) {
+      return res.status(403).json({ message: "You are not the owner" });
     }
 
     const body = req.body ?? {};
@@ -297,14 +308,24 @@ notesRouter.patch("/:id", async (req, res) => {
   }
 });
 
-notesRouter.delete("/:id", async (req, res) => {
+notesRouter.delete("/:id", requireAuth, async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
   const id = Number(req.params.id);
   if (!Number.isInteger(id) || id <= 0) {
     return res.status(400).json({ error: "Invalid id parameter" });
   }
 
   try {
-    // TODO: Auth control to implement
+    const noteRow = await findNoteRowById(id);
+    if (!noteRow) {
+      return res.status(404).json({ message: "Note not found" });
+    }
+
+    if (noteRow.owner_id !== req.user.id) {
+      return res.status(403).json({ message: "You are not the owner" });
+    }
 
     const delistNote = await delistNoteById(id);
     if (!delistNote) {
