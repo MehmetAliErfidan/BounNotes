@@ -14,4 +14,6 @@ export const env = {
   DB_NAME: required("DB_NAME"),
   DB_USER: required("DB_USER"),
   DB_PASSWORD: required("DB_PASSWORD"),
+  JWT_SECRET: required("JWT_SECRET"),
+  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "7d",
 };
