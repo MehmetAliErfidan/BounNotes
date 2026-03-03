@@ -9,6 +9,9 @@ export const LOGIN_PAGE = {
     login: "Giriş Yapın",
     dontHaveAccountText: "Hesabınız yok mu?",
     registerLink: "Kayıt Olun",
+    invalidCredentials: "E-posta veya şifre hatalı.",
+    loginFailed: "Giriş yapılamadı. Lütfen tekrar deneyin.",
+    rememberMe: "Beni hatırla",
   },
   en: {
     errorMessage: `Only email addresses ending with “${ALLOWED_DOMAIN}” are allowed.`,
@@ -18,5 +21,8 @@ export const LOGIN_PAGE = {
     login: "Login",
     dontHaveAccountText: "Don't have an account?",
     registerLink: "Register",
+    invalidCredentials: "Invalid email or password.",
+    loginFailed: "Login failed. Please try again.",
+    rememberMe: "Remember me",
   },
 };
