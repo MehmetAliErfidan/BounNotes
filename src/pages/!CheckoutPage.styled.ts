@@ -42,6 +42,12 @@ export const BackMessage = styled.span`
   }
 `;
 
+export const PurchaseErrorText = styled.p`
+  margin: 0;
+  font-size: 0.875rem;
+  color: ${(p) => p.theme.colors.red[500]};
+`;
+
 export const CheckoutActions = styled.div`
   width: 20rem;
   border: 1px solid ${(p) => p.theme.colors.gray[300]};

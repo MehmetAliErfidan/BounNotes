@@ -1,49 +1,115 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import NoteDetailUI from "../components/note/NoteDetailUI";
-import { dummyData } from "../data/dummyData";
 import { Main } from "../styles/GlobalStyles";
+import { buildOptionalAuthHeaders } from "../features/auth/authRequest";
+import type { Note, NoteWithContext } from "../config/note.types";
 import {
   CheckoutLayout,
   CheckoutContent,
   ActionWrapper,
   BackMessage,
+  PurchaseErrorText,
 } from "./!CheckoutPage.styled";
 import Navbar from "../components/common/navbar/Navbar";
 import CheckoutActions from "../components/buy/CheckoutActions";
 import { CHECKOUT_PAGE_TEXTS } from "../i18n/translations/pages/Checkout";
 import { useLang } from "../i18n";
 import { notePermissionsFromContext } from "../components/note/notePermissionsFromContext";
+import { API_BASE_URL } from "../config/api";
 
 export default function CheckoutPage() {
   const { lang } = useLang();
-  const { goBack } = CHECKOUT_PAGE_TEXTS[lang];
-
+  const { goBack, noteNotFound, loadingText } = CHECKOUT_PAGE_TEXTS[lang];
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+
+  const [note, setNote] = useState<Note | null>(null);
+  const [context, setContext] = useState<NoteWithContext["context"] | null>(
+    null,
+  );
+  const [loading, setLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [isPurchasing, setIsPurchasing] = useState(false);
+  const [purchaseError, setPurchaseError] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadNote = async () => {
+      if (!id) {
+        if (!isMounted) return;
+        setHasError(true);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setHasError(false);
+        const response = await fetch(`${API_BASE_URL}/api/notes/${id}`, {
+          headers: buildOptionalAuthHeaders(),
+        });
+        if (!response.ok) {
+          if (!isMounted) return;
+          setHasError(true);
+          return;
+        }
+
+        const data = (await response.json()) as NoteWithContext;
+        if (!isMounted) return;
+
+        setNote(data.note);
+        setContext(data.context);
+      } catch {
+        if (!isMounted) return;
+        setHasError(true);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    loadNote();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
 
   const handleGoBack = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
-    } else {
-      navigate("/search");
+    if (window.history.length > 1) navigate(-1);
+    else navigate("/search");
+  };
+
+  const handlePurchase = async () => {
+    if (isPurchasing) return;
+
+    try {
+      if (!id) return;
+      setIsPurchasing(true);
+      setPurchaseError("");
+      const res = await fetch(`${API_BASE_URL}/api/notes/${id}/purchase`, {
+        method: "POST",
+        headers: buildOptionalAuthHeaders(),
+      });
+      if (!res.ok) {
+        setPurchaseError("Purchase failed.");
+        return;
+      }
+      navigate("/my-notes");
+    } catch {
+      setPurchaseError("Purchase failed.");
+    } finally {
+      setIsPurchasing(false);
     }
   };
 
-  const { id } = useParams<{ id: string }>();
-  const item = dummyData.find((n) => n.note.id === Number(id));
-
-  if (!item) {
-    return <p>Note not found.</p>;
-  }
-
-  const { note, context } = item;
+  if (loading) return <p>{loadingText}</p>;
+  if (hasError || !note || !context) return <p>{noteNotFound}</p>;
 
   const basePermissions = notePermissionsFromContext(context);
-
-  const checkoutPermissions = {
-    ...basePermissions,
-    canBuy: false,
-  };
+  const checkoutPermissions = { ...basePermissions, canBuy: false };
 
   return (
     <Main>
@@ -55,10 +121,12 @@ export default function CheckoutPage() {
         <ActionWrapper>
           <CheckoutActions
             note={note}
-            onProceed={() => {
-              console.log("Payment flow will start");
-            }}
+            onProceed={handlePurchase}
+            isSubmitting={isPurchasing}
           />
+          {purchaseError ? (
+            <PurchaseErrorText>{purchaseError}</PurchaseErrorText>
+          ) : null}
           <BackMessage onClick={handleGoBack}>
             <FaArrowLeftLong /> {goBack}
           </BackMessage>
