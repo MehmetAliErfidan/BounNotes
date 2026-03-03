@@ -2,19 +2,20 @@ import { useRef, useState } from "react";
 import UserAvatar from "./UserAvatar";
 import UserMenuPortal from "./UserMenuPortal";
 import LanguageSwitcher from "./LanguageSwitcher";
-import { useAppDispatch } from "../../../features/hooks";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../features/hooks";
 import { clearUser } from "../../../features/auth/authSlice";
+import { clearAccessToken } from "../../../features/auth/authStorage";
 
 export default function UserActions() {
   const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const user = useAppSelector((state) => state.auth.user);
 
   const avatarBtnRef = useRef<HTMLButtonElement | null>(null);
-  //Mock user data until backend
-  const mockUser = {
-    username: "Mehmet",
-    avatarUrl: "",
-  };
+  const username = user?.username ?? "User";
+  const avatarUrl = user?.avatarUrl ?? "";
 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
@@ -29,10 +30,7 @@ export default function UserActions() {
         }}
         type="button"
       >
-        <UserAvatar
-          username={mockUser.username}
-          avatarUrl={mockUser.avatarUrl}
-        />
+        <UserAvatar username={username} avatarUrl={avatarUrl} />
       </button>
 
       <UserMenuPortal
@@ -40,8 +38,10 @@ export default function UserActions() {
         open={open}
         onClose={() => setOpen(false)}
         onLogout={() => {
+          clearAccessToken();
           dispatch(clearUser());
           setOpen(false);
+          navigate("/login");
         }}
       />
       <LanguageSwitcher />
