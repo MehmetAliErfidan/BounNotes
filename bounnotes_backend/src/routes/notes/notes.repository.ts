@@ -27,6 +27,101 @@ export async function findAllNotesRows(): Promise<NoteListRow[]> {
   return rows;
 }
 
+export async function findUploadedNotesRowsByOwnerId(
+  ownerId: number,
+): Promise<NoteListRow[]> {
+  const { rows } = await pool.query<NoteListRow>(
+    `
+    SELECT
+      n.id,
+      n.title,
+      n.course,
+      n.term,
+      n.year,
+      n.teacher,
+      n.description,
+      n.price,
+      n.created_at,
+      u.id AS owner_id,
+      u.username AS owner_username,
+      n.like_count,
+      n.dislike_count
+    FROM notes n
+    JOIN users u ON u.id = n.owner_id
+    WHERE n.owner_id = $1
+      AND n.is_active = true
+    ORDER BY n.created_at DESC
+    `,
+    [ownerId],
+  );
+
+  return rows;
+}
+
+export async function createPurchase(
+  noteId: number,
+  buyerId: number,
+): Promise<void> {
+  await pool.query(
+    `
+    INSERT INTO note_purchases (note_id, buyer_id, price_paid, status)
+    SELECT n.id, $2, n.price, 'completed'
+    FROM notes n
+    WHERE n.id = $1
+    ON CONFLICT (note_id, buyer_id) DO NOTHING
+    `,
+    [noteId, buyerId],
+  );
+}
+
+export async function hasUserPurchasedNote(
+  noteId: number,
+  buyerId: number,
+): Promise<boolean> {
+  const { rows } = await pool.query<{ exists: number }>(
+    `
+    SELECT 1 AS exists
+    FROM note_purchases
+    WHERE note_id = $1 AND buyer_id = $2
+    LIMIT 1
+    `,
+    [noteId, buyerId],
+  );
+  return Boolean(rows[0]);
+}
+
+export async function findPurchasedNotesRowsByBuyerId(
+  buyerId: number,
+): Promise<NoteListRow[]> {
+  const { rows } = await pool.query<NoteListRow>(
+    `
+    SELECT
+      n.id,
+      n.title,
+      n.course,
+      n.term,
+      n.year,
+      n.teacher,
+      n.description,
+      n.price,
+      n.created_at,
+      u.id AS owner_id,
+      u.username AS owner_username,
+      n.like_count,
+      n.dislike_count
+    FROM note_purchases np
+    JOIN notes n ON n.id = np.note_id
+    JOIN users u ON u.id = n.owner_id
+    WHERE np.buyer_id = $1
+      AND n.is_active = true
+    ORDER BY np.purchased_at DESC
+    `,
+    [buyerId],
+  );
+
+  return rows;
+}
+
 export async function findNoteRowById(id: number): Promise<NoteListRow | null> {
   const { rows } = await pool.query<NoteListRow>(
     `
