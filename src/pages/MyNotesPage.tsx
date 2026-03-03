@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CirclePlus } from "lucide-react";
 import { MY_NOTE_PAGE_TEXTS } from "../i18n/translations/pages/MyNotes";
 import { useLang } from "../i18n";
@@ -16,23 +16,68 @@ import {
 import OxNoUpload from "../assets/illustrations/no-uploads-yet/OxNoUpload.jpg";
 import { Main } from "../styles/GlobalStyles";
 import type { NotesTab } from "../components/note/my-notes/NotesTabBar.types";
-import { dummyData } from "../data/dummyData";
 import NoteCard from "../components/note/NoteCard";
+import { API_BASE_URL } from "../config/api";
+import { buildOptionalAuthHeaders } from "../features/auth/authRequest";
+import type { Note } from "../config/note.types";
 
 export default function MyNotesPage() {
   const navigate = useNavigate();
   const { lang } = useLang();
-  const { noPurchaseYet, noUploadsYet, uploadFirstNote } =
+  const { noPurchaseYet, noUploadsYet, uploadFirstNote, emptyStateImageAlt } =
     MY_NOTE_PAGE_TEXTS[lang];
 
   const [activeTab, setActiveTab] = useState<NotesTab>("purchased");
+  const [uploadedNotes, setUploadedNotes] = useState<Note[]>([]);
+  const [purchasedNotes, setPurchasedNotes] = useState<Note[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
-  const purchasedNotes = dummyData
-    .filter((x) => x.context.isPurchased)
-    .map((x) => x.note);
-  const uploadedNotes = dummyData
-    .filter((x) => x.context.isOwner)
-    .map((x) => x.note);
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadUploadedNotes = async () => {
+      try {
+        setIsLoading(true);
+        setHasError(false);
+
+        const res = await fetch(`${API_BASE_URL}/api/notes/me/uploaded`, {
+          headers: buildOptionalAuthHeaders(),
+        });
+
+        const res2 = await fetch(`${API_BASE_URL}/api/notes/me/purchased`, {
+          headers: buildOptionalAuthHeaders(),
+        });
+
+        if (!res.ok) {
+          if (isMounted) setHasError(true);
+          return;
+        }
+
+        if (!res2.ok) {
+          if (isMounted) setHasError(true);
+          return;
+        }
+
+        const purchasedData = (await res2.json()) as Note[];
+        if (isMounted) setPurchasedNotes(purchasedData);
+
+        const data = (await res.json()) as Note[];
+        if (isMounted) setUploadedNotes(data);
+      } catch {
+        if (isMounted) setHasError(true);
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    };
+
+    loadUploadedNotes();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const notesToShow =
     activeTab === "purchased" ? purchasedNotes : uploadedNotes;
   const isEmpty = notesToShow.length === 0;
@@ -40,6 +85,9 @@ export default function MyNotesPage() {
   const handleOpenNote = (noteID: number) => {
     navigate(`/note/${noteID}`);
   };
+
+  if (isLoading) return <p>Loading...</p>;
+  if (hasError) return <p>Failed to load notes.</p>;
 
   return (
     <>
@@ -64,13 +112,12 @@ export default function MyNotesPage() {
           </Grid>
         )}
 
-        {/* --- EMPTY STATE --- */}
         {["purchased", "uploaded"].includes(activeTab) && isEmpty && (
           <NoNotesWrapper>
             <NoNotesText>
               {activeTab === "purchased" ? noPurchaseYet : noUploadsYet}
             </NoNotesText>
-            <EmptyIllustration src={OxNoUpload} alt="No notes yet" />
+            <EmptyIllustration src={OxNoUpload} alt={emptyStateImageAlt} />
             {activeTab === "uploaded" && (
               <UploadNoteCTAButton onClick={() => navigate("/my-notes/upload")}>
                 {uploadFirstNote} <CirclePlus size={34} />
