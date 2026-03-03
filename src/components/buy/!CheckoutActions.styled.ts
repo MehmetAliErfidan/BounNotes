@@ -51,6 +51,11 @@ export const CheckoutActionsBox = styled.div`
     transform: scale(0.97);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
   }
+
+  button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 `;
 
 export const TotalLabel = styled.span`

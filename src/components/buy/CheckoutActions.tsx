@@ -11,9 +11,14 @@ import { useLang } from "../../i18n";
 type Props = {
   note: Note;
   onProceed: () => void;
+  isSubmitting?: boolean;
 };
 
-export default function CheckoutActions({ note, onProceed }: Props) {
+export default function CheckoutActions({
+  note,
+  onProceed,
+  isSubmitting = false,
+}: Props) {
   const { lang } = useLang();
   const { checkoutSummary, digitalProduct, cost, initiatePayment, accessInfo } =
     CHECKOUT_ACTIONS_TEXTS[lang];
@@ -35,7 +40,9 @@ export default function CheckoutActions({ note, onProceed }: Props) {
       </p>
       <hr />
 
-      <button onClick={onProceed}>{initiatePayment}</button>
+      <button onClick={onProceed} disabled={isSubmitting}>
+        {initiatePayment}
+      </button>
       <SecurityInfo>
         <MdLockOutline />
         <span>{accessInfo}</span>
