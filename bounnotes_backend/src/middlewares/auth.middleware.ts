@@ -35,12 +35,42 @@ function extractBearerToken(authHeader: string | undefined): string | null {
   return token;
 }
 
-export function requireAuth(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
+export function requireAuth(req: Request, res: Response, next: NextFunction) {
   const token = extractBearerToken(req.headers.authorization);
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, env.JWT_SECRET);
+    if (!isAuthTokenPayload(decoded)) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const userId = Number(decoded.sub);
+    if (!Number.isInteger(userId) || userId <= 0) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    req.user = {
+      id: userId,
+      email: decoded.email,
+      username: decoded.username,
+    };
+
+    return next();
+  } catch {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+}
+
+export function optionalAuth(req: Request, res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return next();
+  }
+
+  const token = extractBearerToken(authHeader);
   if (!token) {
     return res.status(401).json({ error: "Unauthorized" });
   }
