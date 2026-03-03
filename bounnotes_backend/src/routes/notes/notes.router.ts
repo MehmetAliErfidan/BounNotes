@@ -1,6 +1,10 @@
 import { Router } from "express";
 import {
   findAllNotesRows,
+  findPurchasedNotesRowsByBuyerId,
+  findUploadedNotesRowsByOwnerId,
+  createPurchase,
+  hasUserPurchasedNote,
   findNoteRowById,
   createNote,
   updateNoteById,
@@ -11,7 +15,8 @@ import {
   mapNoteRowToNoteListItem,
 } from "./notes.mapper";
 import { NOTE_RULES } from "../../config/note.rules";
-import { requireAuth } from "../../middlewares/auth.middleware";
+import { requireAuth, optionalAuth } from "../../middlewares/auth.middleware";
+import { findReactionByNoteAndUser } from "../reactions/reactions.repository";
 
 const notesRouter = Router();
 const VALID_TERMS = new Set(["spring", "summer", "fall"]);
@@ -27,7 +32,65 @@ notesRouter.get("/", async (req, res) => {
   }
 });
 
-notesRouter.get("/:id", async (req, res) => {
+notesRouter.get("/me/uploaded", requireAuth, async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const rows = await findUploadedNotesRowsByOwnerId(req.user.id);
+    const notes = mapNoteRowsToNoteListItems(rows);
+    return res.json(notes);
+  } catch (error) {
+    console.error("Failed to fetch uploaded notes:", error);
+    return res.status(500).json({ error: "Failed to fetch uploaded notes" });
+  }
+});
+
+notesRouter.get("/me/purchased", requireAuth, async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "user not found" });
+    }
+    const rawPurchaseRow = await findPurchasedNotesRowsByBuyerId(req.user.id);
+    const purchaseRow = mapNoteRowsToNoteListItems(rawPurchaseRow);
+    return res.json(purchaseRow);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Failed to fetch purchased notes" });
+  }
+});
+
+notesRouter.post("/:id/purchase", requireAuth, async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "user not found" });
+    }
+
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ message: "id is invalid" });
+    }
+
+    const rawNote = await findNoteRowById(id);
+    if (!rawNote) {
+      return res.status(404).json({ message: "note not found" });
+    }
+
+    if (rawNote.owner_id === req.user.id) {
+      return res.status(403).json({ message: "You can not buy your own note" });
+    }
+
+    await createPurchase(id, req.user.id);
+
+    return res.status(200).json({ message: "Purchase successful" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Failed to purchase note" });
+  }
+});
+
+notesRouter.get("/:id", optionalAuth, async (req, res) => {
   const id = Number(req.params.id);
   if (isNaN(id)) {
     return res.status(400).json({ error: "invalid id" });
@@ -40,7 +103,20 @@ notesRouter.get("/:id", async (req, res) => {
       return res.status(404).json({ error: "note not found" });
     }
     const note = mapNoteRowToNoteListItem(noteRow);
-    return res.json(note);
+    let isLiked = false;
+    let isPurchased = false;
+    if (req.user) {
+      const myReaction = await findReactionByNoteAndUser(id, req.user.id);
+      isLiked = myReaction?.reaction === "like";
+      isPurchased = await hasUserPurchasedNote(id, req.user.id);
+    }
+
+    const context = {
+      isOwner: req.user ? req.user.id === noteRow.owner_id : false,
+      isPurchased: isPurchased,
+      isLiked,
+    };
+    return res.json({ note, context });
   } catch (error) {
     console.error("Failed to fetch note:", error);
     res.status(500).json({ error: "Failed to fetch note" });
