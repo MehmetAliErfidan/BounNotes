@@ -26,6 +26,23 @@ export const ErrorText = styled.p`
   font-size: 0.875rem;
 `;
 
+export const RememberMeRow = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  color: #4b5563;
+  font-size: 0.875rem;
+  cursor: pointer;
+`;
+
+export const RememberMeCheckbox = styled.input`
+  width: 1rem;
+  height: 1rem;
+  accent-color: #2563eb;
+  cursor: pointer;
+`;
+
 export const SubmitButton = styled.button<{
   $hasError: boolean;
   $hasEmail: boolean;

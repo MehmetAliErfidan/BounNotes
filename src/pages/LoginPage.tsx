@@ -8,6 +8,8 @@ import * as S from "./!LoginPage.styled";
 import { Form, Input, Header, HeaderText } from "../styles/GlobalStyles.ts";
 import { useAppDispatch } from "../features/hooks";
 import { setUser } from "../features/auth/authSlice";
+import { setAccessToken } from "../features/auth/authStorage.ts";
+import { loginRequest, parseLoginResponse } from "../features/auth/authApi.ts";
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
@@ -21,11 +23,15 @@ export default function LoginPage() {
     login,
     dontHaveAccountText,
     registerLink,
+    invalidCredentials,
+    loginFailed,
+    rememberMe,
   } = LOGIN_PAGE[lang];
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMeChecked, setRememberMeChecked] = useState(true);
 
   const validateEmail = (value: string) => {
     const allowedDomain = "std.bogazici.edu.tr";
@@ -43,18 +49,40 @@ export default function LoginPage() {
     validateEmail(value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    validateEmail(email);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    validateEmail(email);
+    try {
+      const res = await loginRequest(email, password);
 
-    // for now mock login, until backend login request is going to be here.
-    dispatch(
-      setUser({
-        username: email.split("@")[0],
-        avatarUrl: "",
-      }),
-    );
+      if (!res.ok) {
+        setError(invalidCredentials);
+        return;
+      }
 
-    navigate("/");
+      const data = await parseLoginResponse(res);
+      if (!data.token) {
+        setError(loginFailed);
+        return;
+      }
+      setAccessToken(data.token, rememberMeChecked);
+
+      dispatch(
+        setUser({
+          id: String(data.user.id),
+          username: data.user.username,
+          avatarUrl: "",
+        }),
+      );
+      navigate("/");
+    } catch {
+      setError(loginFailed);
+    }
   };
 
   return (
@@ -81,8 +109,18 @@ export default function LoginPage() {
           placeholder={passwordPlaceholder}
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={handlePasswordChange}
         />
+
+        <S.RememberMeRow htmlFor="remember-me">
+          <S.RememberMeCheckbox
+            id="remember-me"
+            type="checkbox"
+            checked={rememberMeChecked}
+            onChange={(e) => setRememberMeChecked(e.target.checked)}
+          />
+          <span>{rememberMe}</span>
+        </S.RememberMeRow>
 
         <S.SubmitButton
           disabled={!!error || !email || !password}
