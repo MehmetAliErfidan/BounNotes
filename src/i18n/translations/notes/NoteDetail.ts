@@ -1,6 +1,9 @@
 export const NOTE_DETAIL_TEXTS = {
   tr: {
     buyText: "Satın Al",
+    openPdf: "PDF Aç",
+    noAssetsUploadedYet: "Henüz asset yüklenmemiş.",
+    loadingAssets: "Assetler yükleniyor...",
     download: "İndir",
     edit: "Düzenle",
     deleteNote: "Notu Sil",
@@ -12,6 +15,9 @@ export const NOTE_DETAIL_TEXTS = {
   },
   en: {
     buyText: "Buy",
+    openPdf: "Open PDF",
+    noAssetsUploadedYet: "No assets uploaded yet",
+    loadingAssets: "Loading assets...",
     download: "Download",
     edit: "Edit",
     deleteNote: "Delete Note",

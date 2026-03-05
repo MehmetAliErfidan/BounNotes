@@ -114,7 +114,7 @@ export const Description = styled.p`
 
 /* PDF Preview */
 export const PdfPreview = styled.div`
-  height: 12rem;
+  min-height: 12rem;
   border-radius: 0.5rem;
 
   border: 1px dashed #d1d5db;
@@ -125,6 +125,73 @@ export const PdfPreview = styled.div`
 
   font-size: 0.875rem;
   color: #9ca3af;
+`;
+
+export const AssetList = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+`;
+
+export const AssetLink = styled.a`
+  color: #2563eb;
+  font-size: 0.875rem;
+  text-decoration: underline;
+`;
+
+export const AssetRow = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+`;
+
+export const AssetDeleteButton = styled.button`
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  color: #ef4444;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+`;
+
+export const ImageGrid = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.5rem;
+`;
+
+export const ImagePreview = styled.img`
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 0.375rem;
+  border: 1px solid #e5e7eb;
+`;
+
+export const ImageCard = styled.div`
+  position: relative;
+`;
+
+export const ImageDeleteButton = styled.button`
+  position: absolute;
+  top: 0.375rem;
+  right: 0.375rem;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #ef4444;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  padding: 0.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 /* Price & Buy */
