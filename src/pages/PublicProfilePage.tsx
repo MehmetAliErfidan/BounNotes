@@ -6,40 +6,106 @@ import { Main } from "../styles/GlobalStyles";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileSummary from "../components/profile/ProfileSummary";
 import * as S from "../components/profile/!PublicProfile.styled";
-import { dummyData } from "../data/dummyData";
-
+import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../config/api";
+import { buildOptionalAuthHeaders } from "../features/auth/authRequest";
+import type { Note } from "../config/note.types";
+import { useLang } from "../i18n";
+import { PUBLIC_PROFILE_TEXTS } from "../i18n/translations/pages/PublicProfile";
 /**
  * Route:
  * /users/:username
  */
 export default function PublicProfilePage() {
   const navigate = useNavigate();
+  const { username } = useParams<{ username: string }>();
+  const { lang } = useLang();
+  const { loadingText, profileLoadFailed, userNotFound, uploadedNotesTitle } =
+    PUBLIC_PROFILE_TEXTS[lang];
+
+  const [userNotes, setUserNotes] = useState<Note[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadUserNotes = async () => {
+      if (!username) {
+        if (!isMounted) return;
+        setUserNotes([]);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setHasError(false);
+
+        const res = await fetch(`${API_BASE_URL}/api/notes`, {
+          headers: buildOptionalAuthHeaders(),
+        });
+
+        if (!res.ok) {
+          if (isMounted) setHasError(true);
+          return;
+        }
+
+        const notes = (await res.json()) as Note[];
+        if (!isMounted) return;
+
+        const filtered = notes.filter(
+          (note) => note.owner.username === username,
+        );
+        setUserNotes(filtered);
+      } catch {
+        if (isMounted) setHasError(true);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    loadUserNotes();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [username]);
 
   const handleOpenNote = (noteId: number) => {
     navigate(`/note/${noteId}`);
   };
 
-  const { username } = useParams<{ username: string }>();
+  if (loading) {
+    return (
+      <Main>
+        <Navbar />
+        <S.EmptyState>{loadingText}</S.EmptyState>
+      </Main>
+    );
+  }
 
-  // ---- MOCK BACKEND LOGIC ----
-  // backend gelince:
-  // GET /users/:username
-  const userNotes = dummyData.filter(
-    (item) => item.note.owner.username === username,
-  );
+  if (hasError) {
+    return (
+      <Main>
+        <Navbar />
+        <S.EmptyState>{profileLoadFailed}</S.EmptyState>
+      </Main>
+    );
+  }
 
   if (!userNotes.length) {
     return (
       <Main>
         <Navbar />
-        <S.EmptyState>Kullanıcı bulunamadı.</S.EmptyState>
+        <S.EmptyState>{userNotFound}</S.EmptyState>
       </Main>
     );
   }
 
   const user = {
-    id: userNotes[0].note.owner.id,
-    username: userNotes[0].note.owner.username,
+    id: userNotes[0].owner.id,
+    username: userNotes[0].owner.username,
     email: "", // public profilde GÖSTERİLMEZ
     profile: {
       fullName: null,
@@ -54,20 +120,17 @@ export default function PublicProfilePage() {
     <>
       <Navbar />
       <Main>
-        {/* Kullanıcı vitrini */}
         <ProfileHeader user={user} />
 
-        {/* Profil bilgileri (sadece okuma) */}
         <ProfileSummary profile={user.profile} onEdit={() => {}} />
 
-        {/* Kullanıcının YÜKLEDİĞİ notlar */}
-        <S.SectionTitle>Yüklenen Notlar</S.SectionTitle>
+        <S.SectionTitle>{uploadedNotesTitle}</S.SectionTitle>
         <S.Grid>
-          {userNotes.map((item) => (
+          {userNotes.map((note) => (
             <NoteCard
-              key={item.note.id}
-              note={item.note}
-              onOpen={() => handleOpenNote(item.note.id)}
+              key={note.id}
+              note={note}
+              onOpen={() => handleOpenNote(note.id)}
             />
           ))}
         </S.Grid>
