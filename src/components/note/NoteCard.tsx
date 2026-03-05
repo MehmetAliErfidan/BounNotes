@@ -7,7 +7,9 @@ import type { NoteCardProps } from "../../config/note.types";
 import {
   Card,
   TitleWrapper,
+  TitleRow,
   Title,
+  DelistedBadge,
   MetaWrapper,
   Course,
   Teacher,
@@ -22,7 +24,7 @@ import {
 
 export default function NoteCard({ note, onOpen }: NoteCardProps) {
   const { lang } = useLang();
-  const { seeDetailText } = NOTE_CARD_TEXTS[lang];
+  const { seeDetailText, delistedBadge } = NOTE_CARD_TEXTS[lang];
   const navigate = useNavigate();
   const openUserProfile = useOpenUserProfile();
 
@@ -37,7 +39,10 @@ export default function NoteCard({ note, onOpen }: NoteCardProps) {
   return (
     <Card>
       <TitleWrapper>
-        <Title>{note.title}</Title>
+        <TitleRow>
+          <Title>{note.title}</Title>
+          {!note.isListed && <DelistedBadge>{delistedBadge}</DelistedBadge>}
+        </TitleRow>
       </TitleWrapper>
 
       <MetaWrapper>

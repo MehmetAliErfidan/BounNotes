@@ -26,6 +26,13 @@ export const TitleWrapper = styled.div`
   margin-bottom: 0.75rem;
 `;
 
+export const TitleRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+`;
+
 export const Title = styled.h2`
   font-size: 1rem;
   font-weight: 600;
@@ -36,6 +43,17 @@ export const Title = styled.h2`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+`;
+
+export const DelistedBadge = styled.span`
+  flex-shrink: 0;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #b91c1c;
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 9999px;
+  padding: 0.15rem 0.45rem;
 `;
 
 export const MetaWrapper = styled.div`
