@@ -1,4 +1,4 @@
-import { Images } from "lucide-react";
+import { ImagePlus } from "lucide-react";
 import * as S from "./!ImageUpload.styled";
 import { IMAGE_UPLOAD_TEXTS } from "../../i18n/translations/pdf/ImageUpload";
 import { useLang } from "../../i18n";
@@ -40,7 +40,7 @@ export default function ImageUpload({
     <S.Container>
       <S.Card>
         <S.SectionHeader>
-          <Images /> {previewTitleText} ({images.length} / {max})
+          <ImagePlus /> {previewTitleText} ({images.length} / {max})
         </S.SectionHeader>
         <S.ImagesRow $full={images.length === max}>
           {images.map((img, i) => (
