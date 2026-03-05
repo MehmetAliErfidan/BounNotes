@@ -18,6 +18,7 @@ export function mapNoteRowToNoteListItem(row: NoteListRow): NoteListItem {
     teacher: row.teacher,
     description: row.description,
     price: Number(row.price),
+    isListed: row.is_listed,
     createdAt: toIsoString(row.created_at),
     owner: {
       id: row.owner_id,
