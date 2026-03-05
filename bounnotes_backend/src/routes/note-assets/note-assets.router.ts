@@ -7,6 +7,8 @@ import {
   findAssetById,
   createNoteAsset,
   deleteNoteAssetById,
+  countAssetsByNoteAndType,
+  countCompletedPurchasesByNoteId,
 } from "./note-assets.repository";
 import type { AssetType, NoteAssetRow } from "./note-assets.types";
 import {
@@ -71,12 +73,17 @@ function hasImageSignatureOrSvg(buffer: Buffer): boolean {
     return true;
   }
 
-  const textHead = buffer.subarray(0, Math.min(buffer.length, 512)).toString("utf8");
+  const textHead = buffer
+    .subarray(0, Math.min(buffer.length, 512))
+    .toString("utf8");
   const trimmed = textHead.trimStart();
   return trimmed.startsWith("<svg") || trimmed.startsWith("<?xml");
 }
 
-function validateFileSignature(assetType: AssetType, fileBuffer: Buffer): boolean {
+function validateFileSignature(
+  assetType: AssetType,
+  fileBuffer: Buffer,
+): boolean {
   if (assetType === "pdf") {
     return hasPdfSignature(fileBuffer);
   }
@@ -414,6 +421,32 @@ notesAssetsRouter.delete("/asset/:assetId", requireAuth, async (req, res) => {
       });
     }
 
+    const purchaseCount = await countCompletedPurchasesByNoteId(noteId);
+    if (purchaseCount > 0) {
+      return res.status(409).json({
+        error: "ASSET_DELETE_BLOCKED",
+        message:
+          "Asset cannot be deleted after at least one completed purchase.",
+      });
+    }
+
+    if (assetRow.asset_type === "pdf") {
+      return res.status(409).json({
+        error: "PDF_DELETE_BLOCKED",
+        message: "PDF asset cannot be deleted. Please replace it instead.",
+      });
+    }
+
+    if (assetRow.asset_type === "image") {
+      const imageCount = await countAssetsByNoteAndType(noteId, "image");
+      if (imageCount <= 1) {
+        return res.status(409).json({
+          error: "MIN_IMAGE_REQUIRED",
+          message: "At least one image must remain for the note.",
+        });
+      }
+    }
+
     const deleteAsset = await deleteNoteAssetById(assetId);
     if (!deleteAsset) {
       return res.status(404).json({ error: "Asset not found" });
@@ -435,5 +468,108 @@ notesAssetsRouter.delete("/asset/:assetId", requireAuth, async (req, res) => {
     });
   }
 });
+
+notesAssetsRouter.put(
+  "/note/:noteId/pdf",
+  requireAuth,
+  express.raw({ type: "*/*", limit: MAX_UPLOAD_BYTES }),
+  async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const noteId = Number(req.params.noteId);
+      if (!Number.isInteger(noteId) || noteId <= 0) {
+        return res.status(400).json({
+          error: "INVALID_NOTE_ID",
+          message: "noteId must be a valid integer",
+        });
+      }
+      const noteRow = await findNoteRowById(noteId);
+      if (!noteRow) {
+        return res.status(404).json({ error: "Note not found" });
+      }
+
+      const ownerId = Number(noteRow.owner_id);
+      if (!Number.isInteger(ownerId) || ownerId !== req.user.id) {
+        return res.status(403).json({
+          error: "FORBIDDEN",
+          message: "Only the note owner can replace the PDF",
+        });
+      }
+
+      const mime = req.header("content-type") ?? "";
+      if (mime !== "application/pdf") {
+        return res.status(400).json({
+          error: "INVALID_CONTENT_TYPE",
+          message: "PDF uploads require Content-Type: application/pdf",
+        });
+      }
+      const fileBuffer = Buffer.isBuffer(req.body) ? req.body : Buffer.alloc(0);
+      if (fileBuffer.length === 0) {
+        return res.status(400).json({
+          error: "EMPTY_FILE",
+          message: "Request body must contain file bytes",
+        });
+      }
+
+      if (!validateFileSignature("pdf", fileBuffer)) {
+        return res.status(400).json({
+          error: "INVALID_FILE_SIGNATURE",
+          message: "Uploaded file is not a valid PDF binary",
+        });
+      }
+
+      const existingAssets = await findAssetsByNoteId(noteId);
+      const existingPdf = existingAssets.find((a) => a.asset_type === "pdf");
+
+      const rawFilename = req.header("x-file-name") ?? "asset.pdf";
+      let decodedName = rawFilename;
+      try {
+        decodedName = decodeURIComponent(rawFilename);
+      } catch {
+        decodedName = rawFilename;
+      }
+
+      const extension = buildFileExt("pdf", decodedName);
+      const fileName = `pdf-${Date.now()}-${randomUUID()}${extension}`;
+      const noteDir = path.join(UPLOAD_ROOT, String(noteId));
+      await fs.mkdir(noteDir, { recursive: true });
+
+      const absoluteFilePath = path.join(noteDir, fileName);
+      await fs.writeFile(absoluteFilePath, fileBuffer);
+
+      const fileUrl = `/uploads/note-assets/${noteId}/${fileName}`;
+      const createdRow = await createNoteAsset({
+        noteId,
+        assetType: "pdf",
+        fileUrl,
+        sortOrder: 0,
+      });
+
+      if (existingPdf) {
+        await deleteNoteAssetById(Number(existingPdf.id));
+        const oldAbsolutePath = resolveAbsoluteAssetFilePath(
+          existingPdf.file_url,
+        );
+        if (oldAbsolutePath) {
+          await fs.unlink(oldAbsolutePath).catch(() => undefined);
+        }
+      }
+      return res.status(200).json(mapNoteAssetRowToItem(createdRow));
+    } catch (err) {
+      console.error("Failed to replace PDF asset", {
+        userId: req.user?.id,
+        noteId: req.params.noteId,
+        error: err,
+      });
+      return res.status(500).json({
+        error: "Internal server error",
+        message: "Failed to replace PDF asset",
+      });
+    }
+  },
+);
 
 export default notesAssetsRouter;
