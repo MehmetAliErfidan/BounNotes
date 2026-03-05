@@ -3,13 +3,13 @@ export const CHECKOUT_PAGE_TEXTS = {
     goBack: "Geri dön",
     loadingText: "Yükleniyor...",
     noteNotFound: "Not bulunamadı.",
-    paymentFlowLog: "Ödeme akışı başlayacak",
+    purchaseFailed: "Satın alma işlemi başarısız oldu.",
   },
 
   en: {
     goBack: "Go back",
     loadingText: "Loading...",
     noteNotFound: "Note not found.",
-    paymentFlowLog: "Payment flow will start",
+    purchaseFailed: "Purchase failed.",
   },
 };

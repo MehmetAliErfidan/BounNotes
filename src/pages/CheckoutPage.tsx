@@ -21,7 +21,8 @@ import { API_BASE_URL } from "../config/api";
 
 export default function CheckoutPage() {
   const { lang } = useLang();
-  const { goBack, noteNotFound, loadingText } = CHECKOUT_PAGE_TEXTS[lang];
+  const { goBack, noteNotFound, loadingText, purchaseFailed } =
+    CHECKOUT_PAGE_TEXTS[lang];
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
@@ -94,12 +95,18 @@ export default function CheckoutPage() {
         headers: buildOptionalAuthHeaders(),
       });
       if (!res.ok) {
-        setPurchaseError("Purchase failed.");
+        const errorData = (await res.json().catch(() => null)) as {
+          message?: string;
+          error?: string;
+        } | null;
+        setPurchaseError(
+          errorData?.message || errorData?.error || purchaseFailed,
+        );
         return;
       }
       navigate("/my-notes");
     } catch {
-      setPurchaseError("Purchase failed.");
+      setPurchaseError(purchaseFailed);
     } finally {
       setIsPurchasing(false);
     }
@@ -111,6 +118,13 @@ export default function CheckoutPage() {
   const basePermissions = notePermissionsFromContext(context);
   const checkoutPermissions = { ...basePermissions, canBuy: false };
 
+  useEffect(() => {
+    if (!loading && note && !basePermissions.canBuy) {
+      navigate(`/note/${note.id}`, { replace: true });
+    }
+  }, [loading, note, basePermissions.canBuy, navigate]);
+
+  if (!basePermissions.canBuy) return null;
   return (
     <Main>
       <Navbar />
