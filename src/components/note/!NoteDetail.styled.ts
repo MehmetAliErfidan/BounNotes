@@ -39,6 +39,12 @@ export const DeleteButton = styled.button`
   &:hover {
     transform: translateY(-3px);
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+    transform: none;
+  }
 `;
 
 /* Content */
@@ -148,16 +154,6 @@ export const AssetRow = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-`;
-
-export const AssetDeleteButton = styled.button`
-  border: 1px solid #e5e7eb;
-  background-color: #ffffff;
-  color: #ef4444;
-  border-radius: 0.375rem;
-  padding: 0.25rem 0.5rem;
-  cursor: pointer;
-  font-size: 0.75rem;
 `;
 
 export const ImageGrid = styled.div`

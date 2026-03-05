@@ -24,7 +24,6 @@ import {
   AssetList,
   AssetLink,
   AssetRow,
-  AssetDeleteButton,
   ImageGrid,
   ImagePreview,
   ImageCard,
@@ -41,9 +40,15 @@ type Props = {
   assets?: NoteAsset[];
   assetUrls?: Record<number, string>;
   onBuy?: () => void;
+  onDeleteNote?: () => void;
   onDeleteAsset?: (assetId: number) => void;
-  // new (backend-proof)
   permissions?: NotePermissions;
+  onDownload?: () => void;
+  onLike?: () => void;
+  onDislike?: () => void;
+  isLiked?: boolean;
+  isDisliked?: boolean;
+  onEdit?: () => void;
 };
 
 export default function NoteDetailUI({
@@ -51,17 +56,44 @@ export default function NoteDetailUI({
   assets = [],
   assetUrls = {},
   onBuy,
+  onDeleteNote,
   onDeleteAsset,
   permissions,
+  onDownload,
+  onLike,
+  onDislike,
+  isLiked = false,
+  isDisliked = false,
+  onEdit,
 }: Props) {
   const { lang } = useLang();
   const {
     buyText,
     deleteNote,
+    alreadyDelisted,
     openPdf,
+    pdfPreviewPlaceholder,
     noAssetsUploadedYet,
     loadingAssets,
+    springTerm,
+    summerTerm,
+    fallTerm,
   } = NOTE_DETAIL_TEXTS[lang];
+
+  const parsedDate = new Date(note.createdAt);
+  const shortDate = Number.isNaN(parsedDate.getTime())
+    ? note.createdAt
+    : new Intl.DateTimeFormat(lang === "tr" ? "tr-TR" : "en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }).format(new Date(note.createdAt));
+
+  const termLabelMap = {
+    spring: springTerm,
+    summer: summerTerm,
+    fall: fallTerm,
+  } as const;
 
   if (!permissions) {
     throw new Error("NoteDetailUI requires permissions");
@@ -82,15 +114,21 @@ export default function NoteDetailUI({
   const imageAssets = assets
     .filter((a) => a.assetType === "image")
     .sort((a, b) => a.sortOrder - b.sortOrder);
-  const hasRenderableAssets = assets.some((asset) => Boolean(assetUrls[asset.id]));
+  const hasRenderableAssets = assets.some((asset) =>
+    Boolean(assetUrls[asset.id]),
+  );
 
   return (
     <Wrapper>
       <Header>
         <Title>{note.title}</Title>
         {canEdit && (
-          <Tooltip content={deleteNote}>
-            <DeleteButton>
+          <Tooltip content={note.isListed ? deleteNote : alreadyDelisted}>
+            <DeleteButton
+              type="button"
+              onClick={onDeleteNote}
+              disabled={!note.isListed}
+            >
               <Trash2 color="#ef4444" size={18} />
             </DeleteButton>
           </Tooltip>
@@ -107,10 +145,10 @@ export default function NoteDetailUI({
           <DateRow>
             <CourseDate>
               <CourseYear>{note.year}</CourseYear>
-              <CourseTerm>{note.term.toUpperCase()}</CourseTerm>
+              <CourseTerm>{termLabelMap[note.term] ?? note.term}</CourseTerm>
             </CourseDate>
             <Dot color="#d1d5db" size={16} />
-            <UploadDate>{note.createdAt}</UploadDate>
+            <UploadDate>{shortDate}</UploadDate>
           </DateRow>
           <Description>{note.description}</Description>
         </DescriptionBox>
@@ -122,9 +160,15 @@ export default function NoteDetailUI({
           canRate={canRate}
           showUserInfo={showUserInfo}
           canComment={canComment}
+          onDownload={onDownload}
+          onLike={onLike}
+          onDislike={onDislike}
+          isLiked={isLiked}
+          isDisliked={isDisliked}
+          onEdit={onEdit}
         />
 
-        {p.canBuy && <PdfPreview>PDF preview will be shown here</PdfPreview>}
+        {p.canBuy && <PdfPreview>{pdfPreviewPlaceholder}</PdfPreview>}
 
         {(p.canDownload || canEdit) && (
           <PdfPreview>
@@ -143,14 +187,6 @@ export default function NoteDetailUI({
                     >
                       {openPdf}
                     </AssetLink>
-                    {canEdit && onDeleteAsset && (
-                      <AssetDeleteButton
-                        type="button"
-                        onClick={() => onDeleteAsset(pdfAsset.id)}
-                      >
-                        Delete
-                      </AssetDeleteButton>
-                    )}
                   </AssetRow>
                 )}
                 <ImageGrid>
