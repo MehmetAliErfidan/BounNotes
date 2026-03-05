@@ -87,3 +87,34 @@ export async function deleteNoteAssetById(assetId: number): Promise<boolean> {
 
   return Boolean(rows[0]);
 }
+
+export async function countAssetsByNoteAndType(
+  noteId: number,
+  assetType: "pdf" | "image",
+): Promise<number> {
+  const { rows } = await pool.query<{ count: string }>(
+    `
+    SELECT COUNT(*)::text AS count
+    FROM note_assets
+    WHERE note_id = $1
+      AND asset_type = $2
+    `,
+    [noteId, assetType],
+  );
+  return Number(rows[0]?.count ?? "00");
+}
+
+export async function countCompletedPurchasesByNoteId(
+  noteId: number,
+): Promise<number> {
+  const { rows } = await pool.query<{ count: string }>(
+    ` 
+    SELECT COUNT(*)::text AS count
+    FROM note_purchases
+    WHERE note_id = $1
+      AND status = 'completed'
+    `,
+    [noteId],
+  );
+  return Number(rows[0]?.count ?? "0");
+}
