@@ -6,6 +6,7 @@ export const MY_NOTE_PAGE_TEXTS = {
     noUploadsYet: "Henüz yüklediğiniz bir not yok.",
     uploadFirstNote: "İlk Notunuzu Yükleyin",
     emptyStateImageAlt: "Henüz not yok.",
+    delistSuccess: "Not pazardan kaldırıldı.",
   },
 
   en: {
@@ -15,5 +16,6 @@ export const MY_NOTE_PAGE_TEXTS = {
     noUploadsYet: "You have not uploaded any notes yet.",
     uploadFirstNote: "Upload Your First Note",
     emptyStateImageAlt: "No notes yet.",
+    delistSuccess: "Note has been delisted from marketplace.",
   },
 };

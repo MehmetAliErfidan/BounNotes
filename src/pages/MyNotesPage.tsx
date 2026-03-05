@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { CirclePlus } from "lucide-react";
 import { MY_NOTE_PAGE_TEXTS } from "../i18n/translations/pages/MyNotes";
@@ -31,7 +31,11 @@ export default function MyNotesPage() {
     noUploadsYet,
     uploadFirstNote,
     emptyStateImageAlt,
+    delistSuccess,
   } = MY_NOTE_PAGE_TEXTS[lang];
+  const [searchParams, setSearchParams] = useSearchParams();
+  const status = searchParams.get("status");
+  const showDelistSuccess = status === "delisted";
 
   const [activeTab, setActiveTab] = useState<NotesTab>("purchased");
   const [uploadedNotes, setUploadedNotes] = useState<Note[]>([]);
@@ -92,6 +96,12 @@ export default function MyNotesPage() {
     navigate(`/note/${noteID}`);
   };
 
+  const dismissStatusMessage = () => {
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete("status");
+    setSearchParams(nextParams, { replace: true });
+  };
+
   if (isLoading) return <p>{loadingText}</p>;
   if (hasError) return <p>{loadFailedText}</p>;
 
@@ -99,6 +109,9 @@ export default function MyNotesPage() {
     <>
       <Navbar />
       <Main>
+        {showDelistSuccess && (
+          <NoNotesText onClick={dismissStatusMessage}>{delistSuccess}</NoNotesText>
+        )}
         <NotesTabBarContainer>
           <NotesTabBar
             activateTab={activeTab}
