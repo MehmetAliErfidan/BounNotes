@@ -77,7 +77,7 @@ notesRouter.post("/:id/purchase", requireAuth, async (req, res) => {
       return res.status(404).json({ message: "note not found" });
     }
 
-    if (Number(rawNote.owner_id) === req.user.id) {
+    if (Number(rawNote.owner_id) === Number(req.user.id)) {
       return res.status(403).json({ message: "You can not buy your own note" });
     }
 
@@ -103,7 +103,9 @@ notesRouter.get("/:id", optionalAuth, async (req, res) => {
       return res.status(404).json({ error: "note not found" });
     }
     const note = mapNoteRowToNoteListItem(noteRow);
-    const isOwner = req.user ? Number(noteRow.owner_id) === req.user.id : false;
+    const isOwner = req.user
+      ? Number(noteRow.owner_id) === Number(req.user.id)
+      : false;
     let isLiked = false;
     let isPurchased = false;
     if (req.user) {
@@ -211,7 +213,7 @@ notesRouter.patch("/:id", requireAuth, async (req, res) => {
       return res.status(404).json({ error: "Note not found" });
     }
 
-    if (existingNoteRow.owner_id !== req.user.id) {
+    if (Number(existingNoteRow.owner_id) !== Number(req.user.id)) {
       return res.status(403).json({ message: "You are not the owner" });
     }
 
