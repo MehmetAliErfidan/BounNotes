@@ -1,0 +1,95 @@
+[1mdiff --git a/src/config/note.types.ts b/src/config/note.types.ts[m
+[1mindex 4d91e89..1afbbc3 100644[m
+[1m--- a/src/config/note.types.ts[m
+[1m+++ b/src/config/note.types.ts[m
+[36m@@ -29,6 +29,15 @@[m [mexport type NoteWithContext = {[m
+   };[m
+ };[m
+ [m
+[32m+[m[32mexport type NoteAsset = {[m
+[32m+[m[32m  id: number;[m
+[32m+[m[32m  noteId: number;[m
+[32m+[m[32m  assetType: "pdf" | "image";[m
+[32m+[m[32m  fileUrl: string;[m
+[32m+[m[32m  sortOrder: number;[m
+[32m+[m[32m  createdAt: string;[m
+[32m+[m[32m};[m
+[32m+[m
+ export type FormNote = {[m
+   title: string;[m
+   course: string;[m
+[1mdiff --git a/src/i18n/translations/notes/CreateNote.ts b/src/i18n/translations/notes/CreateNote.ts[m
+[1mindex 2429d7c..1202a00 100644[m
+[1m--- a/src/i18n/translations/notes/CreateNote.ts[m
+[1m+++ b/src/i18n/translations/notes/CreateNote.ts[m
+[36m@@ -1,11 +1,21 @@[m
+ export const CREATE_NOTE_TEXTS = {[m
+   tr: {[m
+     uploadText: "Yükle",[m
+[32m+[m[32m    uploadingText: "Yükleniyor...",[m
+[32m+[m[32m    retryUploadText: "Tekrar Dene",[m
+[32m+[m[32m    uploadFailed: "Yükleme başarısız oldu.",[m
+[32m+[m[32m    rollbackFailedText:[m
+[32m+[m[32m      "Yükleme başarısız oldu ve geri alma tamamlanamadı. Lütfen notu My Notes sayfasından kaldırın.",[m
+     headerText: "Notunu Paylaş",[m
+     headerExplanation: "Not bilgilerinizi girin ve dosyalarınızı yükleyin.",[m
+   },[m
+   en: {[m
+     uploadText: "Upload",[m
+[32m+[m[32m    uploadingText: "Uploading...",[m
+[32m+[m[32m    retryUploadText: "Retry",[m
+[32m+[m[32m    uploadFailed: "Upload failed.",[m
+[32m+[m[32m    rollbackFailedText:[m
+[32m+[m[32m      "Upload failed and automatic rollback failed. Please remove the note from My Notes.",[m
+     headerText: "Share Your Note",[m
+     headerExplanation: "Fill in the details and upload your files.",[m
+   },[m
+[1mdiff --git a/src/i18n/translations/pages/Checkout.ts b/src/i18n/translations/pages/Checkout.ts[m
+[1mindex 45a1c5a..9ed8881 100644[m
+[1m--- a/src/i18n/translations/pages/Checkout.ts[m
+[1m+++ b/src/i18n/translations/pages/Checkout.ts[m
+[36m@@ -3,13 +3,13 @@[m [mexport const CHECKOUT_PAGE_TEXTS = {[m
+     goBack: "Geri dön",[m
+     loadingText: "Yükleniyor...",[m
+     noteNotFound: "Not bulunamadı.",[m
+[31m-    paymentFlowLog: "Ödeme akışı başlayacak",[m
+[32m+[m[32m    purchaseFailed: "Satın alma işlemi başarısız oldu.",[m
+   },[m
+ [m
+   en: {[m
+     goBack: "Go back",[m
+     loadingText: "Loading...",[m
+     noteNotFound: "Note not found.",[m
+[31m-    paymentFlowLog: "Payment flow will start",[m
+[32m+[m[32m    purchaseFailed: "Purchase failed.",[m
+   },[m
+ };[m
+[1mdiff --git a/src/i18n/translations/pages/MyNotes.ts b/src/i18n/translations/pages/MyNotes.ts[m
+[1mindex 5261873..0e3124d 100644[m
+[1m--- a/src/i18n/translations/pages/MyNotes.ts[m
+[1m+++ b/src/i18n/translations/pages/MyNotes.ts[m
+[36m@@ -1,5 +1,7 @@[m
+ export const MY_NOTE_PAGE_TEXTS = {[m
+   tr: {[m
+[32m+[m[32m    loadingText: "Yükleniyor...",[m
+[32m+[m[32m    loadFailedText: "Notlar yüklenemedi.",[m
+     noPurchaseYet: "Henüz hiçbir not satın almadınız.",[m
+     noUploadsYet: "Henüz yüklediğiniz bir not yok.",[m
+     uploadFirstNote: "İlk Notunuzu Yükleyin",[m
+[36m@@ -7,6 +9,8 @@[m [mexport const MY_NOTE_PAGE_TEXTS = {[m
+   },[m
+ [m
+   en: {[m
+[32m+[m[32m    loadingText: "Loading...",[m
+[32m+[m[32m    loadFailedText: "Failed to load notes.",[m
+     noPurchaseYet: "You have not purchased any class notes yet.",[m
+     noUploadsYet: "You have not uploaded any notes yet.",[m
+     uploadFirstNote: "Upload Your First Note",[m
+[1mdiff --git a/src/pages/CheckoutPage.tsx b/src/pages/CheckoutPage.tsx[m
+[1mindex ea89d7d..b0567c9 100644[m
+[1m--- a/src/pages/CheckoutPage.tsx[m
+[1m+++ b/src/pages/CheckoutPage.tsx[m
+[36m@@ -21,7 +21,8 @@[m [mimport { API_BASE_URL } from "../config/api";[m
+ [m
+ export default function CheckoutPage() {[m
+   const { lang } = u

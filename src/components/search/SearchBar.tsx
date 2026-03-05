@@ -10,8 +10,8 @@ import { SEARCHBAR_TEXTS } from "../../i18n/translations/search/SearchBar";
 import { useLang } from "../../i18n";
 import SearchInput from "./SearchInput";
 import { Container } from "./!SearchBar.styled";
-import type { NoteWithContext, Note } from "../../config/note.types";
-import { dummyData } from "../../data/dummyData";
+import type { Note } from "../../config/note.types";
+import { API_BASE_URL } from "../../config/api";
 
 /* // Dummy data (until backend)
 const dummyData = [
@@ -73,7 +73,7 @@ export default function SearchBar() {
     setInputValue(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(searchTriggered());
     dispatch(setQuery(inputValue));
@@ -85,38 +85,45 @@ export default function SearchBar() {
     }
 
     const lower = inputValue.toLowerCase();
-    let filtered: Note[] = [];
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/notes`);
+      if (!response.ok) {
+        dispatch(setResults([]));
+        navigate("/search");
+        return;
+      }
 
-    const matches = (item: NoteWithContext) => {
-      const n = item.note;
-      return (
-        n.owner.username.toLowerCase().includes(lower) ||
-        n.course.toLowerCase().includes(lower) ||
-        n.teacher.toLowerCase().includes(lower) ||
-        n.title.toLowerCase().includes(lower)
-      );
-    };
+      const notes = (await response.json()) as Note[];
+      let filtered: Note[] = [];
+      const matches = (n: Note) => {
+        return (
+          n.owner.username.toLowerCase().includes(lower) ||
+          n.course.toLowerCase().includes(lower) ||
+          n.teacher.toLowerCase().includes(lower) ||
+          n.title.toLowerCase().includes(lower)
+        );
+      };
 
-    if (selectedCategory === "user") {
-      filtered = dummyData
-        .filter((item) =>
-          item.note.owner.username.toLowerCase().includes(lower),
-        )
-        .map((item) => item.note);
-    } else if (selectedCategory === "course") {
-      filtered = dummyData
-        .filter((item) => item.note.course.toLowerCase().includes(lower))
-        .map((item) => item.note);
-    } else if (selectedCategory === "teacher") {
-      filtered = dummyData
-        .filter((item) => item.note.teacher.toLowerCase().includes(lower))
-        .map((item) => item.note);
-    } else {
-      filtered = dummyData.filter(matches).map((item) => item.note);
+      if (selectedCategory === "user") {
+        filtered = notes.filter((note) =>
+          note.owner.username.toLowerCase().includes(lower),
+        );
+      } else if (selectedCategory === "course") {
+        filtered = notes.filter((note) => note.course.toLowerCase().includes(lower));
+      } else if (selectedCategory === "teacher") {
+        filtered = notes.filter((note) =>
+          note.teacher.toLowerCase().includes(lower),
+        );
+      } else {
+        filtered = notes.filter(matches);
+      }
+
+      dispatch(setResults(filtered));
+      navigate("/search");
+    } catch {
+      dispatch(setResults([]));
+      navigate("/search");
     }
-
-    dispatch(setResults(filtered));
-    navigate("/search");
   };
 
   return (
