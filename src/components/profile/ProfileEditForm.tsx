@@ -32,10 +32,10 @@ export default function ProfileEditForm({
     fullName: initialProfile?.fullName ?? "",
     department: initialProfile?.department ?? "",
     grade: initialProfile?.grade ?? "",
-    favoriteClass: initialProfile?.favoriteClass ?? "",
-    favoriteTeacher: initialProfile?.favoriteTeacher ?? "",
-    favoriteHangoutPlace: initialProfile?.favoriteHangoutPlace ?? "",
-    bio: initialProfile?.bio ?? "",
+    favoriteCourse: initialProfile?.favoriteCourse ?? "",
+    favoriteProfessor: initialProfile?.favoriteProfessor ?? "",
+    favoritePlace: initialProfile?.favoritePlace ?? "",
+    about: initialProfile?.about ?? "",
     avatarUrl: initialProfile?.avatarUrl ?? "",
   });
 
@@ -63,29 +63,29 @@ export default function ProfileEditForm({
 
       <Input
         placeholder={favoriteCourse}
-        value={form.favoriteClass ?? ""}
-        onChange={(e) => setForm({ ...form, favoriteClass: e.target.value })}
+        value={form.favoriteCourse ?? ""}
+        onChange={(e) => setForm({ ...form, favoriteCourse: e.target.value })}
       />
 
       <Input
         placeholder={favoriteProfessor}
-        value={form.favoriteTeacher ?? ""}
-        onChange={(e) => setForm({ ...form, favoriteTeacher: e.target.value })}
+        value={form.favoriteProfessor ?? ""}
+        onChange={(e) =>
+          setForm({ ...form, favoriteProfessor: e.target.value })
+        }
       />
 
       <Input
         placeholder={favoritePlace}
-        value={form.favoriteHangoutPlace ?? ""}
-        onChange={(e) =>
-          setForm({ ...form, favoriteHangoutPlace: e.target.value })
-        }
+        value={form.favoritePlace ?? ""}
+        onChange={(e) => setForm({ ...form, favoritePlace: e.target.value })}
       />
 
       <S.Textarea
         placeholder={about}
-        value={form.bio ?? ""}
+        value={form.about ?? ""}
         maxLength={250}
-        onChange={(e) => setForm({ ...form, bio: e.target.value })}
+        onChange={(e) => setForm({ ...form, about: e.target.value })}
       />
 
       <S.Actions>
