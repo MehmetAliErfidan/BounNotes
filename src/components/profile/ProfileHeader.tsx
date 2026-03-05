@@ -15,7 +15,7 @@ export default function ProfileHeader({ user }: Props) {
       />
       <S.TextBlock>
         <S.Username>{user.username}</S.Username>
-        <S.Email>{user.email}</S.Email>
+        <S.Email>{user.email ?? ""}</S.Email>
       </S.TextBlock>
     </S.Wrapper>
   );
