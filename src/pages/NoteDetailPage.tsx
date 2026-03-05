@@ -9,10 +9,26 @@ import { buildOptionalAuthHeaders } from "../features/auth/authRequest";
 import { NOTE_DETAIL_TEXTS } from "../i18n/translations/pages/NoteDetail";
 import { useLang } from "../i18n";
 import { API_BASE_URL } from "../config/api";
+import * as S from "./!NoteDetailPage.styled";
 
 export default function NoteDetailPage() {
   const { lang } = useLang();
-  const { noteNotFound, loadingText } = NOTE_DETAIL_TEXTS[lang];
+  const {
+    noteNotFound,
+    loadingText,
+    deleteModalTitle,
+    deleteModalDescription,
+    deleteModalCancel,
+    deleteModalConfirm,
+    deleteModalConfirmLoading,
+    assetDeleteFailed,
+    assetDeleteNetworkFailed,
+    noteDeleteFailed,
+    noteDeleteNetworkFailed,
+    downloadablePdfNotFound,
+    pdfNotReady,
+    reactionUpdateFailed,
+  } = NOTE_DETAIL_TEXTS[lang];
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [note, setNote] = useState<Note | null>(null);
@@ -23,6 +39,13 @@ export default function NoteDetailPage() {
   const [assetUrls, setAssetUrls] = useState<Record<number, string>>({});
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [assetActionError, setAssetActionError] = useState("");
+  const [noteActionError, setNoteActionError] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeletingNote, setIsDeletingNote] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isDisliked, setIsDisliked] = useState(false);
+  const [reactionError, setReactionError] = useState("");
 
   useEffect(() => {
     let isMounted = true;
@@ -52,6 +75,8 @@ export default function NoteDetailPage() {
 
         setNote(data.note);
         setContext(data.context);
+        setIsLiked(data.context.isLiked);
+        setIsDisliked(false);
 
         if (data.context.isOwner || data.context.isPurchased) {
           try {
@@ -156,37 +181,283 @@ export default function NoteDetailPage() {
   if (loading) return <p>{loadingText}</p>;
   if (hasError || !note || !context) return <p>{noteNotFound}</p>;
 
+  const postReaction = async (reaction: "like" | "dislike") => {
+    const res = await fetch(`${API_BASE_URL}/api/reactions/note/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...Object.fromEntries(
+          new Headers(buildOptionalAuthHeaders()).entries(),
+        ),
+      },
+      body: JSON.stringify({ reaction }),
+    });
+    return res;
+  };
+
+  const deleteReaction = async () => {
+    const res = await fetch(`${API_BASE_URL}/api/reactions/note/${id}`, {
+      method: "DELETE",
+      headers: buildOptionalAuthHeaders(),
+    });
+    return res;
+  };
+
+  const handleLike = async () => {
+    if (!note || !id) return;
+    setReactionError("");
+
+    const prevLiked = isLiked;
+    const prevDisliked = isDisliked;
+    const prevStats = note.stats;
+
+    try {
+      if (isLiked) {
+        setIsLiked(false);
+        setNote({
+          ...note,
+          stats: {
+            ...note.stats,
+            likeCount: Math.max(0, note.stats.likeCount - 1),
+          },
+        });
+        const res = await deleteReaction();
+        if (!res.ok) throw new Error("REACTION_DELETE_FAILED");
+        return;
+      }
+
+      const nextLikeCount = note.stats.likeCount + 1;
+      const nextDislikeCount = isDisliked
+        ? Math.max(0, note.stats.dislikeCount - 1)
+        : note.stats.dislikeCount;
+
+      setIsLiked(true);
+      setIsDisliked(false);
+      setNote({
+        ...note,
+        stats: { likeCount: nextLikeCount, dislikeCount: nextDislikeCount },
+      });
+
+      const res = await postReaction("like");
+      if (!res.ok) throw new Error("REACTION_SET_FAILED");
+    } catch {
+      setIsLiked(prevLiked);
+      setIsDisliked(prevDisliked);
+      setNote({ ...note, stats: prevStats });
+      setReactionError(reactionUpdateFailed);
+    }
+  };
   const handleBuy = () => {
     navigate(`/note/${note.id}/buy`);
   };
 
+  const handleDislike = async () => {
+    if (!note || !id) return;
+
+    setReactionError("");
+    const prevLiked = isLiked;
+    const prevDisliked = isDisliked;
+    const prevStats = note.stats;
+
+    try {
+      if (isDisliked) {
+        setIsDisliked(false);
+        setNote({
+          ...note,
+          stats: {
+            ...note.stats,
+            dislikeCount: Math.max(0, note.stats.dislikeCount - 1),
+          },
+        });
+
+        const res = await deleteReaction();
+        if (!res.ok) throw new Error("REACTION_DELETE_FAILED");
+        return;
+      }
+
+      const nextDislikeCount = note.stats.dislikeCount + 1;
+      const nextLikeCount = isLiked
+        ? Math.max(0, note.stats.likeCount - 1)
+        : note.stats.likeCount;
+
+      setIsDisliked(true);
+      setIsLiked(false);
+      setNote({
+        ...note,
+        stats: { likeCount: nextLikeCount, dislikeCount: nextDislikeCount },
+      });
+
+      const res = await postReaction("dislike");
+      if (!res.ok) throw new Error("REACTION_SET_FAILED");
+    } catch {
+      setIsLiked(prevLiked);
+      setIsDisliked(prevDisliked);
+      setNote({ ...note, stats: prevStats });
+      setReactionError(reactionUpdateFailed);
+    }
+  };
+
+  const handleDownload = () => {
+    setAssetActionError("");
+
+    const pdfAsset = assets.find((a) => a.assetType === "pdf");
+    if (!pdfAsset) {
+      setAssetActionError(downloadablePdfNotFound);
+      return;
+    }
+
+    const url = assetUrls[pdfAsset.id];
+    if (!url) {
+      setAssetActionError(pdfNotReady);
+      return;
+    }
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `note-${note?.id ?? "file"}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
+  const handleOpenDeleteModal = () => {
+    if (!note || !note.isListed) return;
+    setNoteActionError("");
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    if (isDeletingNote) return;
+    setIsDeleteModalOpen(false);
+  };
+
   const handleDeleteAsset = async (assetId: number) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/assets/asset/${assetId}`, {
+      setAssetActionError("");
+
+      let res = await fetch(`${API_BASE_URL}/api/assets/asset/${assetId}`, {
         method: "DELETE",
         headers: buildOptionalAuthHeaders(),
       });
+
+      // Backward compatibility if backend still runs an older route shape.
+      if (res.status === 404 || res.status === 405) {
+        res = await fetch(`${API_BASE_URL}/api/assets/asset/${assetId}/file`, {
+          method: "DELETE",
+          headers: buildOptionalAuthHeaders(),
+        });
+      }
+
       if (!res.ok) {
+        let message = assetDeleteFailed;
+        try {
+          const data = (await res.json()) as {
+            message?: string;
+            error?: string;
+          };
+          message = data.message || data.error || message;
+        } catch {
+          // keep default error text
+        }
+        setAssetActionError(message);
         return;
       }
       setAssets((prev) => prev.filter((asset) => asset.id !== assetId));
     } catch {
-      // Keep the current UI state when delete fails.
+      setAssetActionError(assetDeleteNetworkFailed);
     }
+  };
+
+  const handleDeleteNote = async () => {
+    if (!note) return;
+    try {
+      setIsDeletingNote(true);
+      setNoteActionError("");
+      const res = await fetch(`${API_BASE_URL}/api/notes/${note.id}`, {
+        method: "DELETE",
+        headers: buildOptionalAuthHeaders(),
+      });
+      if (!res.ok) {
+        let message = noteDeleteFailed;
+        try {
+          const data = (await res.json()) as {
+            message?: string;
+            error?: string;
+          };
+          message = data.message || data.error || message;
+        } catch {
+          // keep default
+        }
+        setNoteActionError(message);
+        return;
+      }
+      setIsDeleteModalOpen(false);
+      navigate("/my-notes?status=delisted");
+    } catch {
+      setNoteActionError(noteDeleteNetworkFailed);
+    } finally {
+      setIsDeletingNote(false);
+    }
+  };
+
+  const handleEdit = async () => {
+    navigate(`/note/${note?.id}/edit`);
   };
 
   return (
     <>
       <Navbar />
       <Main>
+        {assetActionError && <S.InlineError>{assetActionError}</S.InlineError>}
+        {reactionError && <S.InlineError>{reactionError}</S.InlineError>}
+        {noteActionError && <S.InlineError>{noteActionError}</S.InlineError>}
         <NoteDetailUI
           note={note}
           assets={assets}
           assetUrls={assetUrls}
           permissions={notePermissionsFromContext(context)}
           onBuy={handleBuy}
+          onDeleteNote={handleOpenDeleteModal}
           onDeleteAsset={handleDeleteAsset}
+          onDownload={handleDownload}
+          onLike={handleLike}
+          onDislike={handleDislike}
+          isLiked={isLiked}
+          isDisliked={isDisliked}
+          onEdit={handleEdit}
         />
+
+        {isDeleteModalOpen && (
+          <S.ModalOverlay onClick={handleCloseDeleteModal}>
+            <S.ModalCard onClick={(e) => e.stopPropagation()}>
+              <S.ModalTitle>{deleteModalTitle}</S.ModalTitle>
+              <S.ModalDescription>{deleteModalDescription}</S.ModalDescription>
+              {noteActionError && (
+                <S.InlineError>{noteActionError}</S.InlineError>
+              )}
+              <S.ModalActions>
+                <S.CancelButton
+                  type="button"
+                  onClick={handleCloseDeleteModal}
+                  disabled={isDeletingNote}
+                >
+                  {deleteModalCancel}
+                </S.CancelButton>
+                <S.ConfirmButton
+                  type="button"
+                  onClick={() => {
+                    void handleDeleteNote();
+                  }}
+                  disabled={isDeletingNote}
+                >
+                  {isDeletingNote
+                    ? deleteModalConfirmLoading
+                    : deleteModalConfirm}
+                </S.ConfirmButton>
+              </S.ModalActions>
+            </S.ModalCard>
+          </S.ModalOverlay>
+        )}
       </Main>
     </>
   );
