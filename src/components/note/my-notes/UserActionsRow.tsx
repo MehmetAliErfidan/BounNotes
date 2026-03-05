@@ -21,6 +21,10 @@ type Props = {
   canComment: boolean;
   isLiked?: boolean;
   isDisliked?: boolean;
+  onDownload?: () => void;
+  onLike?: () => void;
+  onDislike?: () => void;
+  onEdit?: () => void;
 };
 
 export default function UserActionsRow({
@@ -32,6 +36,10 @@ export default function UserActionsRow({
   canComment,
   isLiked = false,
   isDisliked = false,
+  onDownload,
+  onLike,
+  onDislike,
+  onEdit,
 }: Props) {
   const { lang } = useLang();
   const { download, edit, liked, like, dislike, disliked, makeComment } =
@@ -48,14 +56,14 @@ export default function UserActionsRow({
       )}
 
       {canEdit && (
-        <S.EditButton>
+        <S.EditButton type="button" onClick={onEdit}>
           <Pencil size={20} />
           <span>{edit}</span>
         </S.EditButton>
       )}
 
       {canDownload && (
-        <S.DownloadButton>
+        <S.DownloadButton type="button" onClick={onDownload}>
           <Download size={20} />
           <span>{download}</span>
         </S.DownloadButton>
@@ -65,14 +73,14 @@ export default function UserActionsRow({
         {canRate && (
           <S.LikeButtons>
             <Tooltip content={isLiked ? liked : like} delay={300}>
-              <S.LikeButton>
+              <S.LikeButton onClick={onLike}>
                 <ThumbsUp />
                 <span>{note.stats.likeCount}</span>
               </S.LikeButton>
             </Tooltip>
 
             <Tooltip content={isDisliked ? disliked : dislike} delay={400}>
-              <S.LikeButton>
+              <S.LikeButton onClick={onDislike}>
                 <ThumbsDown />
                 <span>{note.stats.dislikeCount}</span>
               </S.LikeButton>
