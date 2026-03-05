@@ -1,5 +1,5 @@
 import { Trash2, Dot } from "lucide-react";
-import type { Note } from "../../config/note.types";
+import type { Note, NoteAsset } from "../../config/note.types";
 import type { NotePermissions } from "./NotePermissions";
 import { NOTE_DETAIL_TEXTS } from "../../i18n/translations/notes/NoteDetail";
 import { useLang } from "../../i18n";
@@ -21,6 +21,14 @@ import {
   UploadDate,
   Description,
   PdfPreview,
+  AssetList,
+  AssetLink,
+  AssetRow,
+  AssetDeleteButton,
+  ImageGrid,
+  ImagePreview,
+  ImageCard,
+  ImageDeleteButton,
   BuyRow,
   Price,
   BuyButton,
@@ -30,14 +38,30 @@ import UserActionsRow from "./my-notes/UserActionsRow";
 
 type Props = {
   note: Note;
+  assets?: NoteAsset[];
+  assetUrls?: Record<number, string>;
   onBuy?: () => void;
+  onDeleteAsset?: (assetId: number) => void;
   // new (backend-proof)
   permissions?: NotePermissions;
 };
 
-export default function NoteDetailUI({ note, onBuy, permissions }: Props) {
+export default function NoteDetailUI({
+  note,
+  assets = [],
+  assetUrls = {},
+  onBuy,
+  onDeleteAsset,
+  permissions,
+}: Props) {
   const { lang } = useLang();
-  const { buyText, deleteNote } = NOTE_DETAIL_TEXTS[lang];
+  const {
+    buyText,
+    deleteNote,
+    openPdf,
+    noAssetsUploadedYet,
+    loadingAssets,
+  } = NOTE_DETAIL_TEXTS[lang];
 
   if (!permissions) {
     throw new Error("NoteDetailUI requires permissions");
@@ -54,6 +78,11 @@ export default function NoteDetailUI({ note, onBuy, permissions }: Props) {
   // permissions will come from backend when auth is implemented
 
   const showBuy = p.canBuy && !!onBuy;
+  const pdfAsset = assets.find((a) => a.assetType === "pdf");
+  const imageAssets = assets
+    .filter((a) => a.assetType === "image")
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+  const hasRenderableAssets = assets.some((asset) => Boolean(assetUrls[asset.id]));
 
   return (
     <Wrapper>
@@ -96,6 +125,58 @@ export default function NoteDetailUI({ note, onBuy, permissions }: Props) {
         />
 
         {p.canBuy && <PdfPreview>PDF preview will be shown here</PdfPreview>}
+
+        {(p.canDownload || canEdit) && (
+          <PdfPreview>
+            {assets.length === 0 ? (
+              noAssetsUploadedYet
+            ) : !hasRenderableAssets ? (
+              loadingAssets
+            ) : (
+              <AssetList>
+                {pdfAsset && assetUrls[pdfAsset.id] && (
+                  <AssetRow>
+                    <AssetLink
+                      href={assetUrls[pdfAsset.id]}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {openPdf}
+                    </AssetLink>
+                    {canEdit && onDeleteAsset && (
+                      <AssetDeleteButton
+                        type="button"
+                        onClick={() => onDeleteAsset(pdfAsset.id)}
+                      >
+                        Delete
+                      </AssetDeleteButton>
+                    )}
+                  </AssetRow>
+                )}
+                <ImageGrid>
+                  {imageAssets
+                    .filter((asset) => Boolean(assetUrls[asset.id]))
+                    .map((asset) => (
+                      <ImageCard key={asset.id}>
+                        <ImagePreview
+                          src={assetUrls[asset.id]}
+                          alt={`note-image-${asset.sortOrder + 1}`}
+                        />
+                        {canEdit && onDeleteAsset && (
+                          <ImageDeleteButton
+                            type="button"
+                            onClick={() => onDeleteAsset(asset.id)}
+                          >
+                            <Trash2 size={14} />
+                          </ImageDeleteButton>
+                        )}
+                      </ImageCard>
+                    ))}
+                </ImageGrid>
+              </AssetList>
+            )}
+          </PdfPreview>
+        )}
 
         {showBuy && (
           <BuyRow>
