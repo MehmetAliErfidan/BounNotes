@@ -21,7 +21,7 @@ export default function NoteUploadPage() {
     uploadingText,
     retryUploadText,
     uploadFailed,
-    rollbackFailedText,
+    autoDelistFailedText,
     headerText,
     headerExplanation,
   } = CREATE_NOTE_TEXTS[lang];
@@ -79,9 +79,9 @@ export default function NoteUploadPage() {
     }
   };
 
-  const rollbackCreatedNote = async (noteId: number): Promise<boolean> => {
+  const autoDelistCreatedNote = async (noteId: number): Promise<boolean> => {
     try {
-      const rollbackRes = await fetch(`${API_BASE_URL}/api/notes/${noteId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/notes/${noteId}`, {
         method: "DELETE",
         headers: {
           ...Object.fromEntries(
@@ -89,7 +89,7 @@ export default function NoteUploadPage() {
           ),
         },
       });
-      return rollbackRes.ok;
+      return res.ok;
     } catch {
       return false;
     }
@@ -146,9 +146,9 @@ export default function NoteUploadPage() {
       navigate("/my-notes");
     } catch (err) {
       if (createdNoteId !== null) {
-        const rolledBack = await rollbackCreatedNote(createdNoteId);
-        if (!rolledBack) {
-          setSubmitError(rollbackFailedText);
+        const delisted = await autoDelistCreatedNote(createdNoteId);
+        if (!delisted) {
+          setSubmitError(autoDelistFailedText);
           setCanRetry(false);
           return;
         }
