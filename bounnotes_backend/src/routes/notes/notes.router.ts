@@ -77,7 +77,7 @@ notesRouter.post("/:id/purchase", requireAuth, async (req, res) => {
       return res.status(404).json({ message: "note not found" });
     }
 
-    if (rawNote.owner_id === req.user.id) {
+    if (Number(rawNote.owner_id) === req.user.id) {
       return res.status(403).json({ message: "You can not buy your own note" });
     }
 
@@ -103,16 +103,19 @@ notesRouter.get("/:id", optionalAuth, async (req, res) => {
       return res.status(404).json({ error: "note not found" });
     }
     const note = mapNoteRowToNoteListItem(noteRow);
+    const isOwner = req.user ? Number(noteRow.owner_id) === req.user.id : false;
     let isLiked = false;
     let isPurchased = false;
     if (req.user) {
       const myReaction = await findReactionByNoteAndUser(id, req.user.id);
       isLiked = myReaction?.reaction === "like";
-      isPurchased = await hasUserPurchasedNote(id, req.user.id);
+      isPurchased = isOwner
+        ? false
+        : await hasUserPurchasedNote(id, req.user.id);
     }
 
     const context = {
-      isOwner: req.user ? req.user.id === noteRow.owner_id : false,
+      isOwner: isOwner,
       isPurchased: isPurchased,
       isLiked,
     };
@@ -399,7 +402,8 @@ notesRouter.delete("/:id", requireAuth, async (req, res) => {
       return res.status(404).json({ message: "Note not found" });
     }
 
-    if (noteRow.owner_id !== req.user.id) {
+    const ownerId = Number(noteRow.owner_id);
+    if (!Number.isInteger(ownerId) || ownerId !== req.user.id) {
       return res.status(403).json({ message: "You are not the owner" });
     }
 
