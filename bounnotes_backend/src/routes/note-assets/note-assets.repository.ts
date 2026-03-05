@@ -23,6 +23,27 @@ export async function findAssetsByNoteId(
   return rows;
 }
 
+export async function findAssetById(
+  assetId: number,
+): Promise<NoteAssetRow | null> {
+  const { rows } = await pool.query<NoteAssetRow>(
+    `
+    SELECT 
+    id,
+    note_id,
+    asset_type,
+    file_url,
+    sort_order,
+    created_at
+    FROM note_assets
+    WHERE id = $1
+    LIMIT 1
+    `,
+    [assetId],
+  );
+  return rows[0] ?? null;
+}
+
 export async function createNoteAsset(
   input: CreateNoteAssetInput,
 ): Promise<NoteAssetRow> {
