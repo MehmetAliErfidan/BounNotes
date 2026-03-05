@@ -7,6 +7,7 @@ export type Note = {
   teacher: string;
   description: string;
   price: number;
+  isListed: boolean;
   createdAt: string;
 
   owner: {
