@@ -14,6 +14,7 @@ import MyNotesPage from "./pages/MyNotesPage.tsx";
 import NoteUploadPage from "./pages/NoteUploadPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
 import PublicProfilePage from "./pages/PublicProfilePage.tsx";
+import NoteEditPage from "./pages/NoteEditPage.tsx";
 import { clearUser, setUser, setHydrating } from "./features/auth/authSlice";
 import {
   getAccessToken,
@@ -92,6 +93,7 @@ function App() {
           <Route path="/my-notes/upload" element={<NoteUploadPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/users/:username" element={<PublicProfilePage />} />
+          <Route path="/note/:id/edit" element={<NoteEditPage />} />
         </Route>
       </Routes>
     </Provider>
