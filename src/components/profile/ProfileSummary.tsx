@@ -30,10 +30,10 @@ export default function ProfileSummary({ profile, onEdit }: Props) {
     (!profile.fullName &&
       !profile.department &&
       !profile.grade &&
-      !profile.favoriteClass &&
-      !profile.favoriteTeacher &&
-      !profile.favoriteHangoutPlace &&
-      !profile.bio);
+      !profile.favoriteCourse &&
+      !profile.favoriteProfessor &&
+      !profile.favoritePlace &&
+      !profile.about);
 
   return (
     <S.Wrapper>
@@ -70,28 +70,28 @@ export default function ProfileSummary({ profile, onEdit }: Props) {
               <span className="value">{profile.grade}</span>
             </li>
           )}
-          {profile?.favoriteClass && (
+          {profile?.favoriteCourse && (
             <li>
               <span className="label">{favoriteCourse}</span>
-              <span className="value">{profile.favoriteClass}</span>
+              <span className="value">{profile.favoriteCourse}</span>
             </li>
           )}
-          {profile?.favoriteTeacher && (
+          {profile?.favoriteProfessor && (
             <li>
               <span className="label">{favoriteProfessor}</span>
-              <span className="value">{profile.favoriteTeacher}</span>
+              <span className="value">{profile.favoriteProfessor}</span>
             </li>
           )}
-          {profile?.favoriteHangoutPlace && (
+          {profile?.favoritePlace && (
             <li>
               <span className="label">{favoritePlace}</span>
-              <span className="value">{profile.favoriteHangoutPlace}</span>
+              <span className="value">{profile.favoritePlace}</span>
             </li>
           )}
-          {profile?.bio && (
+          {profile?.about && (
             <li>
               <span className="label">{aboutMe}:</span>
-              <span className="value">{profile.bio}</span>
+              <span className="value">{profile.about}</span>
             </li>
           )}
         </S.List>
