@@ -29,6 +29,15 @@ export type NoteWithContext = {
   };
 };
 
+export type NoteAsset = {
+  id: number;
+  noteId: number;
+  assetType: "pdf" | "image";
+  fileUrl: string;
+  sortOrder: number;
+  createdAt: string;
+};
+
 export type FormNote = {
   title: string;
   course: string;
