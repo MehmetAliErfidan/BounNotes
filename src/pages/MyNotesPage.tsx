@@ -24,8 +24,14 @@ import type { Note } from "../config/note.types";
 export default function MyNotesPage() {
   const navigate = useNavigate();
   const { lang } = useLang();
-  const { noPurchaseYet, noUploadsYet, uploadFirstNote, emptyStateImageAlt } =
-    MY_NOTE_PAGE_TEXTS[lang];
+  const {
+    loadingText,
+    loadFailedText,
+    noPurchaseYet,
+    noUploadsYet,
+    uploadFirstNote,
+    emptyStateImageAlt,
+  } = MY_NOTE_PAGE_TEXTS[lang];
 
   const [activeTab, setActiveTab] = useState<NotesTab>("purchased");
   const [uploadedNotes, setUploadedNotes] = useState<Note[]>([]);
@@ -86,8 +92,8 @@ export default function MyNotesPage() {
     navigate(`/note/${noteID}`);
   };
 
-  if (isLoading) return <p>Loading...</p>;
-  if (hasError) return <p>Failed to load notes.</p>;
+  if (isLoading) return <p>{loadingText}</p>;
+  if (hasError) return <p>{loadFailedText}</p>;
 
   return (
     <>
