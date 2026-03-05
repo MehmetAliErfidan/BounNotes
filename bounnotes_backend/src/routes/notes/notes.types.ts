@@ -7,6 +7,7 @@ export type NoteListItem = {
   teacher: string;
   description: string;
   price: number;
+  isListed: boolean;
   createdAt: string;
   owner: {
     id: number;
@@ -27,6 +28,7 @@ export type NoteListRow = {
   teacher: string;
   description: string;
   price: string;
+  is_listed: boolean;
   created_at: Date | string;
   owner_id: number;
   owner_username: string;
