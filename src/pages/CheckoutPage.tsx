@@ -5,6 +5,7 @@ import NoteDetailUI from "../components/note/NoteDetailUI";
 import { Main } from "../styles/GlobalStyles";
 import { buildOptionalAuthHeaders } from "../features/auth/authRequest";
 import type { Note, NoteWithContext } from "../config/note.types";
+import type { NotePermissions } from "../components/note/NotePermissions";
 import {
   CheckoutLayout,
   CheckoutContent,
@@ -112,18 +113,27 @@ export default function CheckoutPage() {
     }
   };
 
-  if (loading) return <p>{loadingText}</p>;
-  if (hasError || !note || !context) return <p>{noteNotFound}</p>;
+  const basePermissions: NotePermissions = context
+    ? notePermissionsFromContext(context)
+    : {
+        canBuy: false,
+        canEdit: false,
+        canDownload: false,
+        canRate: false,
+        canComment: false,
+        showUserInfo: false,
+      };
 
-  const basePermissions = notePermissionsFromContext(context);
   const checkoutPermissions = { ...basePermissions, canBuy: false };
 
   useEffect(() => {
-    if (!loading && note && !basePermissions.canBuy) {
+    if (!loading && note && context && !basePermissions.canBuy) {
       navigate(`/note/${note.id}`, { replace: true });
     }
-  }, [loading, note, basePermissions.canBuy, navigate]);
+  }, [loading, note, context, basePermissions.canBuy, navigate]);
 
+  if (loading) return <p>{loadingText}</p>;
+  if (hasError || !note || !context) return <p>{noteNotFound}</p>;
   if (!basePermissions.canBuy) return null;
   return (
     <Main>
