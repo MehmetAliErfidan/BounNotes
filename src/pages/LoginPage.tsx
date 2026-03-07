@@ -10,6 +10,7 @@ import { useAppDispatch } from "../features/hooks";
 import { setUser } from "../features/auth/authSlice";
 import { setAccessToken } from "../features/auth/authStorage.ts";
 import { loginRequest, parseLoginResponse } from "../features/auth/authApi.ts";
+import { ALLOW_NON_BOUN_DEV_EMAILS } from "../config/api.ts";
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
@@ -34,6 +35,11 @@ export default function LoginPage() {
   const [rememberMeChecked, setRememberMeChecked] = useState(true);
 
   const validateEmail = (value: string) => {
+    if (ALLOW_NON_BOUN_DEV_EMAILS) {
+      setError("");
+      return;
+    }
+
     const allowedDomain = "std.bogazici.edu.tr";
 
     if (!value.endsWith(allowedDomain)) {
