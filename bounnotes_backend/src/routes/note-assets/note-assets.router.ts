@@ -2,6 +2,7 @@ import express, { Router } from "express";
 import { promises as fs } from "fs";
 import path from "path";
 import { randomUUID } from "crypto";
+import pool from "../../db/pool";
 import {
   findAssetsByNoteId,
   findAssetById,
@@ -521,9 +522,6 @@ notesAssetsRouter.put(
         });
       }
 
-      const existingAssets = await findAssetsByNoteId(noteId);
-      const existingPdf = existingAssets.find((a) => a.asset_type === "pdf");
-
       const rawFilename = req.header("x-file-name") ?? "asset.pdf";
       let decodedName = rawFilename;
       try {
@@ -541,22 +539,76 @@ notesAssetsRouter.put(
       await fs.writeFile(absoluteFilePath, fileBuffer);
 
       const fileUrl = `/uploads/note-assets/${noteId}/${fileName}`;
-      const createdRow = await createNoteAsset({
-        noteId,
-        assetType: "pdf",
-        fileUrl,
-        sortOrder: 0,
-      });
+      const client = await pool.connect();
+      let oldAbsolutePath: string | null = null;
+      let createdRow: NoteAssetRow | null = null;
 
-      if (existingPdf) {
-        await deleteNoteAssetById(Number(existingPdf.id));
-        const oldAbsolutePath = resolveAbsoluteAssetFilePath(
-          existingPdf.file_url,
+      try {
+        await client.query("BEGIN");
+
+        const { rows: existingPdfRows } = await client.query<NoteAssetRow>(
+          `
+          SELECT
+            id,
+            note_id,
+            asset_type,
+            file_url,
+            sort_order,
+            created_at
+          FROM note_assets
+          WHERE note_id = $1
+            AND asset_type = 'pdf'
+          FOR UPDATE
+          `,
+          [noteId],
         );
-        if (oldAbsolutePath) {
-          await fs.unlink(oldAbsolutePath).catch(() => undefined);
+
+        const lockedExistingPdf = existingPdfRows[0] ?? null;
+        if (lockedExistingPdf) {
+          oldAbsolutePath = resolveAbsoluteAssetFilePath(lockedExistingPdf.file_url);
+          await client.query("DELETE FROM note_assets WHERE id = $1", [
+            lockedExistingPdf.id,
+          ]);
         }
+
+        const { rows } = await client.query<NoteAssetRow>(
+          `
+          INSERT INTO note_assets (
+            note_id,
+            asset_type,
+            file_url,
+            sort_order
+          )
+          VALUES ($1, $2, $3, $4)
+          RETURNING
+            id,
+            note_id,
+            asset_type,
+            file_url,
+            sort_order,
+            created_at
+          `,
+          [noteId, "pdf", fileUrl, 0],
+        );
+
+        createdRow = rows[0] ?? null;
+        if (!createdRow) {
+          throw new Error("Failed to create replacement PDF row");
+        }
+
+        await client.query("COMMIT");
+      } catch (dbErr) {
+        await client.query("ROLLBACK").catch(() => undefined);
+        await fs.unlink(absoluteFilePath).catch(() => undefined);
+        throw dbErr;
+      } finally {
+        client.release();
       }
+
+      if (oldAbsolutePath) {
+        await fs.unlink(oldAbsolutePath).catch(() => undefined);
+      }
+
       return res.status(200).json(mapNoteAssetRowToItem(createdRow));
     } catch (err) {
       console.error("Failed to replace PDF asset", {
