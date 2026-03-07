@@ -7,10 +7,14 @@ import {
   findUserByEmail,
   findUserByUsername,
   createUser,
+  setEmailVerificationToken,
+  findUserByVerificationTokenHash,
+  markUserAsVerified,
 } from "./auth.repository";
 import { AUTH_RULES } from "../../config/auth.rules";
 import { requireAuth } from "../../middlewares/auth.middleware";
-
+import crypto from "crypto";
+import { sendVerificationEmail } from "../../services/mail.service";
 const authRouter = Router();
 
 authRouter.post("/register", async (req, res) => {
@@ -42,7 +46,10 @@ authRouter.post("/register", async (req, res) => {
         .json({ message: "Surname must be at least 2 characters" });
     }
 
-    if (!safeEmail.endsWith(AUTH_RULES.ALLOWED_DOMAIN)) {
+    if (
+      !env.ALLOW_NON_BOUN_DEV_EMAILS &&
+      !safeEmail.endsWith(AUTH_RULES.ALLOWED_DOMAIN)
+    ) {
       return res.status(400).json({
         message: `Only ${AUTH_RULES.ALLOWED_DOMAIN} emails are allowed`,
       });
@@ -107,6 +114,23 @@ authRouter.post("/register", async (req, res) => {
       passwordHash,
     });
 
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+    const verificationTokenHash = crypto
+      .createHash("sha256")
+      .update(verificationToken)
+      .digest("hex");
+
+    const verificationExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    await setEmailVerificationToken(
+      createdUser.id,
+      verificationTokenHash,
+      verificationExpiresAt,
+    );
+
+    const verifyUrl = `${env.APP_BASE_URL}/verify-email?token=${verificationToken}`;
+    await sendVerificationEmail(createdUser.email, verifyUrl);
+
     type AccessTokenPayload = {
       sub: string;
       email: string;
@@ -119,23 +143,46 @@ authRouter.post("/register", async (req, res) => {
       username: createdUser.username,
     };
 
-    const accessToken = jwt.sign(tokenPayload, env.JWT_SECRET, {
-      expiresIn: env.JWT_EXPIRES_IN as StringValue,
-    });
-
-    const responseUser = {
-      id: createdUser.id,
-      email: createdUser.email,
-      username: createdUser.username,
-      isVerified: createdUser.is_verified,
-    };
-
     return res.status(201).json({
-      token: accessToken,
-      user: responseUser,
+      message: "Registration successful. Please verify your email.",
     });
   } catch (err) {
     console.error("Internal server error", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+authRouter.get("/verify-email", async (req, res) => {
+  try {
+    const rawToken =
+      typeof req.query.token === "string" ? req.query.token.trim() : "";
+
+    if (!rawToken) {
+      return res.status(400).json({ message: "Invalid verification token" });
+    }
+
+    const tokenHash = crypto
+      .createHash("sha256")
+      .update(rawToken)
+      .digest("hex");
+
+    const user = await findUserByVerificationTokenHash(tokenHash);
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    if (!user.verification_expires_at) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+    const expiresAt = new Date(user.verification_expires_at);
+    if (Number.isNaN(expiresAt.getTime()) || expiresAt.getTime() < Date.now()) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    await markUserAsVerified(user.id);
+    return res.status(200).json({ message: "Email verified successfully" });
+  } catch (err) {
+    console.error("GET /auth/verify-email failed:", err);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -154,7 +201,10 @@ authRouter.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid input" });
     }
 
-    if (!safeEmail.endsWith(AUTH_RULES.ALLOWED_DOMAIN)) {
+    if (
+      !env.ALLOW_NON_BOUN_DEV_EMAILS &&
+      !safeEmail.endsWith(AUTH_RULES.ALLOWED_DOMAIN)
+    ) {
       return res.status(400).json({
         message: `Only ${AUTH_RULES.ALLOWED_DOMAIN} emails are allowed`,
       });
@@ -171,6 +221,12 @@ authRouter.post("/login", async (req, res) => {
     );
     if (!matchedPassword) {
       return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    if (!user.is_verified) {
+      return res
+        .status(403)
+        .json({ message: "Please verify your email first" });
     }
 
     const existingUser = user;

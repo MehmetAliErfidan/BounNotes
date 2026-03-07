@@ -93,3 +93,57 @@ export async function createUser(input: RegisterInput): Promise<UserAuthRow> {
   }
   return createdUser;
 }
+
+export async function setEmailVerificationToken(
+  userId: number,
+  tokenHash: string,
+  expiresAt: Date,
+): Promise<void> {
+  await pool.query(
+    `
+      UPDATE users
+      SET
+        verification_token_hash = $2,
+        verification_expires_at = $3
+      WHERE id = $1
+    `,
+    [userId, tokenHash, expiresAt],
+  );
+}
+
+export async function findUserByVerificationTokenHash(
+  tokenHash: string,
+): Promise<UserAuthRow | null> {
+  const { rows } = await pool.query<UserAuthRow>(
+    ` 
+    SELECT 
+      id,
+      email,
+      username,
+      password_hash,
+      is_verified,
+      created_at,
+      verification_token_hash,
+      verification_expires_at
+    FROM users
+    WHERE verification_token_hash = $1
+    LIMIT 1
+    `,
+    [tokenHash],
+  );
+  return rows[0] ?? null;
+}
+
+export async function markUserAsVerified(userId: number): Promise<void> {
+  await pool.query(
+    `
+    UPDATE users
+    SET
+      is_verified = true,
+      verification_token_hash = NULL,
+      verification_expires_at = NULL
+    WHERE id = $1
+    `,
+    [userId],
+  );
+}

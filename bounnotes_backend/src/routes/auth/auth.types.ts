@@ -14,6 +14,8 @@ export type UserAuthRow = {
   is_verified: boolean;
   created_at: Date | string;
   updated_at: Date | string;
+  verification_token_hash: string | null;
+  verification_expires_at: Date | string | null;
 };
 
 export type RegisterInput = {
