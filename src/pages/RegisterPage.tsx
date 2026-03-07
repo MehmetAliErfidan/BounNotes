@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import * as S from "./!RegisterPage.styled";
 import { Form, Input, HeaderText, Header } from "../styles/GlobalStyles.ts";
 import { ALLOWED_DOMAIN } from "./constants";
-
+import { API_BASE_URL, ALLOW_NON_BOUN_DEV_EMAILS } from "../config/api.ts";
 export default function RegisterPage() {
   const navigate = useNavigate();
 
@@ -17,7 +17,6 @@ export default function RegisterPage() {
     unmatchedPasswordsMessage,
     emailErrorMessage,
     passwordErrorMessage,
-    codeSentAlert,
     headerText,
     namePlaceholder,
     surnamePlaceholder,
@@ -27,9 +26,11 @@ export default function RegisterPage() {
     registerButtonText,
     alreadyHaveAccountText,
     loginLink,
-    codeSentText,
-    sendCodeText,
     verifyEmailMessage,
+    registerFailedMessage,
+    registerSuccessFallback,
+    emailAlreadyInUseMessage,
+    registeringButtonText,
   } = REGISTER[lang];
 
   const [email, setEmail] = useState("");
@@ -40,8 +41,9 @@ export default function RegisterPage() {
   const [surname, setSurname] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
-  const [isCodeSent, setIsCodeSent] = useState(false);
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState("");
 
   useEffect(() => {
     if (confirmPassword) {
@@ -56,6 +58,11 @@ export default function RegisterPage() {
   const nameSurname = name.length >= 2 && surname.length >= 2;
 
   const validateEmail = (value: string) => {
+    if (ALLOW_NON_BOUN_DEV_EMAILS) {
+      setEmailError("");
+      return;
+    }
+
     if (!value.endsWith(ALLOWED_DOMAIN)) {
       setEmailError(emailErrorMessage);
     } else {
@@ -65,7 +72,7 @@ export default function RegisterPage() {
 
   const validatePassword = (password: string) => {
     const requiredPassword =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.,;:])[A-Za-z\d@$!%*?&.,;:]{8,}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$!%*?&.,;:_])[A-Za-z\d$!%*?&.,;:_]{8,}$/;
 
     if (!requiredPassword.test(password) || password.length == 0) {
       setPasswordError(passwordErrorMessage);
@@ -105,24 +112,52 @@ export default function RegisterPage() {
     email &&
     nameSurname;
 
-  const handleSendCode = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isFormValid) return;
+    if (!isFormValid || isSubmitting) return;
 
-    setIsCodeSent(true);
-    setTimeout(() => {
-      alert(codeSentAlert);
+    try {
+      setIsSubmitting(true);
+      setSubmitError("");
+      setSubmitSuccess("");
 
-      setIsEmailVerified(true); // Email will be accepted as validated until backend
-    }, 500);
-  };
+      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          name,
+          surname,
+          password,
+        }),
+      });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // backend login request is going to be here.
-    console.log("Registering", name, surname, email, password);
-    navigate("/login");
+      const data = (await res.json().catch(() => null)) as {
+        message?: string;
+        error?: string;
+      } | null;
+
+      if (!res.ok) {
+        const rawError = data?.message || data?.error || "";
+        if (rawError === "Email already in use") {
+          setSubmitError(emailAlreadyInUseMessage);
+          return;
+        }
+        setSubmitError(rawError || registerFailedMessage);
+        return;
+      }
+      setSubmitSuccess(
+        data?.message || registerSuccessFallback,
+      );
+      setTimeout(() => {
+        navigate("/login");
+      }, 1200);
+    } catch {
+      setSubmitError(registerFailedMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const isRegisterDisabled =
@@ -133,7 +168,7 @@ export default function RegisterPage() {
     !confirmPassword ||
     !email ||
     !nameSurname ||
-    !isEmailVerified;
+    isSubmitting;
 
   return (
     <S.Container>
@@ -188,25 +223,16 @@ export default function RegisterPage() {
           )}
         </S.InputContainer>
 
-        {isFormValid && (
-          <S.VerifySection>
-            <S.SendCodeButton
-              onClick={handleSendCode}
-              disabled={isCodeSent}
-              $isCodeSent={isCodeSent}
-            >
-              {isCodeSent ? codeSentText : sendCodeText}
-            </S.SendCodeButton>
-            <S.VerifyText>{verifyEmailMessage}</S.VerifyText>
-          </S.VerifySection>
-        )}
+        <S.VerifySection>
+          <S.VerifyText>{verifyEmailMessage}</S.VerifyText>
+        </S.VerifySection>
 
         <S.ButtonSection>
           <S.RegisterButton
             disabled={isRegisterDisabled}
             $isDisabled={isRegisterDisabled}
           >
-            {registerButtonText}
+            {isSubmitting ? registeringButtonText : registerButtonText}
           </S.RegisterButton>
           <S.FooterText>
             {alreadyHaveAccountText}{" "}
@@ -214,6 +240,10 @@ export default function RegisterPage() {
               <S.LoginLinkSpan>{loginLink}</S.LoginLinkSpan>
             </Link>
           </S.FooterText>
+          {submitError && <S.SubmitErrorText>{submitError}</S.SubmitErrorText>}
+          {submitSuccess && (
+            <S.SubmitSuccessText>{submitSuccess}</S.SubmitSuccessText>
+          )}
         </S.ButtonSection>
       </Form>
     </S.Container>

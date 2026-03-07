@@ -42,21 +42,6 @@ export const VerifySection = styled.div`
   text-align: center;
 `;
 
-export const SendCodeButton = styled.button<{ $isCodeSent: boolean }>`
-  margin-top: 0.5rem;
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  font-weight: 600;
-  transition: all 0.15s;
-  background-color: ${(props) => (props.$isCodeSent ? "#9ca3af" : "#fcd34d")};
-  cursor: ${(props) => (props.$isCodeSent ? "not-allowed" : "pointer")};
-
-  &:hover {
-    background-color: ${(props) => (props.$isCodeSent ? "#9ca3af" : "#fbbf24")};
-  }
-`;
-
 export const VerifyText = styled.p`
   color: #4b5563;
   font-size: 0.875rem;
@@ -97,4 +82,27 @@ export const LoginLinkSpan = styled.span`
   &:hover {
     color: #b91c1c;
   }
+`;
+
+export const SuccessText = styled.p`
+  margin-top: 0.5rem;
+  color: #16a34a;
+  font-size: 0.875rem;
+  text-align: center;
+`;
+
+export const SubmitErrorText = styled.p`
+  margin-top: 0.75rem;
+  color: #ef4444;
+  font-size: 0.875rem;
+  text-align: center;
+  width: 100%;
+`;
+
+export const SubmitSuccessText = styled.p`
+  margin-top: 0.75rem;
+  color: #16a34a;
+  font-size: 0.875rem;
+  text-align: center;
+  width: 100%;
 `;
