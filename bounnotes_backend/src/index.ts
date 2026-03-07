@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
-dotenv.config();
+import path from "path";
+
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 import { env } from "./config/env";
 import pool from "./db/pool";
 import app from "./app";
