@@ -6,6 +6,10 @@ function required(name: string): string {
   return value;
 }
 
+function asBoolean(value: string | undefined): boolean {
+  return value === "true";
+}
+
 export const env = {
   PORT: Number(process.env.PORT || 3000),
 
@@ -16,4 +20,10 @@ export const env = {
   DB_PASSWORD: required("DB_PASSWORD"),
   JWT_SECRET: required("JWT_SECRET"),
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "7d",
+  APP_BASE_URL: required("APP_BASE_URL"),
+  MAIL_FROM: required("MAIL_FROM"),
+  RESEND_API_KEY: required("RESEND_API_KEY"),
+  ALLOW_NON_BOUN_DEV_EMAILS: asBoolean(
+    process.env.ALLOW_NON_BOUN_DEV_EMAILS,
+  ),
 };
