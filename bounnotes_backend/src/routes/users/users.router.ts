@@ -156,8 +156,35 @@ usersRouter.put("/me/profile", requireAuth, async (req, res) => {
 
 usersRouter.get("/:username/public-profile", async (req, res) => {
   try {
+    const username =
+      typeof req.params.username === "string" ? req.params.username.trim() : "";
+    if (!username) {
+      return res.status(400).json({ error: "Invalid username" });
+    }
+    const row = await findPublicProfileByUsername(username);
+    if (!row) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json(mapUserProfileRowToItem(row));
   } catch (err) {
     console.error("GET /users/:username/public-profile failed:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+usersRouter.get("/:username/notes", async (req, res) => {
+  try {
+    const username =
+      typeof req.params.username === "string" ? req.params.username.trim() : "";
+    if (!username) {
+      return res.status(400).json({ error: "Invalid username" });
+    }
+
+    const rows = await findListedNotesByUsername(username);
+    return res.status(200).json(mapNoteRowsToNoteListItems(rows));
+  } catch (err) {
+    console.error("GET /users/:username/notes failed:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
