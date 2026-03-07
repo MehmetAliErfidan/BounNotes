@@ -8,9 +8,14 @@ import { useLang } from "../../i18n";
 type Props = {
   profile: UserProfile | null;
   onEdit: () => void;
+  readOnly?: boolean;
 };
 
-export default function ProfileSummary({ profile, onEdit }: Props) {
+export default function ProfileSummary({
+  profile,
+  onEdit,
+  readOnly = false,
+}: Props) {
   const { lang } = useLang();
   const {
     profileInformation,
@@ -40,11 +45,13 @@ export default function ProfileSummary({ profile, onEdit }: Props) {
       <S.Header>
         <S.TitleRow>
           <S.Title>{profileInformation}</S.Title>
-          <Tooltip content={editProfile} delay={250}>
-            <S.EditButton onClick={onEdit}>
-              <UserPen />
-            </S.EditButton>
-          </Tooltip>
+          {!readOnly && onEdit ? (
+            <Tooltip content={editProfile} delay={250}>
+              <S.EditButton onClick={onEdit}>
+                <UserPen />
+              </S.EditButton>
+            </Tooltip>
+          ) : null}
         </S.TitleRow>
       </S.Header>
 
