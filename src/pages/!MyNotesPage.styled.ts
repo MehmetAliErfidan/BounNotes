@@ -92,3 +92,46 @@ export const UploadNoteCTAButton = styled.button`
     flex-shrink: 0;
   }
 `;
+
+export const CreateNoteCircleButton = styled.button`
+  min-width: 112px;
+  height: 46px;
+  padding: 0 1rem;
+
+  border-radius: 999px;
+  background-color: #fcd34d;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111;
+  letter-spacing: 0.01em;
+
+  border: 1px solid #f59e0b;
+  cursor: pointer;
+
+  transition: all 0.15s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  margin: 1.75rem auto 0;
+
+  span {
+    line-height: 1;
+  }
+
+  svg {
+    display: block;
+    flex-shrink: 0;
+  }
+`;

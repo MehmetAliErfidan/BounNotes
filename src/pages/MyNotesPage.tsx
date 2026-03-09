@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { CirclePlus } from "lucide-react";
+import { CirclePlus, Plus } from "lucide-react";
 import { MY_NOTE_PAGE_TEXTS } from "../i18n/translations/pages/MyNotes";
 import { useLang } from "../i18n";
 import Navbar from "../components/common/navbar/Navbar";
@@ -12,6 +12,7 @@ import {
   NoNotesWrapper,
   EmptyIllustration,
   UploadNoteCTAButton,
+  CreateNoteCircleButton,
 } from "./!MyNotesPage.styled";
 import OxNoUpload from "../assets/illustrations/no-uploads-yet/OxNoUpload.jpg";
 import { Main } from "../styles/GlobalStyles";
@@ -32,6 +33,7 @@ export default function MyNotesPage() {
     uploadFirstNote,
     emptyStateImageAlt,
     delistSuccess,
+    addNote,
   } = MY_NOTE_PAGE_TEXTS[lang];
   const [searchParams, setSearchParams] = useSearchParams();
   const status = searchParams.get("status");
@@ -92,8 +94,14 @@ export default function MyNotesPage() {
     activeTab === "purchased" ? purchasedNotes : uploadedNotes;
   const isEmpty = notesToShow.length === 0;
 
+  const showCreateCircle = activeTab === "uploaded" && !isEmpty;
+
   const handleOpenNote = (noteID: number) => {
     navigate(`/note/${noteID}`);
+  };
+
+  const handleOpenUploadPage = () => {
+    navigate("/my-notes/upload");
   };
 
   const dismissStatusMessage = () => {
@@ -110,7 +118,9 @@ export default function MyNotesPage() {
       <Navbar />
       <Main>
         {showDelistSuccess && (
-          <NoNotesText onClick={dismissStatusMessage}>{delistSuccess}</NoNotesText>
+          <NoNotesText onClick={dismissStatusMessage}>
+            {delistSuccess}
+          </NoNotesText>
         )}
         <NotesTabBarContainer>
           <NotesTabBar
@@ -119,6 +129,15 @@ export default function MyNotesPage() {
           />
         </NotesTabBarContainer>
 
+        {showCreateCircle && (
+          <CreateNoteCircleButton
+            onClick={handleOpenUploadPage}
+            aria-label="Add note"
+          >
+            <span>{addNote}</span>
+            <Plus size={16} color="#111827" />
+          </CreateNoteCircleButton>
+        )}
         {["purchased", "uploaded"].includes(activeTab) && !isEmpty && (
           <Grid>
             {notesToShow.map((note) => (
