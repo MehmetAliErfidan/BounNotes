@@ -53,3 +53,13 @@ export interface NoteCardProps {
   note: Note;
   onOpen?: () => void;
 }
+
+export type NoteComment = {
+  id: number;
+  noteId: number;
+  userId: number;
+  username: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+};
