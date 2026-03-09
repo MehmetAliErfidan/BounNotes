@@ -225,3 +225,119 @@ export const BuyButton = styled.button`
     background-color: #1d4ed8;
   }
 `;
+
+export const CommentsSection = styled.section`
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.875rem;
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`;
+
+export const CommentsHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const CommentsTitle = styled.h3`
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+`;
+
+export const CommentsList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 14rem;
+  overflow-y: auto;
+`;
+
+export const CommentItem = styled.article`
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+`;
+
+export const CommentMeta = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+`;
+
+export const CommentAuthor = styled.span`
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1f2937;
+`;
+
+export const CommentDate = styled.span`
+  font-size: 0.7rem;
+  color: #6b7280;
+`;
+
+export const CommentContent = styled.p`
+  font-size: 0.8rem;
+  color: #374151;
+  white-space: pre-wrap;
+  word-break: break-word;
+`;
+
+export const CommentDeleteButton = styled.button`
+  align-self: flex-end;
+  border: none;
+  background: transparent;
+  color: #ef4444;
+  font-size: 0.75rem;
+  cursor: pointer;
+`;
+
+export const CommentForm = styled.form`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+`;
+
+export const CommentInput = styled.input`
+  flex: 1;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background: #ffffff;
+  font-size: 0.8rem;
+  padding: 0.55rem 0.75rem;
+  color: #111827;
+`;
+
+export const CommentSubmitButton = styled.button`
+  border: none;
+  border-radius: 0.5rem;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.55rem 0.75rem;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+`;
+
+export const CommentErrorText = styled.p`
+  color: #dc2626;
+  font-size: 0.8rem;
+`;
+
+export const CommentEmptyText = styled.p`
+  color: #6b7280;
+  font-size: 0.8rem;
+`;

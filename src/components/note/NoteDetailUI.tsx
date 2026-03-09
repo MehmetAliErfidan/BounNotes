@@ -1,5 +1,5 @@
 import { Trash2, Dot } from "lucide-react";
-import type { Note, NoteAsset } from "../../config/note.types";
+import type { Note, NoteAsset, NoteComment } from "../../config/note.types";
 import type { NotePermissions } from "./NotePermissions";
 import { NOTE_DETAIL_TEXTS } from "../../i18n/translations/notes/NoteDetail";
 import { useLang } from "../../i18n";
@@ -32,6 +32,21 @@ import {
   Price,
   BuyButton,
   DeleteButton,
+  CommentsSection,
+  CommentsHeader,
+  CommentsTitle,
+  CommentsList,
+  CommentItem,
+  CommentMeta,
+  CommentAuthor,
+  CommentDate,
+  CommentContent,
+  CommentDeleteButton,
+  CommentForm,
+  CommentInput,
+  CommentSubmitButton,
+  CommentErrorText,
+  CommentEmptyText,
 } from "./!NoteDetail.styled";
 import UserActionsRow from "./my-notes/UserActionsRow";
 
@@ -49,6 +64,17 @@ type Props = {
   isLiked?: boolean;
   isDisliked?: boolean;
   onEdit?: () => void;
+  comments?: NoteComment[];
+  commentsLoading?: boolean;
+  commentText?: string;
+  commentError?: string;
+  commentSubmitting?: boolean;
+  isCommentsOpen?: boolean;
+  currentUserId?: number | null;
+  onCommentTextChange?: (value: string) => void;
+  onCreateComment?: () => void;
+  onDeleteComment?: (commentId: number) => void;
+  onToggleComments?: () => void;
 };
 
 export default function NoteDetailUI({
@@ -65,6 +91,17 @@ export default function NoteDetailUI({
   isLiked = false,
   isDisliked = false,
   onEdit,
+  comments = [],
+  commentsLoading = false,
+  commentText = "",
+  commentError = "",
+  commentSubmitting = false,
+  isCommentsOpen = false,
+  currentUserId = null,
+  onCommentTextChange,
+  onCreateComment,
+  onDeleteComment,
+  onToggleComments,
 }: Props) {
   const { lang } = useLang();
   const {
@@ -78,16 +115,26 @@ export default function NoteDetailUI({
     springTerm,
     summerTerm,
     fallTerm,
+    commentsTitle,
+    noCommentsYet,
+    loadingComments,
+    commentPlaceholder,
+    sendComment,
+    sendingComment,
+    deleteComment,
   } = NOTE_DETAIL_TEXTS[lang];
 
-  const parsedDate = new Date(note.createdAt);
-  const shortDate = Number.isNaN(parsedDate.getTime())
-    ? note.createdAt
-    : new Intl.DateTimeFormat(lang === "tr" ? "tr-TR" : "en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }).format(new Date(note.createdAt));
+  const locale = lang === "tr" ? "tr-TR" : "en-US";
+  const formatUiDate = (dateValue: string) => {
+    const parsedDate = new Date(dateValue);
+    if (Number.isNaN(parsedDate.getTime())) return dateValue;
+    return new Intl.DateTimeFormat(locale, {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }).format(parsedDate);
+  };
+  const shortDate = formatUiDate(note.createdAt);
 
   const termLabelMap = {
     spring: springTerm,
@@ -166,6 +213,8 @@ export default function NoteDetailUI({
           isLiked={isLiked}
           isDisliked={isDisliked}
           onEdit={onEdit}
+          onCommentClick={onToggleComments}
+          isCommentsOpen={isCommentsOpen}
         />
 
         {p.canBuy && <PdfPreview>{pdfPreviewPlaceholder}</PdfPreview>}
@@ -212,6 +261,74 @@ export default function NoteDetailUI({
               </AssetList>
             )}
           </PdfPreview>
+        )}
+
+        {isCommentsOpen && (
+          <CommentsSection>
+            <CommentsHeader>
+              <CommentsTitle>{commentsTitle}</CommentsTitle>
+            </CommentsHeader>
+
+            {commentError ? <CommentErrorText>{commentError}</CommentErrorText> : null}
+
+            {commentsLoading ? (
+              <CommentEmptyText>{loadingComments}</CommentEmptyText>
+            ) : comments.length === 0 ? (
+              <CommentEmptyText>{noCommentsYet}</CommentEmptyText>
+            ) : (
+              <CommentsList>
+                {comments.map((comment) => {
+                  const canDelete =
+                    currentUserId !== null && Number(comment.userId) === Number(currentUserId);
+
+                  const parsedCreatedAt = new Date(comment.createdAt);
+                  const commentDate = Number.isNaN(parsedCreatedAt.getTime())
+                    ? comment.createdAt
+                    : formatUiDate(comment.createdAt);
+
+                  return (
+                    <CommentItem key={comment.id}>
+                      <CommentMeta>
+                        <CommentAuthor>{comment.username}</CommentAuthor>
+                        <CommentDate>{commentDate}</CommentDate>
+                      </CommentMeta>
+                      <CommentContent>{comment.content}</CommentContent>
+                      {canDelete && onDeleteComment ? (
+                        <CommentDeleteButton
+                          type="button"
+                          onClick={() => onDeleteComment(comment.id)}
+                        >
+                          {deleteComment}
+                        </CommentDeleteButton>
+                      ) : null}
+                    </CommentItem>
+                  );
+                })}
+              </CommentsList>
+            )}
+
+            {p.canComment && onCommentTextChange && onCreateComment ? (
+              <CommentForm
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  onCreateComment();
+                }}
+              >
+                <CommentInput
+                  value={commentText}
+                  onChange={(e) => onCommentTextChange(e.target.value)}
+                  placeholder={commentPlaceholder}
+                  maxLength={1000}
+                />
+                <CommentSubmitButton
+                  type="submit"
+                  disabled={!commentText.trim() || commentSubmitting}
+                >
+                  {commentSubmitting ? sendingComment : sendComment}
+                </CommentSubmitButton>
+              </CommentForm>
+            ) : null}
+          </CommentsSection>
         )}
 
         {showBuy && (
