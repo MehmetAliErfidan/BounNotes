@@ -4,11 +4,17 @@ import NoteDetailUI from "../components/note/NoteDetailUI";
 import Navbar from "../components/common/navbar/Navbar";
 import { Main } from "../styles/GlobalStyles";
 import { notePermissionsFromContext } from "../components/note/notePermissionsFromContext";
-import type { Note, NoteAsset, NoteWithContext } from "../config/note.types";
+import type {
+  Note,
+  NoteAsset,
+  NoteWithContext,
+  NoteComment,
+} from "../config/note.types";
 import { buildOptionalAuthHeaders } from "../features/auth/authRequest";
 import { NOTE_DETAIL_TEXTS } from "../i18n/translations/pages/NoteDetail";
 import { useLang } from "../i18n";
 import { API_BASE_URL } from "../config/api";
+import { useAppSelector } from "../features/hooks";
 import * as S from "./!NoteDetailPage.styled";
 
 export default function NoteDetailPage() {
@@ -28,9 +34,15 @@ export default function NoteDetailPage() {
     downloadablePdfNotFound,
     pdfNotReady,
     reactionUpdateFailed,
+    commentsLoadFailed,
+    commentCreateFailed,
+    commentDeleteFailed,
   } = NOTE_DETAIL_TEXTS[lang];
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const currentUserId = useAppSelector((state) =>
+    state.auth.user?.id ? Number(state.auth.user.id) : null,
+  );
   const [note, setNote] = useState<Note | null>(null);
   const [context, setContext] = useState<NoteWithContext["context"] | null>(
     null,
@@ -46,6 +58,37 @@ export default function NoteDetailPage() {
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
   const [reactionError, setReactionError] = useState("");
+  const [comments, setComments] = useState<NoteComment[]>([]);
+  const [commentText, setCommentText] = useState("");
+  const [commentsLoading, setCommentsLoading] = useState(false);
+  const [commentSubmitting, setCommentSubmitting] = useState(false);
+  const [commentError, setCommentError] = useState("");
+  const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+
+  const loadComments = async () => {
+    if (!id) return;
+
+    try {
+      setCommentsLoading(true);
+      const res = await fetch(`${API_BASE_URL}/api/comments/note/${id}`, {
+        headers: buildOptionalAuthHeaders(),
+      });
+
+      if (!res.ok) {
+        setComments([]);
+        setCommentError(commentsLoadFailed);
+        return;
+      }
+
+      const data = (await res.json()) as NoteComment[];
+      setComments(data);
+    } catch {
+      setComments([]);
+      setCommentError(commentsLoadFailed);
+    } finally {
+      setCommentsLoading(false);
+    }
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -77,6 +120,8 @@ export default function NoteDetailPage() {
         setContext(data.context);
         setIsLiked(data.context.isLiked);
         setIsDisliked(false);
+        setCommentError("");
+        await loadComments();
 
         if (data.context.isOwner || data.context.isPurchased) {
           try {
@@ -221,6 +266,7 @@ export default function NoteDetailPage() {
             likeCount: Math.max(0, note.stats.likeCount - 1),
           },
         });
+
         const res = await deleteReaction();
         if (!res.ok) throw new Error("REACTION_DELETE_FAILED");
         return;
@@ -404,6 +450,70 @@ export default function NoteDetailPage() {
     navigate(`/note/${note?.id}/edit`);
   };
 
+  const handleCreateComment = async () => {
+    if (!id || !commentText.trim() || commentSubmitting) return;
+
+    try {
+      setCommentSubmitting(true);
+      setCommentError("");
+
+      const res = await fetch(`${API_BASE_URL}/api/comments/note/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...Object.fromEntries(
+            new Headers(buildOptionalAuthHeaders()).entries(),
+          ),
+        },
+        body: JSON.stringify({ content: commentText.trim() }),
+      });
+
+      if (!res.ok) {
+        const errorData = (await res.json().catch(() => null)) as {
+          message?: string;
+          error?: string;
+        } | null;
+        setCommentError(
+          errorData?.message || errorData?.error || commentCreateFailed,
+        );
+        return;
+      }
+
+      setCommentText("");
+      await loadComments();
+    } catch {
+      setCommentError(commentCreateFailed);
+    } finally {
+      setCommentSubmitting(false);
+    }
+  };
+
+  const handleDeleteComment = async (commentId: number) => {
+    try {
+      setCommentError("");
+
+      const res = await fetch(`${API_BASE_URL}/api/comments/${commentId}`, {
+        method: "DELETE",
+        headers: buildOptionalAuthHeaders(),
+      });
+
+      if (!res.ok) {
+        const errorData = (await res.json().catch(() => null)) as {
+          message?: string;
+          error?: string;
+        } | null;
+        setCommentError(
+          errorData?.message || errorData?.error || commentDeleteFailed,
+        );
+        return;
+      }
+
+      await loadComments();
+    } catch {
+      setCommentError(commentDeleteFailed);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -425,6 +535,17 @@ export default function NoteDetailPage() {
           isLiked={isLiked}
           isDisliked={isDisliked}
           onEdit={handleEdit}
+          comments={comments}
+          commentsLoading={commentsLoading}
+          commentText={commentText}
+          commentError={commentError}
+          commentSubmitting={commentSubmitting}
+          isCommentsOpen={isCommentsOpen}
+          currentUserId={currentUserId}
+          onCommentTextChange={setCommentText}
+          onCreateComment={handleCreateComment}
+          onDeleteComment={handleDeleteComment}
+          onToggleComments={() => setIsCommentsOpen((prev) => !prev)}
         />
 
         {isDeleteModalOpen && (

@@ -15,6 +15,9 @@ export const NOTE_DETAIL_TEXTS = {
     downloadablePdfNotFound: "İndirilebilir PDF mevcut değil.",
     pdfNotReady: "PDF henüz hazır değil.",
     reactionUpdateFailed: "Reaksiyon güncellenemedi.",
+    commentsLoadFailed: "Yorumlar yüklenemedi.",
+    commentCreateFailed: "Yorum gönderilemedi.",
+    commentDeleteFailed: "Yorum silinemedi.",
   },
   en: {
     noteNotFound: "Note not found.",
@@ -32,5 +35,8 @@ export const NOTE_DETAIL_TEXTS = {
     downloadablePdfNotFound: "No downloadable PDF available.",
     pdfNotReady: "PDF not ready yet.",
     reactionUpdateFailed: "Reaction update failed.",
+    commentsLoadFailed: "Comments could not be loaded.",
+    commentCreateFailed: "Comment could not be submitted.",
+    commentDeleteFailed: "Comment could not be deleted.",
   },
 };
