@@ -223,7 +223,7 @@ authRouter.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    if (!user.is_verified) {
+    if (!env.ALLOW_NON_BOUN_DEV_EMAILS && !user.is_verified) {
       return res
         .status(403)
         .json({ message: "Please verify your email first" });
