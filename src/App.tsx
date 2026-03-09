@@ -16,6 +16,8 @@ import ProfilePage from "./pages/ProfilePage.tsx";
 import PublicProfilePage from "./pages/PublicProfilePage.tsx";
 import NoteEditPage from "./pages/NoteEditPage.tsx";
 import VerifyEmailPage from "./pages/VerifyEmailPage.tsx";
+import PaymentSuccessPage from "./pages/PaymentSuccessPage.tsx";
+import PaymentCancelPage from "./pages/PaymentCancelPage.tsx";
 import { clearUser, setUser, setHydrating } from "./features/auth/authSlice";
 import {
   getAccessToken,
@@ -87,6 +89,8 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
+        <Route path="/payment/success" element={<PaymentSuccessPage />} />
+        <Route path="/payment/cancel" element={<PaymentCancelPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/search" element={<MarketPage />} />
           <Route path="/note/:id" element={<NoteDetailPage />} />
