@@ -91,9 +91,12 @@ export default function CheckoutPage() {
       if (!id) return;
       setIsPurchasing(true);
       setPurchaseError("");
-      const res = await fetch(`${API_BASE_URL}/api/notes/${id}/purchase`, {
+      const res = await fetch(`${API_BASE_URL}/api/payments/checkout`, {
         method: "POST",
-        headers: buildOptionalAuthHeaders(),
+        headers: buildOptionalAuthHeaders({
+          "Content-Type": "application/json",
+        }),
+        body: JSON.stringify({ noteId: Number(id) }),
       });
       if (!res.ok) {
         const errorData = (await res.json().catch(() => null)) as {
@@ -105,7 +108,17 @@ export default function CheckoutPage() {
         );
         return;
       }
-      navigate("/my-notes");
+      const payload = (await res.json()) as {
+        message?: string;
+        data?: { paymentPageUrl?: string };
+      };
+
+      const paymentPageUrl = payload?.data?.paymentPageUrl;
+      if (!paymentPageUrl) {
+        setPurchaseError(purchaseFailed);
+        return;
+      }
+      window.location.href = paymentPageUrl;
     } catch {
       setPurchaseError(purchaseFailed);
     } finally {
