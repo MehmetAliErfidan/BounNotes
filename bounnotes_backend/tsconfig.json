@@ -16,6 +16,6 @@
     }
   },
   "include": ["src/**/*"],
-  "files": ["src/types/express.d.ts"],
+  "files": ["src/types/express.d.ts", "src/types/iyzipay.d.ts"],
   "exclude": ["node_modules"]
 }
