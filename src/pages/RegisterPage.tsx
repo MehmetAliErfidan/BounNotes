@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { REGISTER } from "../i18n/translations/pages/Register";
 import { useLang } from "../i18n";
 import Logo from "../components/common/Logo.tsx";
@@ -9,8 +8,6 @@ import { Form, Input, HeaderText, Header } from "../styles/GlobalStyles.ts";
 import { ALLOWED_DOMAIN } from "./constants";
 import { API_BASE_URL, ALLOW_NON_BOUN_DEV_EMAILS } from "../config/api.ts";
 export default function RegisterPage() {
-  const navigate = useNavigate();
-
   const { lang } = useLang();
 
   const {
@@ -150,9 +147,6 @@ export default function RegisterPage() {
       setSubmitSuccess(
         data?.message || registerSuccessFallback,
       );
-      setTimeout(() => {
-        navigate("/login");
-      }, 1200);
     } catch {
       setSubmitError(registerFailedMessage);
     } finally {
