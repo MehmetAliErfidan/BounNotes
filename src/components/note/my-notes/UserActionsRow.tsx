@@ -25,6 +25,8 @@ type Props = {
   onLike?: () => void;
   onDislike?: () => void;
   onEdit?: () => void;
+  onCommentClick?: () => void;
+  isCommentsOpen?: boolean;
 };
 
 export default function UserActionsRow({
@@ -40,6 +42,8 @@ export default function UserActionsRow({
   onLike,
   onDislike,
   onEdit,
+  onCommentClick,
+  isCommentsOpen = false,
 }: Props) {
   const { lang } = useLang();
   const { download, edit, liked, like, dislike, disliked, makeComment } =
@@ -89,7 +93,11 @@ export default function UserActionsRow({
         )}
         {canComment && (
           <Tooltip content={makeComment} delay={300}>
-            <S.CommentButton>
+            <S.CommentButton
+              type="button"
+              onClick={onCommentClick}
+              $isActive={isCommentsOpen}
+            >
               <MessageSquareText size={18} />
             </S.CommentButton>
           </Tooltip>

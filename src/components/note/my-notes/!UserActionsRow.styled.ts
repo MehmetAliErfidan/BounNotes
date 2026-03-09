@@ -136,12 +136,12 @@ export const LikeButton = styled.div`
   }
 `;
 
-export const CommentButton = styled.button`
+export const CommentButton = styled.button<{ $isActive?: boolean }>`
   background: none;
   border: none;
   cursor: pointer;
 
-  color: #9ca3af;
+  color: ${(p) => (p.$isActive ? "#2563eb" : "#9ca3af")};
   transition: color 0.2s ease;
 
   &:hover {
