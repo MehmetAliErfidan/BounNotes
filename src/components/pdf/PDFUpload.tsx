@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Upload } from "lucide-react";
 import { PDF_UPLOAD_TEXTS } from "../../i18n/translations/pdf/PDFUpload";
 import { useLang } from "../../i18n";
@@ -11,12 +12,14 @@ type Props = {
 export default function PdfUpload({ file, onChange }: Props) {
   const { lang } = useLang();
   const { uploadPdfTitle, onlyPdfFiles, remove } = PDF_UPLOAD_TEXTS[lang];
+  const [fileTypeError, setFileTypeError] = useState("");
 
   const handleSelect = (f: File) => {
     if (f.type !== "application/pdf") {
-      alert(onlyPdfFiles);
+      setFileTypeError(onlyPdfFiles);
       return;
     }
+    setFileTypeError("");
     onChange(f);
   };
 
@@ -46,6 +49,7 @@ export default function PdfUpload({ file, onChange }: Props) {
             </S.RemoveButton>
           </S.PdfInfo>
         )}
+        {fileTypeError && <S.ErrorText>{fileTypeError}</S.ErrorText>}
       </S.Card>
     </S.Container>
   );
