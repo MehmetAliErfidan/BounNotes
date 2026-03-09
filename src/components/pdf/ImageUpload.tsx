@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ImagePlus } from "lucide-react";
 import * as S from "./!ImageUpload.styled";
 import { IMAGE_UPLOAD_TEXTS } from "../../i18n/translations/pdf/ImageUpload";
@@ -19,16 +20,18 @@ export default function ImageUpload({
   const { lang } = useLang();
   const { onlyImageFiles, previewTitleText, minImagesError, deleteImage } =
     IMAGE_UPLOAD_TEXTS[lang];
+  const [fileTypeError, setFileTypeError] = useState("");
 
   const canAddMore = images.length < max;
 
   const handleAdd = (file: File) => {
     if (!file.type.startsWith("image/")) {
-      alert(onlyImageFiles);
+      setFileTypeError(onlyImageFiles);
       return;
     }
 
     if (!canAddMore) return;
+    setFileTypeError("");
     onChange([...images, file]);
   };
 
@@ -67,6 +70,7 @@ export default function ImageUpload({
             {minImagesError.replace("{{min}}", String(min))}
           </S.ErrorText>
         )}
+        {fileTypeError && <S.ErrorText>{fileTypeError}</S.ErrorText>}
       </S.Card>
     </S.Container>
   );
