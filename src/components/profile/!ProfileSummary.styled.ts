@@ -19,7 +19,7 @@ export const TitleRow = styled.div`
 `;
 
 export const Title = styled.h2`
-  font-size: 2rem;
+  font-size: clamp(1.35rem, 4.8vw, 2rem);
   font-weight: 600;
   color: #111827; /* gray-900 */
 `;
@@ -74,5 +74,21 @@ export const List = styled.ul`
     color: #111827;
     max-width: 420px;
     word-break: break-word;
+  }
+
+  @media (max-width: 640px) {
+    li {
+      margin-left: 0;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .label {
+      min-width: 0;
+    }
+
+    .value {
+      max-width: 100%;
+    }
   }
 `;

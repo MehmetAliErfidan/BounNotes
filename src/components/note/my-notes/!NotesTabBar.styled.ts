@@ -4,6 +4,12 @@ export const ButtonContainer = styled.div`
   display: flex;
   gap: 1rem;
   border-bottom: 1px solid ${(p) => p.theme.colors.gray[300]};
+  flex-wrap: wrap;
+
+  @media (max-width: 640px) {
+    gap: 0.5rem;
+    justify-content: center;
+  }
 `;
 
 export const SwitchModeButton = styled.button<{ $active: boolean }>`
@@ -11,7 +17,7 @@ export const SwitchModeButton = styled.button<{ $active: boolean }>`
   padding: 0.5rem 0;
   background: none;
   border: 1px solid transparent;
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 2.6vw, 1.5rem);
   font-weight: 500;
   cursor: pointer;
   color: ${(p) =>

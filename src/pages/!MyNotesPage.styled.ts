@@ -35,7 +35,7 @@ export const NoNotesWrapper = styled.div`
 
 export const NoNotesText = styled.div`
   text-align: center;
-  font-size: 2rem;
+  font-size: clamp(1.15rem, 3.8vw, 2rem);
   color: ${({ theme }) => theme.colors.gray[600]};
   max-width: 420px;
   line-height: 1.6;
@@ -55,9 +55,9 @@ export const EmptyIllustration = styled.img`
 
 export const UploadNoteCTAButton = styled.button`
   border-radius: 0.5rem;
-  font-size: 2rem;
+  font-size: clamp(1rem, 2.8vw, 2rem);
   font-weight: 500;
-  width: 30%;
+  width: min(100%, 420px);
   margin-top: 0.5rem;
   padding: 0.75rem 1rem;
   border: none;
@@ -124,7 +124,7 @@ export const CreateNoteCircleButton = styled.button`
     transform: scale(0.96);
   }
 
-  margin: 1.75rem auto 0;
+  margin: 0.9rem auto 0;
 
   span {
     line-height: 1;

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const CheckoutActionsBox = styled.div`
-  width: 20rem;
+  width: min(100%, 20rem);
   border: 1px solid ${(p) => p.theme.colors.gray[300]};
   border-radius: 0.5rem;
   padding: 1rem;
@@ -55,6 +55,11 @@ export const CheckoutActionsBox = styled.div`
   button:disabled {
     opacity: 0.7;
     cursor: not-allowed;
+  }
+
+  @media (max-width: 900px) {
+    position: static;
+    top: auto;
   }
 `;
 

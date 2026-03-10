@@ -304,6 +304,11 @@ export const CommentForm = styled.form`
   display: flex;
   gap: 0.5rem;
   align-items: center;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 export const CommentInput = styled.input`

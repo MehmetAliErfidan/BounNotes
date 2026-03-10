@@ -7,6 +7,11 @@ export const CheckoutLayout = styled.div`
   display: flex;
   gap: 2rem;
   align-items: flex-start;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 
 export const CheckoutContent = styled.div`
@@ -21,6 +26,7 @@ export const ActionWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
+  width: 100%;
 `;
 
 export const BackMessage = styled.span`

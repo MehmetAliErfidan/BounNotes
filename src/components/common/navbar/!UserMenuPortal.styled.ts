@@ -9,6 +9,7 @@ export const MenuWrapper = styled.div<{ $top: number; $left: number }>`
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
   min-width: 180px;
+  max-width: calc(100vw - 1rem);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
   z-index: 9999;
 `;
