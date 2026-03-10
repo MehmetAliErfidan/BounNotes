@@ -7,6 +7,18 @@ export const StyledNav = styled.nav`
   z-index: 50;
   width: 100%;
   background: linear-gradient(to right, #93c5fd, #d8b4fe, #f472b6);
+
+  &::after {
+    position: relative;
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 5px;
+    background: rgba(17, 24, 39, 0.14);
+    point-events: none;
+  }
 `;
 
 export const NavContainer = styled.div`
@@ -35,6 +47,7 @@ export const LogoWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: 0;
 
   @media (min-width: 640px) {
     width: auto;
