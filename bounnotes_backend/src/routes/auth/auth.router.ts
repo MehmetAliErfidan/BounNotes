@@ -171,6 +171,10 @@ authRouter.get("/verify-email", async (req, res) => {
       return res.status(400).json({ message: "Invalid or expired token" });
     }
 
+    if (user.is_verified) {
+      return res.status(200).json({ message: "Email already verified" });
+    }
+
     if (!user.verification_expires_at) {
       return res.status(400).json({ message: "Invalid or expired token" });
     }

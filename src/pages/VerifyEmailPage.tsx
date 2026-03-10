@@ -16,6 +16,7 @@ export default function VerifyEmailPage() {
     invalidToken,
     invalidOrExpiredToken,
     failed,
+    alreadyVerified,
     goLogin,
   } = VERIFY_EMAIL[lang];
   const navigate = useNavigate();
@@ -49,6 +50,11 @@ export default function VerifyEmailPage() {
             return;
           }
           setMessage(rawMessage || failed);
+          return;
+        }
+        if (data?.message === "Email already verified") {
+          setStatus("success");
+          setMessage(alreadyVerified);
           return;
         }
         setStatus("success");
