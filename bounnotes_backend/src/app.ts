@@ -48,6 +48,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRouter);
 
+app.get("/", (req, res) => {
+  res.send("BounNotes API is running");
+});
+
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
