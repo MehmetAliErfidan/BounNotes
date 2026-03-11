@@ -11,17 +11,22 @@ import commentsRouter from "./routes/comments/comments.router";
 
 const app = express();
 
-const allowedOrigins = new Set<string>([env.CORS_ORIGIN]);
+const configuredOrigins = env.CORS_ORIGINS.length
+  ? env.CORS_ORIGINS
+  : [env.CORS_ORIGIN];
+const allowedOrigins = new Set<string>(configuredOrigins);
 try {
-  const configured = new URL(env.CORS_ORIGIN);
-  if (configured.hostname === "localhost") {
-    const alt = new URL(env.CORS_ORIGIN);
-    alt.hostname = "127.0.0.1";
-    allowedOrigins.add(alt.origin);
-  } else if (configured.hostname === "127.0.0.1") {
-    const alt = new URL(env.CORS_ORIGIN);
-    alt.hostname = "localhost";
-    allowedOrigins.add(alt.origin);
+  for (const origin of configuredOrigins) {
+    const configured = new URL(origin);
+    if (configured.hostname === "localhost") {
+      const alt = new URL(origin);
+      alt.hostname = "127.0.0.1";
+      allowedOrigins.add(alt.origin);
+    } else if (configured.hostname === "127.0.0.1") {
+      const alt = new URL(origin);
+      alt.hostname = "localhost";
+      allowedOrigins.add(alt.origin);
+    }
   }
 } catch {
   // Keep the configured value only if URL parsing fails.

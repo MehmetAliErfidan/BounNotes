@@ -10,6 +10,14 @@ function asBoolean(value: string | undefined): boolean {
   return value === "true";
 }
 
+function asList(value: string | undefined): string[] {
+  if (!value) return [];
+  return value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 export const env = {
   PORT: Number(process.env.PORT || 3000),
 
@@ -22,6 +30,7 @@ export const env = {
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "7d",
   APP_BASE_URL: required("APP_BASE_URL"),
   CORS_ORIGIN: process.env.CORS_ORIGIN || required("APP_BASE_URL"),
+  CORS_ORIGINS: asList(process.env.CORS_ORIGINS),
   MAIL_FROM: required("MAIL_FROM"),
   RESEND_API_KEY: required("RESEND_API_KEY"),
   ALLOW_NON_BOUN_DEV_EMAILS: asBoolean(process.env.ALLOW_NON_BOUN_DEV_EMAILS),
