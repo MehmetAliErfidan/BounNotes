@@ -10,7 +10,7 @@ import { findNoteRowById } from "../notes/notes.repository";
 import { mapReactionRowToItem } from "./reactions.mapper";
 
 import type { ReactionType } from "./reactions.types";
-import { requireAuth } from "../../../src/middlewares/auth.middleware";
+import { requireAuth } from "../../middlewares/auth.middleware";
 
 const validReactions: ReactionType[] = ["like", "dislike"];
 const reactionsRouter = Router();
