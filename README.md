@@ -1,89 +1,170 @@
-BounNotes
+# BounNotes
 
-https://bounnotes.vercel.app/
+BounNotes is a full-stack note sharing platform built for Boğaziçi University students.  
+Users can upload lecture notes, manage assets (images/PDF), and interact through reactions and comments.
 
-A modern, TypeScript-based platform where Boğaziçi University students can share, sell, and discover class notes.
-There are two languages in UI, that can switch between: English and Turkish.
-The goal is to support academic collaboration, improve study efficiency, and make high-quality notes accessible across the community.
+**Live Demo:** https://bounnotes.com
 
-This platform allows students to upload class notes, browse materials uploaded by others, and purchase premium resources—all through a clean, fast, and intuitive interface.
+---
 
-✨ Features
-📘 Student-to-Student Notes Marketplace
+## Features
 
-Students can upload their own class notes (PDFs or images) and optionally sell them.
+- User authentication (JWT + email verification)
+- Note upload and editing
+- Image and PDF asset upload/download
+- Public note pages
+- Reactions and comments
+- Personal dashboard (uploaded / purchased notes)
+- Public user profiles
+- Turkish / English UI
 
-🔍 Search & Discover
+---
 
-Filter and explore notes by:
+## Tech Stack
 
-Course
+### Frontend
 
-Instructor
+- React
+- Vite
+- TypeScript
+- Redux Toolkit
+- Styled Components
 
+### Backend
+
+- Node.js
+- Express
+- TypeScript
+
+### Infrastructure
+
+- PostgreSQL (Supabase)
+- Vercel (frontend hosting)
+- Render (backend hosting)
+
+### Integrations
+
+- Resend (email)
+- Iyzico sandbox (payment infrastructure)
+
+---
+
+## Architecture
+
+```text
 User
+  ↓
+bounnotes.com (Vercel frontend)
+  ↓
+Node.js API (Render backend)
+  ↓
+PostgreSQL (Supabase)
+```
 
-⚡ Modern, Real-Time UI
+---
 
-Built with TypeScript, React, and reactive components for a smooth user experience.
+## Screenshots
 
-⭐ Rating System
+### Home
 
-Students can rate notes based on:
+![Home](docs/screenshots/Homepage.png)
 
-Quality
+### Note Detail
 
-Accuracy
+![Note Detail](docs/screenshots/NoteDetail.png)
 
-Clarity
+### Note Upload
 
-🔐 Secure Authentication
+![Note Upload](docs/screenshots/NoteUpload.png)
 
-Email/password login with validation.
+### Purchased Notes
 
-🗂 Media Support
+![Purchased Notes](docs/screenshots/PurchasedNotes.png)
 
-Upload and preview:
+### Uploaded Notes
 
-PDFs
+![Uploaded Notes](docs/screenshots/UploadedNotes.png)
 
-Images
+### Profile
 
-🧱 Tech Stack
+![Profile](docs/screenshots/Profile.png)
 
-    Frontend:
+## Monorepo Structure
 
-React
+```text
+src/                   → frontend application
+bounnotes_backend/src/ → backend API
+```
 
-Vite
+---
 
-TypeScript
+## Local Development
 
-Styled Components / TailwindCSS (depending on page)
+### Frontend
 
-React Router (BrowserRouter)
-
-    Backend:
-
-Node.js
-
-Express.js
-
-Database
-
-PostgreSQL or MongoDB (depending on deployment stage)
-
-    Authentication:
-
-JWT
-
-Email verification
-
-Only @std.bogazici.edu.tr email addresses can register
-
-📦 Requirements & Installation
-
-To run this project locally:
-
+```bash
 npm install
 npm run dev
+```
+
+Runs on: `http://localhost:5173`
+
+### Backend
+
+```bash
+cd bounnotes_backend
+npm install
+npm run dev
+```
+
+Runs on: `http://localhost:3001`
+
+---
+
+## Environment Variables
+
+### Frontend (`/.env`)
+
+```env
+VITE_API_BASE_URL=http://localhost:3001
+VITE_ALLOW_NON_BOUN_DEV_EMAILS=false
+```
+
+### Backend (`/bounnotes_backend/.env`)
+
+Use `bounnotes_backend/.env.example` as a base.
+
+Core variables:
+
+- `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`
+- `JWT_SECRET`, `JWT_EXPIRES_IN`
+- `APP_BASE_URL`, `CORS_ORIGIN`, `CORS_ORIGINS`
+- `MAIL_FROM`, `RESEND_API_KEY`
+- `IYZICO_API_KEY`, `IYZICO_SECRET_KEY`, `IYZICO_BASE_URL`
+- `PAYMENT_SUCCESS_URL`, `PAYMENT_CANCEL_URL`
+- `BACKEND_BASE_URL`
+
+---
+
+## Production Deployment
+
+- Frontend -> Vercel
+- Backend -> Render
+- Database -> Supabase
+
+Important notes:
+
+- Environment variables must be set in Vercel and Render dashboards.
+- Backend is built from `bounnotes_backend` root.
+- Backend production start command:
+
+```bash
+npm start
+```
+
+---
+
+## Notes
+
+- Payment integration currently runs on Iyzico sandbox.
+- This project is maintained as a portfolio and demo application.
