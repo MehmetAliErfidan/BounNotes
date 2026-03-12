@@ -7,6 +7,10 @@ Users can upload lecture notes, manage assets (images/PDF), and interact through
 
 ---
 
+## Preview
+
+![Preview](docs/screenshots/Homepage.png)
+
 ## Features
 
 - User authentication (JWT + email verification)
