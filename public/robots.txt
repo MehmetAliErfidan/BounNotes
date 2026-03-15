@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# App routes that should not be indexed.
+Disallow: /verify-email
+Disallow: /payment/
+Disallow: /search
+Disallow: /note/
+Disallow: /my-notes
+Disallow: /profile
+Disallow: /users/
+
+Sitemap: https://bounnotes.com/sitemap.xml
